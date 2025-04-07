@@ -41,12 +41,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_enable_login',
         'last_login_at',
         'created_by',
-        'country_of_residence',
-        'nationality',
-        'dob',
-        'gender',
-        'phone',
-        'address',
     ];
 
     protected $hidden = [
@@ -69,8 +63,6 @@ class User extends Authenticatable implements MustVerifyEmail
             return $this->attributes['avatar'] = asset(\Storage::url('avatar.png'));
         }
     }
-
-    
 
     public function authId()
     {
@@ -1230,7 +1222,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne('App\Models\Employee', 'user_id', 'id');
     }
-
 
     public function total_lead()
     {
@@ -4329,8 +4320,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function employeeIdFormat($number)
     {
         $settings = Utility::settings();
-        $formattedNumber = sprintf("%05d", $number + 1000);
-        return $settings["employee_prefix"] . $formattedNumber ;
+
+        return $settings["employee_prefix"] . sprintf("%05d", $number);
     }
 
     //user log details

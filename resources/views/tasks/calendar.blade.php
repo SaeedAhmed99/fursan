@@ -20,8 +20,8 @@
 @section('content')
 
     <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
+        <div class="col-xl-8 col-lg-7 mb-4">
+            <div class="card h-100 mb-0">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-lg-6">
@@ -30,11 +30,11 @@
                         <div class="col-lg-6">
                             @if (isset($setting['google_calendar_enable']) && $setting['google_calendar_enable'] == 'on')
                                 <select class="form-control" name="calender_type" id="calender_type" onchange="get_data()">
-                                    <option value="goggle_calender">{{__('Google Calender')}}</option>
-                                    <option value="local_calender" selected="true">{{__('Local Calender')}}</option>
+                                    <option value="goggle_calender">{{ __('Google Calender') }}</option>
+                                    <option value="local_calender" selected="true">{{ __('Local Calender') }}</option>
                                 </select>
                             @endif
-                            <input type="hidden" id="task_calendar" value="{{url('/')}}">
+                            <input type="hidden" id="task_calendar" value="{{ url('/') }}">
                         </div>
                     </div>
                 </div>
@@ -44,29 +44,27 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card">
+        <div class="col-xl-4 col-lg-5 mb-4">
+            <div class="card h-100 mb-0">
+                <div class="card-header">
+                    <h5>{{ __('Tasks') }}</h5>
+                </div>
                 <div class="card-body task-calendar-scroll">
-                    <h4 class="mb-4">{{__('Tasks')}}</h4>
-                    <ul class="event-cards list-group list-group-flush mt-3 w-100">
+                    <ul class="task-item-wrp p-0 m-0">
                         @forelse($arrTasks as $task)
-                            <li class="list-group-item card mb-3">
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="col-auto mb-3 mb-sm-0">
-                                        <div class="d-flex align-items-center">
-                                            <div class="theme-avtar bg-primary badge">
-                                                <i class="ti ti-calendar-event"></i>
-                                            </div>
-                                            <div class="ms-3 fc-event-title-container">
-                                                <h6 class="m-0 text-sm fc-event-title text-primary">{{$task['title']}}</h6>
-                                                <small class="text-muted">{{$task['start']}}  to {{$task['end']}}</small>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <li class="task-item d-flex align-items-center gap-3">
+                            <div class="task-item-icon">
+                                <div class="icon-inner">
+                                    <i class="f-20 ti ti-calendar-event text-white"></i>
                                 </div>
-                            </li>
+                            </div>
+                            <div class="task-item-info flex-1">
+                                <h5>{{ $task['title'] }}</h5>
+                                <span class="text-muted">{{ $task['start'] }} to {{ $task['end'] }}</span>
+                            </div>
+                        </li>
                         @empty
-                            <p class="text-dark text-center">{{__('No Data Found')}}</p>
+                            <h6 class="text-dark text-center mb-0">{{ __('No Data Found') }}</h6>
                         @endforelse
                     </ul>
                 </div>

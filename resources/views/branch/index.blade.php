@@ -29,7 +29,7 @@
         <div class="col-12">
             {{-- <div class="tab-pane fade active show" id="branch-setting" role="tabpanel"
                 aria-labelledby="pills-user-tab-1"> --}}
-            <div class="my-3 d-flex justify-content-end">
+            <div class="mb-4 d-flex justify-content-end">
                 @can('create branch')
                     <a href="#" data-url="{{ route('branch.create') }}" data-ajax-popup="true"
                         data-title="{{ __('Create New Branch') }}" data-bs-toggle="tooltip" title="{{ __('Create') }}"

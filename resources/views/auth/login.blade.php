@@ -15,43 +15,15 @@
 @section('page-title')
     {{ __('Login') }}
 @endsection
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 @if ($settings['cust_darklayout'] == 'on')
     <style>
         .g-recaptcha {
             filter: invert(1) hue-rotate(180deg) !important;
         }
-
     </style>
 @endif
-<style>
-    .password-container {
-        position: relative;
-        width: 100%; /* السماح له بالتكيف مع حجم الشاشة */
-        display: block;
-    }
 
-    .password-container input {
-    padding-right: 35px; /* مساحة للأيقونة */
-    width: 100%; /* جعل العرض مرنًا */
-
-}
-
-        .toggle-password {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            font-size: 18px;
-            color: #666;
-        }
-        
-        .toggle-password:hover {
-            color: #000;
-        }
-</style>
 @php
     $languages = App\Models\Utility::languages();
 @endphp
@@ -96,11 +68,8 @@
                 @enderror
             </div>
             <div class="form-group mb-3">
-                <label class="form-label" style="display: block;">{{ __('Password') }}</label>
-                <div class="password-container">
-                     {{ Form::password('password', ['class' => 'form-control', 'placeholder' => __('Enter Your Password'), 'id' => 'input-password', 'required' => 'required']) }}
-                     <i class="fa-solid fa-eye toggle-password" id="toggle-password" onclick="togglePassword()"></i>
-                    </div>
+                <label class="form-label">{{ __('Password') }}</label>
+                {{ Form::password('password', ['class' => 'form-control', 'placeholder' => __('Enter Your Password'), 'id' => 'input-password', 'required' => 'required']) }}
                 @error('password')
                     <span class="error invalid-password text-danger" role="alert">
                         <strong>{{ $message }}</strong>
@@ -142,28 +111,14 @@
             <div class="d-grid">
                 {{ Form::submit(__('Login'), ['class' => 'btn btn-primary mt-2', 'id' => 'saveBtn']) }}
             </div>
-            
             @if ($settings['enable_signup'] == 'on')
                 <p class="my-4 text-center">{{ __("Don't have an account?") }}
                     <a href="{{ route('register', $lang) }}" class="text-primary">{{ __('Register') }}</a>
                 </p>
             @endif
-
         </div>
         {{ Form::close() }}
     </div>
-    <script>
-        function togglePassword() {
-            var passwordInput = document.getElementById("input-password");
-    
-            // التأكد من أن العنصر موجود قبل محاولة استخدامه
-            if (passwordInput) {
-                passwordInput.type = (passwordInput.type === "password") ? "text" : "password";
-            } else {
-                console.error("العنصر #input-password غير موجود في DOM");
-            }
-        }
-    </script>
 @endsection
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>

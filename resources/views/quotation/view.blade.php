@@ -32,7 +32,7 @@
 
 @section('action-btn')
     <div class="float-end">
-        <a href="{{ route('quotation.pdf', Crypt::encrypt($quotation->id))}}" class="btn btn-primary" target="_blank" download="">{{__('Download')}}</a>
+        <a href="{{ route('quotation.pdf', Crypt::encrypt($quotation->id))}}" class="btn btn-primary" target="_blank" >{{__('Download')}}</a>
     </div>
 @endsection
 

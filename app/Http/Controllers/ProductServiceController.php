@@ -552,7 +552,7 @@ class ProductServiceController extends Controller
 
                         $output .= '
 
-                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-12">
+                                    <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 col-6">
                                         <div class="tab-pane fade show active toacart w-100" data-url="' . url('add-to-cart/' . $product->id . '/' . $lastsegment) . '">
                                             <div class="position-relative card">
                                                 <img alt="Image placeholder" src="' . asset(Storage::url($image_url)) . '" class="card-image avatar shadow hover-shadow-lg" style=" height: 6rem; width: 100%;">

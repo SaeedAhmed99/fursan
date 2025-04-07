@@ -109,7 +109,7 @@
             <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
 
                 <div class="all-button-box mx-2">
-                    <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id)) }}" download="" target="_blank"
+                    <a href="{{ route('invoice.pdf', Crypt::encrypt($invoice->id)) }}"  target="_blank"
                         class="btn btn-primary mt-3">
                         {{ __('Download') }}
                     </a>

@@ -400,7 +400,7 @@ class ExpenseController extends Controller
                 if ($status == true) {
                     return redirect()->route('expense.index', $expense->id)->with('success', __('Expense successfully created.'));
                 } else {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Expense successfully created, Webhook call failed.'));
                 }
             }
 
@@ -871,10 +871,10 @@ class ExpenseController extends Controller
             BillProduct::where('id', '=', $request->id)->delete();
             BillAccount::where('id', '=', $request->account_id)->delete();
 
-            return redirect()->back()->with('success', __('Expense product successfully deleted.'));
+            return response()->json(['status' => true, 'message' => __('Expense product successfully deleted.')]);
 
         } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return response()->json(['status' => false, 'message' => __('Permission denied.')]);
         }
     }
 

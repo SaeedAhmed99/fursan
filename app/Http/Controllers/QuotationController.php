@@ -70,7 +70,7 @@ class QuotationController extends Controller
         $quotation_date = $request->quotation_date;
         $quotation_number = $request->quotation_number;
 
-        
+
         $warehouseProducts = WarehouseProduct::where('created_by', '=', \Auth::user()->creatorId())->where('warehouse_id',$request->warehouse_id)->get()->pluck('product_id')->toArray();
         $product_services = ProductService::where('created_by', \Auth::user()->creatorId())->whereIn('id',$warehouseProducts)->where('type','!=', 'service')->get()->pluck('name', 'id');
         $product_services->prepend(' -- ', '');
@@ -314,7 +314,7 @@ class QuotationController extends Controller
 
         $product = ProductService::find($request->product_id);
         $productquantity = 0;
-        
+
         if ($product) {
             $productquantity = $product->getQuantity();
         }

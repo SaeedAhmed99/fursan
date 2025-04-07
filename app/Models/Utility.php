@@ -5862,7 +5862,70 @@ class Utility extends Model
                     'en' => '<p>Hello,&nbsp;<br>Welcome to {app_name}.</p><p><b>Email </b>: {email}<br><b>Password</b> : {password}</p><p>{app_url}</p><p>Thanks,<br>{app_name}</p>',
                 ],
             ],
-
+            'new_project' => [
+                'subject' => 'New Project',
+                'lang' => [
+                    'en' => '<p><strong>Hi</strong> {project_user}</p>
+                    <p><b>Project Name</b>&nbsp;: {project_name}</p>
+                    <p><b>Start Date&nbsp;</b>: {project_start_date}</p>
+                    <p><b>End Date&nbsp;</b>: {project_end_date}</p>
+                    <p><b>Estimated Hours&nbsp;</b>: {hours}</p>
+                    <p>Looking forward to hear from you.</p>
+                    <p><strong>Kind Regards, </strong></p>
+                    <p>{company_name}</p>',
+                ],
+            ],
+            'new_task' => [
+                'subject' => 'New Task',
+                'lang' => [
+                    'en' => '<p><strong>Hi</strong> {task_user}</p>
+                    <p><b>Task Name</b>&nbsp;: {task_name}</p>
+                    <p><b>Project Name</b>&nbsp;: {project_name}</p>
+                    <p><b>Start Date&nbsp;</b>: {task_start_date}</p>
+                    <p><b>End Date&nbsp;</b>: {task_end_date}</p>
+                    <p><b>Estimated Hours&nbsp;</b>: {hours}</p>
+                    <p>Looking forward to hear from you.</p>
+                    <p><strong>Kind Regards, </strong></p>
+                    <p>{company_name}</p>',
+                ],
+            ],
+            'task_status_updated' => [
+                'subject' => 'Task Status Updated',
+                'lang' => [
+                    'en' => '<p>&nbsp;</p>
+                    <p><strong>Hi</strong> {task_user}</p>
+                    <p>{task_name} status changed from {old_stage_name} to {new_stage_name}</p>
+                    <p><strong>Kind Regards, </strong></p>
+                    <p>{company_name}</p>',
+                ],
+            ],
+            'new_leave' => [
+                'subject' => 'New Leave',
+                'lang' => [
+                    'en' => '<p><strong>Hi</strong> {user_name}</p>
+                    <p>New Leave create from {start_date} to {end_date} for {leave_reason}</p>
+                    <p><strong>Kind Regards, </strong></p>
+                    <p>{employee_name}</p>',
+                ],
+            ],
+            'promotion_sent' => [
+                'subject' => 'Promotion Sent',
+                'lang' => [
+                    'en' => '<p>&nbsp;</p>
+                    <p><strong>Subject:-HR department/Company to send job promotion congratulation letter.</strong></p>
+                    <p><strong>Dear {employee_name},</strong></p>
+                    <p>Congratulations on your promotion to {promotion_designation} {promotion_title} effective {promotion_date}.</p>
+                    <p>We shall continue to expect consistency and great results from you in your new role. We hope that you will set an example for the other employees of the organization.</p>
+                    <p>We wish you luck for your future performance, and congratulations!.</p>
+                    <p>Again, congratulations on the new position.</p>
+                    <p>&nbsp;</p>
+                    <p>Feel free to reach out if you have any questions.</p>
+                    <p>Thank you</p>
+                    <p><strong>Regards,</strong></p>
+                    <p><strong>HR Department,</strong></p>
+                    <p><strong>{app_name}</strong></p>',
+                ],
+            ],
         ];
 
         $email = EmailTemplate::all();

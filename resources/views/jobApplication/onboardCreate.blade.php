@@ -3,8 +3,8 @@
     <div class="row">
         @if ($id == 0)
             <div class="form-group col-md-12">
-                {{ Form::label('application', __('Interviewer'), ['class' => 'col-form-label']) }}
-                {{ Form::select('application', $applications, null, ['class' => 'form-control select2']) }}
+                {{ Form::label('application', __('Interviewer'), ['class' => 'col-form-label']) }}<x-required></x-required>
+                {{ Form::select('application', $applications, null, ['class' => 'form-control select2', 'required' => 'required']) }}
             </div>
         @endif
         <div class="form-group col-md-12">

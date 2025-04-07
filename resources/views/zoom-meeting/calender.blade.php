@@ -13,7 +13,7 @@
 
 @section('action-btn')
     <div class="float-end">
-        <a href="{{ route('zoom-meeting.index') }}" class="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip" title="{{__('List View')}}" data-original-title="{{__('List View')}}">
+        <a href="{{ route('zoom-meeting.index') }}" class="btn btn-sm btn-primary-subtle me-1" data-bs-toggle="tooltip" title="{{__('List View')}}" data-original-title="{{__('List View')}}">
             <i class="ti ti-list"></i>
         </a>
         @can('create zoom meeting')
@@ -94,8 +94,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8">
-            <div class="card">
+        <div class="col-xl-8 col-lg-7 mb-4">
+            <div class="card h-100 mb-0">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-lg-6">
@@ -117,41 +117,33 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="mb-4">{{__('Mettings')}}</h4>
-                    <ul class="event-cards list-group list-group-flush mt-3 w-100">
-
+        <div class="col-xl-4 col-lg-5 mb-4">
+            <div class="card h-100 mb-0">
+                <div class="card-header">
+                    <h5>{{__('Mettings')}}</h5>
+                </div>
+                <div class="card-body task-calendar-scroll">
+                    <ul class="task-item-wrp p-0 m-0">
                         @foreach($calandar as $event)
-
-                            @php
-                                $month = date("m",strtotime($event['start']));
-                            @endphp
-                            @if($month == date('m'))
-                                <li class="list-group-item card mb-3">
-                                    <div class="row align-items-center justify-content-between">
-                                        <div class="col-auto mb-3 mb-sm-0">
-                                            <div class="d-flex align-items-center">
-                                                <div class="theme-avtar bg-primary badge">
-                                                    <i class="ti ti-video"></i>
-                                                </div>
-                                                <div class="ms-3">
-                                                    <h6 class="m-0">
-                                                        <a href="{{$event['url']}}" class="fc-daygrid-event" style="white-space: inherit;">
-                                                            <div class="fc-event-title-container">
-                                                                <div class="fc-event-title text-dark">{{$event['title']}}</div>
-                                                            </div>
-                                                        </a>
-                                                    </h6>
-                                                    <small class="text-muted">{{$event['start']}}</small>
-                                                </div>
-                                            </div>
-                                        </div>
+                        @php
+                            $month = date("m",strtotime($event['start']));
+                        @endphp
+                        @if($month == date('m'))
+                            <li class="task-item d-flex align-items-center gap-3">
+                                <div class="task-item-icon">
+                                    <div class="icon-inner">
+                                        <i class="f-20 ti ti-video text-white"></i>
                                     </div>
-                                </li>
-                            @endif
-                        @endforeach
+                                </div>
+                                <div class="task-item-info flex-1">
+                                    <h5>
+                                        <a href="{{$event['url']}}" class="dashboard-link">{{$event['title']}}</a>
+                                    </h5>
+                                    <span class="text-muted">{{$event['start']}}</span>
+                                </div>
+                            </li>
+                        @endif
+                    @endforeach
                     </ul>
                 </div>
             </div>

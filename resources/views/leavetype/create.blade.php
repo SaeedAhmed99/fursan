@@ -15,12 +15,6 @@
         </div>
         <div class="col-md-12">
             <div class="form-group">
-                {{Form::label('title',__('Description'),['class'=>'form-label'])}}
-                {{Form::text('description',null,array('class'=>'form-control','placeholder'=>__('Enter Leave Type Name')))}}
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group">
                 {{Form::label('days',__('Days Per Year'),['class'=>'form-label'])}}<x-required></x-required>
                 {{Form::number('days',null,array('class'=>'form-control','placeholder'=>__('Enter Days / Year'),'required'=> 'required'))}}
             </div>

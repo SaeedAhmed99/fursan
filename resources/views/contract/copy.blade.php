@@ -43,7 +43,7 @@
     </div>
 
 <div class="modal-footer pr-0">
-    <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal">{{ __('Close') }}</button>
+    <button type="button" class="btn  btn-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
     {{Form::submit(__('Copy'),array('class'=>'btn  btn-primary'))}}
 </div>
 </div>

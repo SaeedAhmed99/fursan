@@ -40,7 +40,7 @@ class LoanOptionController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:250|unique:loan_options,name',
+                                   'name' => 'required|max:20',
                                ]
             );
             if($validator->fails())
@@ -95,7 +95,8 @@ class LoanOptionController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:250|unique:loan_options,name,' . $loanoption->id,
+                                       'name' => 'required|max:20',
+
                                    ]
                 );
                 if($validator->fails())

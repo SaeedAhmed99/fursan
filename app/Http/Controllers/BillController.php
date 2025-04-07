@@ -279,7 +279,7 @@ class BillController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Bill successfully created, Webhook call failed.'));
                 }
             }
 
@@ -697,11 +697,11 @@ class BillController extends Controller
             BillProduct::where('id', '=', $request->id)->delete();
             BillAccount::where('id','=',$request->account_id)->delete();
 
-            return redirect()->back()->with('success', __('Bill product successfully deleted.'));
+            return response()->json(['status' => true, 'message' => __('Bill product successfully deleted.')]);
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return response()->json(['status' => false, 'message' => __('Permission denied.')]);
         }
     }
 

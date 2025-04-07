@@ -80,38 +80,6 @@
                             {!! Form::label('skill', __('Skill'),['class'=>'form-label']) !!}<x-required></x-required>
                             <input type="text" class="form-control" value="" data-toggle="tags" name="skill" placeholder="Skill" required/>
                         </div>
-                        <div class="form-group col-md-6">
-                            {!! Form::label('title', __('Job type'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::text('job_type', old('job_type'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter Job Type')]) !!}
-                        </div>
-                        <div class="form-group col-md-6">
-                            {!! Form::label('title', __('Years of experience'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::number('years_of_experience', old('years_of_experience'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter years of experience')]) !!}
-                        </div>
-                        <div class="form-group col-md-12">
-                            {!! Form::label('title', __('Show pay by'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::text('show_pay_by', old('show_pay_by'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter Show pay by')]) !!}
-                        </div>
-                        <div class="form-group col-md-6">
-                            {!! Form::label('title', __('Starting salary'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::number('starting_salary', old('starting_salary'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter Starting salary')]) !!}
-                        </div>
-                        <div class="form-group col-md-6">
-                            {!! Form::label('title', __('Currency'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::text('currency', old('currency'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter Currency')]) !!}
-                        </div>
-                        {{-- <div class="form-group col-md-6">
-                            {!! Form::label('title', __('Rate'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::text('rate', old('rate'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter Rate')]) !!}
-                        </div> --}}
-                        <div class="form-group col-md-6">
-                            {!! Form::label('title', __('Academic Major'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::text('major', old('major'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter Academic Major')]) !!}
-                        </div>
-                        <div class="form-group col-md-6">
-                            {!! Form::label('title', __('Degree'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::text('degree', old('degree'), ['class' => 'form-control','required' => 'required' , 'placeholder'=>__('Enter Degree')]) !!}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -213,6 +181,7 @@
         </div>
         <div class="col-md-12 text-end">
             <div class="form-group">
+                <input type="button" value="{{__('Cancel')}}" onclick="location.href = '{{route("job.index")}}';" class="btn btn-secondary me-1">
                 <input type="submit" value="{{__('Create')}}" class="btn btn-primary">
             </div>
         </div>

@@ -20,7 +20,7 @@
                 <span class="btn-inner--icon"><i class="ti ti-plus"></i></span>
             </a>
         @endcan
-        <a href="{{ route('projects.show',$project->id) }}" class="btn btn-primary btn-sm" data-bs-toggle="tooltip" title="{{__('Back')}}">
+        <a href="{{ route('projects.show',$project->id) }}" class="btn bg-brown-subtitle text-white btn-sm" data-bs-toggle="tooltip" title="{{__('Back')}}">
             <span class="btn-inner--icon"><i class="ti ti-arrow-left"></i></span>
         </a>
     </div>

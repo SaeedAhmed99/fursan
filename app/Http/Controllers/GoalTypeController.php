@@ -42,7 +42,7 @@ class GoalTypeController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:250|unique:goal_types,name',
+                                   'name' => 'required',
                                ]
             );
             if($validator->fails())
@@ -94,7 +94,7 @@ class GoalTypeController extends Controller
         {
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:250|unique:goal_types,name,' . $id,
+                                   'name' => 'required',
                                ]
             );
             if($validator->fails())

@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="col-4 mb-2 file-{{$file->id}}">
                                     <div class="comment-trash" style="float: right">
-                                        <a download href="{{asset(Storage::url('bugs/'.$file->file))}}" class="btn btn-sm btn-primary">
+                                        <a download href="{{asset(Storage::url('bugs/'.$file->file))}}" class="btn btn-sm btn-primary me-1">
                                             <i class="ti ti-download"></i>
                                         </a>
                                         <a href="#" class="btn btn-sm red btn-danger delete-comment-file m-0 px-2" data-id="{{$file->id}}" data-url="{{route('bug.comment.file.destroy',[$file->id])}}">

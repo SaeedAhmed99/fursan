@@ -7,7 +7,7 @@
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('amount', __('Amount'),['class'=>'form-label']) }}<x-required></x-required>
-            {{ Form::number('amount',$purchase->getDue(), array('class' => 'form-control','required'=>'required','step'=>'0.01')) }}
+            {{ Form::number('amount',$purchase->getDue(), array('class' => 'form-control','required'=>'required','step'=>'0.01', 'placeholder' => __('Enter Amount'))) }}
         </div>
         <div class="form-group  col-md-6">
             {{ Form::label('account_id', __('Account'),['class'=>'form-label']) }}<x-required></x-required>
@@ -16,11 +16,11 @@
 
         <div class="form-group  col-md-6">
             {{ Form::label('reference', __('Reference'),['class'=>'form-label']) }}
-            {{ Form::text('reference', '', array('class' => 'form-control')) }}
+            {{ Form::text('reference', '', array('class' => 'form-control', 'placeholder' => __('Enter Reference'))) }}
         </div>
         <div class="form-group  col-md-12">
             {{ Form::label('description', __('Description'),['class'=>'form-label']) }}
-            {{ Form::textarea('description', '', array('class' => 'form-control','rows'=>3)) }}
+            {{ Form::textarea('description', '', array('class' => 'form-control','rows'=>3, 'placeholder' => __('Enter Description'))) }}
         </div>
 
 

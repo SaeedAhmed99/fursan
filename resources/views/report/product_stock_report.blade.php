@@ -10,7 +10,7 @@
 @section('action-btn')
     <div class="float-end">
         <a href="{{ route('productstock.export') }}" data-bs-toggle="tooltip" title="{{ __('Export') }}"
-           class="btn btn-sm btn-primary">
+           class="btn btn-sm btn-secondary">
             <i class="ti ti-file-export"></i>
         </a>
 

@@ -162,7 +162,7 @@ class MeetingController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Meeting successfully created, Webhook call failed.'));
                 }
             }
 

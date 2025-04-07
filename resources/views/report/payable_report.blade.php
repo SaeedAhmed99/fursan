@@ -57,12 +57,12 @@
 
 @section('action-btn')
 <div class="float-end">
-    <a href="#" onclick="saveAsPDF()" class="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip"
+    <a href="#" onclick="saveAsPDF()" class="btn btn-sm btn-primary-subtle me-1" data-bs-toggle="tooltip"
         title="{{ __('Print') }}" data-original-title="{{ __('Print') }}"><i class="ti ti-printer"></i></a>
 </div>
 
     <div class="float-end me-2" id="filter">
-        <button id="filter" class="btn btn-sm btn-primary"><i class="ti ti-filter"></i></button>
+        <button id="filter" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{ __('Filter') }}"><i class="ti ti-filter"></i></button>
     </div>
 
 @endsection
@@ -136,7 +136,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between w-100">
-                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <ul class="nav nav-pills nav-ul gap-2 mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="payable-tab1" data-bs-toggle="pill" href="#vendor_balance"
                                     role="tab" aria-controls="pills-vendor-balance"

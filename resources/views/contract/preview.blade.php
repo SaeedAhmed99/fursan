@@ -48,7 +48,7 @@ $SITE_RTL = !empty($settings['SITE_RTL'] ) ? $settings['SITE_RTL']  : 'off';
                                 class="ti ti-pencil text-white" data-bs-toggle="tooltip" data-bs-original-title="{{__('signature')}}"></i></span></a>
                     </a>
                     @endif
-                <a href="{{route('contract.download.pdf',\Crypt::encrypt($contract->id))}}" class="btn btn-sm btn-primary btn-icon" download="" data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('Download')}}" target="_blanks">
+                <a href="{{route('contract.download.pdf',\Crypt::encrypt($contract->id))}}" class="btn btn-sm btn-primary btn-icon"  data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('Download')}}" target="_blanks">
                     <i class="ti ti-download"></i>
                 </a>
 

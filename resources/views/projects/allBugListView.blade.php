@@ -26,7 +26,7 @@
         @endif
 
         @can('manage project')
-            <a href="{{ route('projects.index') }}" class="btn btn-primary btn-sm me-1" data-bs-toggle="tooltip"
+            <a href="{{ route('projects.index') }}" class="btn bg-brown-subtitle text-white btn-sm me-1" data-bs-toggle="tooltip"
                 title="{{ __('Back') }}">
                 <span class="btn-inner--icon"><i class="ti ti-arrow-left"></i></span>
             </a>

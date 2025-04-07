@@ -5,7 +5,7 @@
             $plan= \App\Models\Utility::getChatGPTSettings();
         @endphp
         @if($plan->chatgpt == 1)
-        <div class="text-end">
+        <div class="text-end mb-3">
             <a href="#" data-size="md" class="btn  btn-primary btn-icon btn-sm" data-ajax-popup-over="true" data-url="{{ route('generate',['event']) }}"
                data-bs-placement="top" data-title="{{ __('Generate content with AI') }}">
                 <i class="fas fa-robot"></i> <span>{{__('Generate with AI')}}</span>
@@ -38,7 +38,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                {{ Form::label('color', __('Event Select Color'), ['class' => 'col-form-label d-block mb-3']) }}
+                {{ Form::label('color', __('Event Select Color'), ['class' => 'form-label']) }}
                 <div class=" btn-group-toggle btn-group-colors event-tag" data-toggle="buttons">
                     <label
                         class="btn bg-info p-3 {{ $event->color == 'event-info'
@@ -60,12 +60,12 @@
 
 
                     <label
-                        class="btn bg-primary p-3 {{ $event->color == 'event-success' ? 'custom_color_radio_button' : '' }}"><input
+                        class="btn bg-success p-3 {{ $event->color == 'event-success' ? 'custom_color_radio_button' : '' }}"><input
                             type="radio" class="d-none" name="color" value="event-success"
                             {{ $event->color == 'event-success' ? 'checked' : '' }}></label>
 
-                    <label class="btn p-3 {{ $event->color == 'event-primary' ? 'custom_color_radio_button' : '' }}"
-                           style="background-color: #51459d !important"><input type="radio" class="d-none"
+                    <label class="btn bg-custom p-3 {{ $event->color == 'event-primary' ? 'custom_color_radio_button' : '' }}"><input
+                            type="radio" class="d-none"
                                                                                name="color" value="event-primary"
                             {{ $event->color == 'event-primary' ? 'checked' : '' }}></label>
                 </div>
@@ -74,7 +74,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="form-group">
+            <div class="form-group mb-0">
                 {{Form::label('description',__('Event Description'),['class'=>'form-label'])}}
                 {{Form::textarea('description',null,array('class'=>'form-control','placeholder'=>__('Enter Event Description')))}}
             </div>

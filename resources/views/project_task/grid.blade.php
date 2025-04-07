@@ -54,11 +54,16 @@
                                             <div class="col-12">
                                                 <div class="actions d-flex justify-content-between mt-2 mb-2">
                                                     @if(count($task->taskFiles) > 0)
-                                                        <div class="action-item mr-2"><i class="ti ti-paperclip mr-2"></i>{{ count($task->taskFiles) }}</div>@endif
+                                                        <div class="action-item mr-2" data-bs-toggle="tooltip"
+                                                        title="{{ __('Attachment') }}"><i class="ti ti-paperclip mr-2"></i>{{ count($task->taskFiles) }}</div>@endif
                                                     @if(count($task->comments) > 0)
-                                                        <div class="action-item mr-2"><i class="ti ti-brand-hipchat mr-2"></i>{{ count($task->comments) }}</div>@endif
+                                                        <div class="action-item mr-2" data-bs-toggle="tooltip"
+                                                        title="{{ __('Comment') }}"
+                                                        data-original-title="{{ __('Comment') }}"><i class="ti ti-brand-hipchat mr-2"></i>{{ count($task->comments) }}</div>@endif
                                                     @if($task->checklist->count() > 0)
-                                                        <div class="action-item mr-2"><i class="ti ti-list-check mr-2"></i>{{ $task->countTaskChecklist() }}</div>@endif
+                                                        <div class="action-item mr-2" data-bs-toggle="tooltip"
+                                                        title="{{ __('Checklist') }}"
+                                                        data-original-title="{{ __('Checklist') }}"><i class="ti ti-list-check mr-2"></i>{{ $task->countTaskChecklist() }}</div>@endif
                                                 </div>
                                             </div>
                                             <div class="col-6">@if(!empty($task->end_date) && $task->end_date != '0000-00-00')<small @if(strtotime($task->end_date) < time())class="text-danger"@endif>{{ Utility::getDateFormated($task->end_date) }}</small>@endif</div>

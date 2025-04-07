@@ -3963,21 +3963,6 @@ class UsersTableSeeder extends Seeder
             ]
         );
 
-        $userRole       = Role::create(
-            [
-                'name' => 'user',
-                'created_by' => $company->id,
-            ]
-        );
-
-            
-        $userPermission = [
-            'manage employee profile',
-            'show employee profile',
-        ];
-        $userRole->givePermissionTo($userPermission);
-
-
         $employeePermission = [
             'show hrm dashboard',
             'manage user',

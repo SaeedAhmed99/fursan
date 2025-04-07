@@ -367,11 +367,13 @@ class ProposalController extends Controller
         {
             ProposalProduct::where('id', '=', $request->id)->delete();
 
-            return redirect()->back()->with('success', __('Proposal product successfully deleted.'));
+            return response()->json(['status' => true, 'message' => __('Proposal product successfully deleted.')]);
+            // return redirect()->back()->with('success', __('Proposal product successfully deleted.'));
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return response()->json(['status' => false, 'message' => __('Permission denied.')]);
+            // return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 

@@ -1,13 +1,14 @@
+
 {{ Form::model($lead, array('route' => array('leads.convert.to.deal', $lead->id), 'method' => 'POST', 'class'=>'needs-validation', 'novalidate')) }}
 <div class="modal-body">
     <div class="row">
         <div class="col-6 form-group">
             {{ Form::label('name', __('Deal Name'),['class'=>'form-label']) }}<x-required></x-required>
-            {{ Form::text('name', $lead->subject, array('class' => 'form-control','required'=>'required')) }}
+            {{ Form::text('name', $lead->subject, array('class' => 'form-control','required'=>'required', 'placeholder' => __('Enter Name'))) }}
         </div>
         <div class="col-6 form-group">
             {{ Form::label('price', __('Price'),['class'=>'form-label']) }}
-            {{ Form::number('price', 0, array('class' => 'form-control','min'=>0)) }}
+            {{ Form::number('price', 0, array('class' => 'form-control','min'=>0, 'placeholder' => __('Enter Price'))) }}
         </div>
         <div class="col-sm-12 col-md-12">
             <div class="d-flex radio-check">
@@ -22,7 +23,7 @@
             </div>
         </div>
         <div class="col-6 exist_client d-none form-group">
-            {{ Form::label('clients', __('Client'),['class'=>'form-label']) }}
+            {{ Form::label('clients', __('Client'),['class'=>'form-label']) }}<x-required></x-required>
             <select name="clients" id="clients" class="form-control select" required>
                 <option value="">{{ __('Select Client') }}</option>
                 @foreach($clients as $client)
@@ -32,15 +33,15 @@
         </div>
         <div class="col-6 new_client form-group">
             {{ Form::label('client_name', __('Client Name'),['class'=>'form-label']) }}<x-required></x-required>
-            {{ Form::text('client_name', $lead->name, array('class' => 'form-control','required'=>'required')) }}
+            {{ Form::text('client_name', $lead->name, array('class' => 'form-control','required'=>'required', 'placeholder' => __('Enter Client Name'))) }}
         </div>
         <div class="col-6 new_client form-group">
             {{ Form::label('client_email', __('Client Email'),['class'=>'form-label']) }}<x-required></x-required>
-            {{ Form::text('client_email', $lead->email, array('class' => 'form-control','required'=>'required')) }}
+            {{ Form::text('client_email', $lead->email, array('class' => 'form-control','required'=>'required', 'placeholder' => __('Enter Client Email'))) }}
         </div>
         <div class="col-6 new_client form-group">
             {{ Form::label('client_password', __('Client Password'),['class'=>'form-label']) }}<x-required></x-required>
-            {{ Form::text('client_password',null, array('class' => 'form-control','required'=>'required')) }}
+            {{ Form::text('client_password',null, array('class' => 'form-control','required'=>'required', 'placeholder' => __('Enter Client Password'))) }}
         </div>
     </div>
     <div class="row px-3 text-sm">
@@ -95,12 +96,14 @@
                 $('#client_email').removeAttr('required');
                 $('#client_password').removeAttr('required');
                 $('.new_client').addClass('d-none');
+                $('#clients').attr('required', 'required');
             } else {
                 $('.new_client').removeClass('d-none');
                 $('#client_name').attr('required', 'required');
                 $('#client_email').attr('required', 'required');
                 $('#client_password').attr('required', 'required');
                 $('.exist_client').addClass('d-none');
+                $('#clients').removeAttr('required');
             }
         });
         if (is_client == "exist") {
@@ -109,12 +112,14 @@
             $('#client_email').removeAttr('required');
             $('#client_password').removeAttr('required');
             $('.new_client').addClass('d-none');
+            $('#clients').attr('required', 'required');
         } else {
             $('.new_client').removeClass('d-none');
             $('#client_name').attr('required', 'required');
             $('#client_email').attr('required', 'required');
             $('#client_password').attr('required', 'required');
             $('.exist_client').addClass('d-none');
+            $('#clients').removeAttr('required');
         }
     })
 

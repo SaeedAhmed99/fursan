@@ -1,24 +1,22 @@
 <div class="col-form-label">
     <div class="row px-3">
         <div class="col-md-4 mb-3">
-            <h6 class="emp-title mb-0">{{__('Employee')}}</h6>
+            <h6 class="emp-title mb-2">{{__('Employee')}}</h6>
             <h6 class="emp-title black-text">{{  !empty($payslip->employees)? \Auth::user()->employeeIdFormat( $payslip->employees->employee_id):''}}</h6>
         </div>
         <div class="col-md-4 mb-3">
-            <h6 class="emp-title mb-0">{{__('Basic Salary')}}</h6>
+            <h6 class="emp-title mb-2">{{__('Basic Salary')}}</h6>
             <h6 class="emp-title black-text">{{  \Auth::user()->priceFormat( $payslip->basic_salary)}}</h6>
         </div>
         <div class="col-md-4 mb-3">
-            <h6 class="emp-title mb-0">{{__('Payroll Month')}}</h6>
+            <h6 class="emp-title mb-2">{{__('Payroll Month')}}</h6>
             <h6 class="emp-title black-text">{{ \Auth::user()->dateFormat( $payslip->salary_month)}}</h6>
         </div>
 
         <div class="col-lg-12 our-system">
             {{Form::open(array('route'=>array('payslip.updateemployee',$payslip->employee_id),'method'=>'post'))}}
             {!! Form::hidden('payslip_id', $payslip->id, ['class' => 'form-control']) !!}
-            <div class="row">
-
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <ul class="nav gap-1 nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#allowance" role="tab" aria-controls="pills-home" aria-selected="true">{{__('Allowance')}}</a>
                     </li>
@@ -167,7 +165,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
             <div class="modal-footer">
                 <input type="button" value="Cancel" class="btn btn-secondary" data-bs-dismiss="modal">
                 <input type="submit" value="{{__('Update')}}" class="btn btn-primary">

@@ -227,7 +227,7 @@
                     <div class="list-group-item px-0 mb-1">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <a href="#" class="avatar avatar-sm rounded-circle ms-2">
+                                <a href="#" class="avatar avatar-sm ms-2">
                                     <img data-original-title="{{(!empty($user)?$user->name:'')}}" @if($user->avatar) src="{{asset('/storage/uploads/avatar/'.$user->avatar)}}" @else src="{{asset('/storage/uploads/avatar/avatar.png')}}" @endif title="{{ $comment->user->name }}" class="wid-40 rounded border-2 border border-primary ml-3">
                                 </a>
                             </div>
@@ -236,8 +236,8 @@
                                 <small class="d-block">{{$comment->created_at->diffForHumans()}}</small>
                             </div>
                             <div class="col-auto">
-                                <div class="action-btn bg-danger me-2">
-                                    <a href="#" class="mx-3 btn btn-sm  align-items-center delete-comment" data-url="{{ route('comment.destroy',[$task->project_id,$task->id,$comment->id]) }}">
+                                <div class="action-btn me-2">
+                                    <a href="#" class="mx-3 btn btn-sm  align-items-center delete-comment bg-danger" data-url="{{ route('comment.destroy',[$task->project_id,$task->id,$comment->id]) }}">
                                         <i data-bs-toggle="tooltip" title="{{__('Delete')}}" class="ti ti-trash text-white"></i>
                                     </a>
                                 </div>

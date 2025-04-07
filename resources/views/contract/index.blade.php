@@ -10,7 +10,7 @@
 @endsection
 @section('action-btn')
     <div class="float-end">
-        <a href="{{ route('contract.grid') }}"  data-bs-toggle="tooltip" title="{{__('Grid View')}}" class="btn btn-sm btn-primary me-1">
+        <a href="{{ route('contract.grid') }}"  data-bs-toggle="tooltip" title="{{__('Grid View')}}" class="btn btn-sm bg-light-blue-subtitle me-1">
             <i class="ti ti-layout-grid"></i>
         </a>
         @if(\Auth::user()->type == 'company')

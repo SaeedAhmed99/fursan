@@ -2,7 +2,7 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12 mb-6">
-            {{Form::label('file',__('Download sample employee CSV file'),['class'=>'form-label'])}}
+            {{Form::label('file',__('Download sample employee attendance CSV file'),['class'=>'form-label'])}}
             <a href="{{asset(Storage::url('uploads/sample')).'/sample_attendance.csv'}}" download="" class="btn btn-sm btn-primary">
                 <i class="ti ti-download"></i> {{__('Download')}}
             </a>

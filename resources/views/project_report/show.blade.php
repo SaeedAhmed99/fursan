@@ -242,8 +242,8 @@
             $lastStage=\App\Models\TaskStage::where('created_by',\Auth::user()->creatorId())->orderby('id','desc')->first();
 
             @endphp
-                <div class="col-md-5">
-                    <div class="card ">
+                <div class="col-md-5 mb-4">
+                    <div class="card h-100 mb-0">
                         <div class="card-header">
                             <h5>{{ __('Users') }}</h5>
                         </div>
@@ -304,8 +304,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-7">
-                    <div class="card ">
+                <div class="col-md-7 mb-4">
+                    <div class="card h-100 mb-0">
                         <div class="card-header">
                             <h5>{{ __('Milestones') }}</h5>
                         </div>
@@ -362,16 +362,14 @@
         </div>
 
         <div class="col-sm-12">
-            <div class="col-md-12  row d-sm-flex align-items-center justify-content-end">
-                <div class="col-md-1">
-                    <button class=" btn btn-primary mx-2 btn-filter apply">
-                        <a href="{{ route('project_report.export',$project->id)}}" class="text-white">{{ __('Export') }}</a>
-                    </button>
-                </div>
+            <div class="text-end">
+                <button class="btn btn-primary btn-filter apply">
+                    <a href="{{ route('project_report.export',$project->id)}}" class="text-white">{{ __('Export') }}</a>
+                </button>
             </div>
         </div>
 
-        <div class="col-sm-12 mt-3">
+        <div class="col-sm-12 mt-4">
                 <div class="card">
                     <div class="card-body mt-3 mx-2">
                         <div class="row mt-2">

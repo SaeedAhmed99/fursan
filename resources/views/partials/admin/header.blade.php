@@ -38,7 +38,7 @@
                 <li class="dropdown dash-h-item drp-company">
                     <a class="dash-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                         <span class="theme-avtar">
-                             <img src="{{ !empty(\Auth::user()->avatar) ? $profile . \Auth::user()->avatar :  $profile.'avatar.png'}}" class="img-fluid rounded-circle">
+                             <img src="{{ !empty(\Auth::user()->avatar) ? $profile . \Auth::user()->avatar :  $profile.'avatar.png'}}" class="img-fluid rounded border-2 border border-primary">
                         </span>
                         <span class="hide-mob ms-2">{{__('Hi, ')}}{{\Auth::user()->name }}!</span>
                         <i class="ti ti-chevron-down drp-arrow nocolor hide-mob"></i>
@@ -73,7 +73,7 @@
                 </li>
                 @endImpersonating
                 @endif
-            
+
                 @if( \Auth::user()->type !='client' && \Auth::user()->type !='super admin' )
                     <li class="dropdown dash-h-item drp-notification">
                         <a class="dash-head-link arrow-none me-0" href="{{ url('chats') }}" aria-haspopup="false"
@@ -109,7 +109,7 @@
 
                         <h></h>
                             @if(\Auth::user()->type=='super admin')
-                                <a  data-url="{{ route('create.language') }}" class="dropdown-item text-primary"  data-ajax-popup="true" data-title="{{__('Create New Language')}}">
+                                <a data-url="{{ route('create.language') }}" class="dropdown-item text-primary" data-ajax-popup="true" data-title="{{__('Create New Language')}}" style="cursor: pointer">
                                     {{ __('Create Language') }}
                                 </a>
                                 <a class="dropdown-item text-primary" href="{{route('manage.language',[isset($lang)?$lang:'english'])}}">{{ __('Manage Language') }}</a>

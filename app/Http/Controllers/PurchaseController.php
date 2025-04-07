@@ -750,12 +750,10 @@ class PurchaseController extends Controller
     {
         try {
             $id       = Crypt::decrypt($purchaseId);
-        } catch (\Throwable $th) {
+            $purchase = Purchase::findOrFail($id);
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', __('Purchase Not Found.'));
         }
-
-        $id             = Crypt::decrypt($purchaseId);
-        $purchase       = Purchase::find($id);
 
         if(!empty($purchase))
         {
@@ -951,7 +949,7 @@ class PurchaseController extends Controller
         $data['unit']        = !empty($product->unit) ? $product->unit->name : '';
         $data['taxRate']     = $taxRate = !empty($product->tax_id) ? $product->taxRate($product->tax_id) : 0;
         $data['taxes']       = !empty($product->tax_id) ? $product->tax($product->tax_id) : 0;
-        $salePrice           = $product->purchase_price;
+        $salePrice           = $product->purchase_price ?? 0;
         $quantity            = 1;
         $taxPrice            = ($taxRate / 100) * ($salePrice * $quantity);
         $data['totalAmount'] = ($salePrice * $quantity);
@@ -988,12 +986,12 @@ class PurchaseController extends Controller
             PurchaseProduct::where('id', '=', $request->id)->delete();
 
 
-            return redirect()->back()->with('success', __('Purchase product successfully deleted.'));
+            return response()->json(['status' => true, 'message' => __('Purchase product successfully deleted.')]);
 
         }
         else
         {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return response()->json(['status' => false, 'message' => __('Permission denied.')]);
         }
     }
 

@@ -51,7 +51,7 @@ class LanguageController extends Controller
     }
 
     public function manageLanguage($currantLang)
-    {        
+    {
         if(\Auth::user()->type == 'super admin')
         {
             $languages = Language::pluck('full_name','code');
@@ -218,7 +218,10 @@ class LanguageController extends Controller
         {
             // remove directory and file
             Utility::delete_directory($langDir . $lang);
-            unlink($langDir . $lang . '.json');
+            if(file_exists($langDir . $lang . '.json'))
+            {
+                unlink($langDir . $lang . '.json');
+            }
             // update user that has assign deleted language.
             User::where('lang', 'LIKE', $lang)->update(['lang' => $default_lang]);
             Customer::where('lang', 'LIKE', $lang)->update(['lang' => $default_lang]);

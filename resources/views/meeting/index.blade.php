@@ -11,7 +11,7 @@
 @section('action-btn')
     <div class="float-end d-flex">
         @can('create meeting')
-            <a href="{{ route('meeting.calender') }}" class="btn btn-sm btn-primary me-2" data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calendar View')}}">
+            <a href="{{ route('meeting.calender') }}" class="btn btn-sm bg-light-blue-subtitle me-2" data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calendar View')}}">
                 <i class="ti ti-calendar"></i>
             </a>
             <a href="#" data-url="{{ route('meeting.create') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create New Meeting')}}" data-bs-toggle="tooltip" title="{{__('Create')}}"  class="btn btn-sm btn-primary">

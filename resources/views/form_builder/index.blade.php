@@ -52,7 +52,7 @@
                             <tr>
                                 <th>{{__('Name')}}</th>
                                 <th>{{__('Response')}}</th>
-                                @if(\Auth::user()->type=='company')
+                                @if (\Auth::user()->type == 'company' || (\Auth::user()->can('manage form field') || \Auth::user()->can('view form response') || \Auth::user()->can('edit form builder') || \Auth::user()->can('delete form builder')))
                                     <th class="text-end" width="200px">{{__('Action')}}</th>
                                 @endif
                             </tr>
@@ -71,7 +71,7 @@
                                                 <a href="#" class="mx-3 btn btn-sm align-items-center cp_link bg-warning-subtle" data-link="<iframe src='{{url('/form/'.$form->code)}}' title='{{ $form->name }}'></iframe>" data-bs-toggle="tooltip" title="{{__('Click to copy iframe link')}}"><i class="ti ti-frame text-white"></i></a>
                                             </div>
 
-                                            @if(\Auth::user()->type=='company' || \Auth::user()->type=='accountant')
+                                            @if(\Auth::user()->type=='company' || \Auth::user()->type=='accou   ntant')
                                             <div class="action-btn me-2">
                                                 <a href="#" class="mx-3 btn btn-sm align-items-center bg-light-blue-subtitle" data-url="{{ route('form.field.bind',$form->id) }}" data-ajax-popup="true" data-size="md" data-bs-toggle="tooltip" title="{{__('Convert into Lead Setting')}}" data-title="{{__('Convert into Lead Setting')}}">
                                                     <i class="ti ti-exchange text-white"></i>

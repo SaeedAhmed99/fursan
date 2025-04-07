@@ -79,7 +79,7 @@
      <div class="row justify-content-between align-items-center mb-3">
          <div class="col-md-12 d-flex align-items-center justify-content-between justify-content-md-end">
              <div class="all-button-box mx-2">
-                 <a href="{{ route('proposal.pdf', Crypt::encrypt($proposal->id))}}" target="_blank" class="btn btn-primary mt-3" download="">
+                 <a href="{{ route('proposal.pdf', Crypt::encrypt($proposal->id))}}" target="_blank" class="btn btn-primary mt-3" >
                      {{__('Download')}}
                  </a>
              </div>

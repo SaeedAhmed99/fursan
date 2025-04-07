@@ -151,7 +151,7 @@ class BudgetController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Budget plan successfully created, Webhook call failed.'));
                 }
             }
 
@@ -387,7 +387,7 @@ class BudgetController extends Controller
 
             $expenseArr = [];
             $expenseTotalArr = [];
-            
+
             foreach($expenseproduct as $expense)
             {
                 if($budget->period == 'monthly')
@@ -502,10 +502,10 @@ class BudgetController extends Controller
                         {
                             $BillTotalAmount += $billTotal->getTotal();
                         }
-                        
+
                         $monthExpenseArr[$monthName] = $billAmount + $paymentAmount;
                         $expenseTotalArr[$monthName] = $BillTotalAmount + $paymentTotalAmount;
-                        
+
                     }
                     $expenseArr[$expense->id] = $monthExpenseArr;
 

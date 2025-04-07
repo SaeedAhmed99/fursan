@@ -22,14 +22,6 @@ class Job extends Model
         'code',
         'custom_question',
         'created_by',
-        'job_type',
-        'years_of_experience',
-        'show_pay_by',
-        'starting_salary',
-        'currency',
-        'rate',
-        'major',
-        'degree',
     ];
 
     public static $status = [

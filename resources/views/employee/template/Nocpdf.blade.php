@@ -11,17 +11,17 @@
         <div class="container">
             <div>
                 <div class="card mt-5" id="printTable" style="margin-left: 180px;margin-right: -57px;">
-                
+
                     <div class="card-body" id="boxes">
                             <div class="row invoice-title mt-2">
-                                
-                                
+
+
                                 <p data-v-f2a183a6="">
                                 {{-- @dd($Offerletter) --}}
-                                    <div>{!!$noc_certificate->content!!}</div>
-                                   
+                                    <div class="px-5 py-2">{!!$noc_certificate->content!!}</div>
+
                                 </p>
-                        
+
 
                         </div>
                  </div>
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    
+
 </div>
 
 @endsection
@@ -54,7 +54,7 @@
             html2pdf().set(opt).from(element).save().then(closeScript);
         });
 
-        
+
     </script>
-    
+
 @endpush

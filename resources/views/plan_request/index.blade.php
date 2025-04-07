@@ -68,10 +68,10 @@
                                         <td>{{ Utility::getDateFormated($prequest->created_at,true) }}</td>
                                         <td>
                                             <div>
-                                                <a href="{{route('response.request',[$prequest->id,1])}}" class="btn btn-success btn-sm">
+                                                <a href="{{route('response.request',[$prequest->id,1])}}" class="btn btn-success btn-sm me-1" data-bs-toggle="tooltip" data-bs-original-title="{{__('Approve')}}">
                                                     <i class="ti ti-check"></i>
                                                 </a>
-                                                <a href="{{route('response.request',[$prequest->id,0])}}" class="btn btn-danger btn-sm">
+                                                <a href="{{route('response.request',[$prequest->id,0])}}" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" data-bs-original-title="{{__('Reject')}}">
                                                 <i class="ti ti-x"></i>
                                                 </a>
                                             </div>

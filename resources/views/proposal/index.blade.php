@@ -10,7 +10,7 @@
 @section('action-btn')
     <div class="float-end d-flex">
 
-        <a href="{{route('proposal.export')}}" class="me-2 btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{__('Export')}}">
+        <a href="{{route('proposal.export')}}" class="me-2 btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="{{__('Export')}}">
             <i class="ti ti-file-export"></i>
         </a>
 

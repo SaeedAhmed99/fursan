@@ -1,7 +1,7 @@
 {{Form::open(array('url'=>'vender','method'=>'post', 'class'=>'needs-validation', 'novalidate'))}}
 <div class="modal-body">
 
-    <h6 class="sub-title">{{__('Basic Info')}}</h6>
+    <h5 class="sub-title mb-3">{{__('Basic Info')}}</h5>
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="form-group">
@@ -40,7 +40,7 @@
             {{-- </div> --}}
         @endif
     </div>
-    <h6 class="sub-title">{{__('Billing Address')}}</h6>
+    <h5 class="sub-title mb-3">{{__('Billing Address')}}</h5>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="form-group">
@@ -96,10 +96,10 @@
     </div>
 
     @if(App\Models\Utility::getValByName('shipping_display')=='on')
-        <div class="col-md-12 text-end">
+        <div class="col-md-12 text-end mb-3">
             <input type="button" id="billing_data" value="{{__('Shipping Same As Billing')}}" class="btn btn-primary">
         </div>
-        <h6 class="sub-title">{{__('Shipping Address')}}</h6>
+        <h5 class="sub-title mb-3">{{__('Shipping Address')}}</h5>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="form-group">

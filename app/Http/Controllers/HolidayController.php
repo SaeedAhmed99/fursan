@@ -120,7 +120,7 @@ class HolidayController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Holiday successfully created, Webhook call failed.'));
                 }
             }
 

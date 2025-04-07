@@ -209,7 +209,7 @@
             </a>
         @endif
         @can('manage project')
-            <a href="{{ route('projects.index') }}" class="btn btn-primary btn-sm me-1" data-bs-toggle="tooltip" title="{{__('Back')}}">
+            <a href="{{ route('projects.index') }}" class="btn bg-brown-subtitle text-white btn-sm me-1" data-bs-toggle="tooltip" title="{{__('Back')}}">
                 <span class="btn-inner--icon"><i class="ti ti-arrow-left"></i></span>
             </a>
         @endcan
@@ -218,15 +218,15 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body">
+            {{-- <div class="card"> --}}
+                {{-- <div class="card-body"> --}}
                     <div class="row">
                         @if(count($bugs) > 0)
                             @foreach($bugs as $bug)
-                                <div class="col-md-4 col-lg-3">
-                                    <div class="card card-progress border shadow-none" id="{{$bug->id}}" style="{{ !empty($bug->priority_color) ? 'border-left: 2px solid '.$bug->priority_color.' !important' :'' }};">
+                                <div class="col-md-4 col-xxl-3 col-sm-6 d-flex">
+                                    <div class="card card-progress" id="{{$bug->id}}" style="{{ !empty($bug->priority_color) ? 'border-left: 2px solid '.$bug->priority_color.' !important' :'' }};">
                                         <div class="card-body">
-                                            <div class="">
+                                            <div class="h-100 d-flex flex-column">
                                                 <div class="mb-2 d-flex align-items-center justify-content-between">
                                               <span>
                                                 <a href="{{ route('task.bug.kanban',$bug->project_id) }}" class="text-body h6">{{$bug->title}}</a>
@@ -239,7 +239,7 @@
                                                         <span class="status_badge badge bg-danger p-2 px-3 rounded">{{ ucfirst($bug->priority) }}</span>
                                                     @endif
                                                 </div>
-                                                <div class="mb-3 d-flex align-items-center justify-content-between">
+                                                <div class="mb-3 d-flex align-items-center justify-content-between gap-2">
                                                     <p class="mb-0">
                                                         <span class="mb-2 d-inline-block text-sm">{{(!empty($bug->description)) ? $bug->description : '-'}}</span>
                                                     </p>
@@ -252,7 +252,7 @@
                                                         </a>
                                                     </p>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row h-100 align-items-end">
                                                     <div class="col-6 text-xs">
                                                         <i class="far fa-clock"></i>
                                                         <span>{{ \Auth::user()->dateFormat($bug->start_date) }}</span>
@@ -273,8 +273,8 @@
                             </div>
                         @endif
                     </div>
-                </div>
-            </div>
+                {{-- </div> --}}
+            {{-- </div> --}}
         </div>
     </div>
 @endsection

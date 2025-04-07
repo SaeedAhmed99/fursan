@@ -24,12 +24,12 @@ $profile = asset(Storage::url('uploads/avatar/'));
 @endsection
 @section('action-btn')
     <div class="float-end d-flex">
-        <a href="#" class="btn btn-sm btn-primary me-2" data-url="{{ route('vender.file.import') }}" data-ajax-popup="true" data-bs-toggle="tooltip"
+        <a href="#" class="btn btn-sm bg-brown-subtitle me-2" data-url="{{ route('vender.file.import') }}" data-ajax-popup="true" data-bs-toggle="tooltip"
            title="{{ __('Import Vendor CSV File') }}">
             <i class="ti ti-file-import"></i>
         </a>
 
-        <a href="{{ route('vender.export') }}" class="btn btn-sm btn-primary me-2" data-bs-toggle="tooltip" title="{{ __('Export') }}">
+        <a href="{{ route('vender.export') }}" class="btn btn-sm btn-secondary me-2" data-bs-toggle="tooltip" title="{{ __('Export') }}">
             <i class="ti ti-file-export"></i>
         </a>
         @can('create vender')

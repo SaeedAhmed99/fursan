@@ -1983,6 +1983,7 @@ class ReportController extends Controller
     public function leave(Request $request)
     {
 
+        // dd($request->all());
         if (\Auth::user()->can('manage report')) {
 
             $branch = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');

@@ -9,7 +9,6 @@
         "anandsiddharth/laravel-paytm-wallet": "^2.0",
         "anhskohbo/no-captcha": "^3.6",
         "arkitecht/laravel-twilio": "^1.6",
-        "barryvdh/laravel-dompdf": "^3.1",
         "doctrine/dbal": "^4.1",
         "fedapay/fedapay-php": "^0.4.2",
         "guzzlehttp/guzzle": "^7.9",
@@ -39,10 +38,8 @@
         "spatie/browsershot": "^4.3",
         "spatie/laravel-google-calendar": "^3.8",
         "spatie/laravel-permission": "^6.9",
-        "spatie/pdf-to-image": "^1.2",
         "srmklive/paypal": "^3.0",
         "stripe/stripe-php": "^15.7",
-        "tecnickcom/tcpdf": "^6.8",
         "twilio/sdk": "^7.16",
         "whichbrowser/parser": "^2.1",
         "yoomoney/yookassa-sdk-php": "^3.5"

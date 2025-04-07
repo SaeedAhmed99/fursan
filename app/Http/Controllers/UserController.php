@@ -2,18 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CertificateUser;
 use App\Models\CustomField;
-use App\Models\CVUser;
-use App\Models\Edu;
 use App\Models\Employee;
 use App\Models\ExperienceCertificate;
 use App\Models\GenerateOfferLetter;
-use App\Models\Job;
-use App\Models\JobApplication;
 use App\Models\JoiningLetter;
 use App\Models\LoginDetail;
-use App\Models\Membership;
 use App\Models\NOC;
 use App\Models\Order;
 use App\Models\Plan;
@@ -29,77 +23,22 @@ use Lab404\Impersonate\Impersonate;
 use Spatie\Permission\Models\Role;
 use App\Models\ReferralTransaction;
 use App\Models\ReferralSetting;
-use App\Models\Skill;
-use App\Models\Traning;
-use App\Models\UserLanguage;
-use App\Models\WorkExperience;
 use Illuminate\Validation\Rule;
-use App\Providers\UniversityService;
 
 class UserController extends Controller
 {
 
-    protected $universityService;
-
-    public function __construct(UniversityService $universityService)
-    {
-        $this->universityService = $universityService;
-    }
-
-
-    public function index(Request $request)
+    public function index()
     {
         User::defaultEmail();
 
         $user = \Auth::user();
-       
         if (\Auth::user()->can('manage user')) {
             if (\Auth::user()->type == 'super admin') {
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company');
+                $users = User::where('created_by', '=', $user->creatorId())->where('type', '=', 'company')->with(['currentPlan'])->get();
             } else {
-                //$users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->with(['currentPlan'])->get();
-                $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client');
+                $users = User::where('created_by', '=', $user->creatorId())->where('type', '!=', 'client')->with(['currentPlan'])->get();
             }
-
-            if ($request->filled('email')) {
-                $users->where('email', 'LIKE', '%' . $request->input('email') . '%');
-            }
-
-            if ($request->filled('name')) {
-                $users->where('name', 'LIKE', '%' . $request->input('name') . '%');
-            }
-        
-            if ($request->filled('nationality')) {
-                $users->where('nationality', 'LIKE', '%' . $request->input('nationality') . '%');
-            }
-        
-            if ($request->filled('country_of_residence')) {
-                $users->where('country_of_residence', 'LIKE', '%' . $request->input('country_of_residence') . '%');
-            }
-
-            switch ($request->input('sort')) {
-                case 'oldest':
-                    $users->orderBy('created_at', 'asc');
-                    break;
-                case 'newest':
-                    $users->orderBy('created_at', 'desc');
-                    break;
-                case 'age_asc':
-                    $users->orderBy('dob', 'asc');
-                    break;
-                case 'age_desc':
-                    $users->orderBy('dob', 'desc');
-                    break;
-                case 'name_asc':
-                    $users->orderBy('name', 'asc');
-                    break;
-                case 'name_desc':
-                    $users->orderBy('name', 'desc');
-                    break;
-                default:
-                    $users->orderBy('created_at', 'asc'); 
-            }
-            $users = $users->with(['currentPlan'])->get();
 
             return view('user.index')->with('users', $users);
         } else {
@@ -401,11 +340,12 @@ class UserController extends Controller
 
                 if (\Auth::user()->type == 'company') {
 
-                    $employee = Employee::where(['user_id' => $user->id])->delete();
-                    if ($employee) {
-                        $delete_user = User::where(['id' => $user->id])->delete();
+                    $delete_user = User::where(['id' => $user->id])->first();
+                    if ($delete_user) {
+                        $employee = Employee::where(['user_id' => $user->id])->delete();
+                        $delete_user->delete();
 
-                        if ($delete_user) {
+                        if ($delete_user || $employee) {
                             return redirect()->route('users.index')->with('success', __('User successfully deleted .'));
                         } else {
                             return redirect()->back()->with('error', __('Something is wrong.'));
@@ -423,614 +363,23 @@ class UserController extends Controller
         }
     }
 
-    public function allJobs() {
-        $userDetail = \Auth::user();
-        $userDetail->customField = CustomField::getData($userDetail, 'user');
-        $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        $jobs = Job::with('branches','createdBy')->get();
-        return view('user.allJobs', compact('userDetail', 'customFields', 'user', 'employee', 'jobs'));
-    }
-
-    public function allJobsAplly() {
-        $userDetail = \Auth::user();
-        $jobsApplay = JobApplication::where('user_id', $userDetail->id)->get();
-        
-        return view('user.allJobsapply', compact('jobsApplay'));
-    }
-
-    public function index01(Request $request)
-    {
-        $availableCountries = $this->universityService->getAvailableCountries(); 
-        $selectedCountry = $request->country ?? 'Egypt';
-        $universities = $this->universityService->getUniversitiesByCountry($selectedCountry);
-        $universities = collect($universities);
-        // dd($universities[0]);
-        return view('user.university', compact('availableCountries', 'selectedCountry', 'universities'));
-    }
-
-
-    public function getUniversitiesByCountry(Request $request)
-    {
-        $country = $request->query('country');
-        $universities = $this->universityService->getUniversitiesByCountry($country);
-
-        return response()->json($universities);
-    }
-
-
     public function profile()
     {
         $userDetail = \Auth::user();
         $userDetail->customField = CustomField::getData($userDetail, 'user');
         $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-        $workExperiences = $employee->workExperiences ?? [];
-        $skills = $employee->skills ?? [];
-        $edus = $employee->edus ?? [];
-        $langUser = $employee->languageUser ?? [];
-        $membershipUser = $employee->membership ?? [];
-        $traningUser = $employee->traning ?? [];
-        $certificateUser = $employee->certificateUser ?? [];
-        $cvUser = $employee->cvUser ?? [];
-        $availableCountries = $this->universityService->getAvailableCountries(); 
-        if ($user->type == 'user') {
-            $workExperiences = WorkExperience::where('user_id', $user->id)->get();
-            $skills = Skill::where('user_id', $user->id)->get();
-            $edus = Edu::where('user_id', $user->id)->get();
-            $langUser = UserLanguage::where('user_id', $user->id)->get();
-            $membershipUser = Membership::where('user_id', $user->id)->get();
-            $traningUser = Traning::where('user_id', $user->id)->get();
-            $certificateUser = CertificateUser::where('user_id', $user->id)->get();
-            $cvUser = CVUser::where('user_id', $user->id)->get();
-        }
-        return view('user.profile', compact('userDetail', 'customFields', 'workExperiences', 'skills', 'edus', 'employee', 'langUser', 'membershipUser' , 'traningUser' , 'certificateUser','cvUser' , 'availableCountries'));
-    }
 
-
-    public function deleteskill($id) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-
-        $item = Skill::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete skill successfully.'
-        );
-    }
-
-    public function deleteLangUser($id) {
-        $item = UserLanguage::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete language successfully.'
-        );
-    }
-
-    public function addskill(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-        $validator = \Validator::make(
-            $request->all(), [
-                'skill' => 'required|string|max:255',
-                'skill_level' => 'required|string|max:255',
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($user->type == 'user') {
-            $skills = Skill::create([
-                'skill' => $request['skill'],
-                'level' => $request['skill_level'],
-                'user_id' => $user->id,
-            ]);
-        } else {
-            $skills = $employee->skills()->create([
-                'skill' => $request['skill'],
-                'level' => $request['skill_level'],
-                'user_id' => $request->employeeUser,
-
-            ]);
-            $skills->save();
-        }
-        
-        return redirect()->back()->with(
-            'success', 'Add skill successfully.'
-        );
-    }
-
-
-    public function addMembershipUser(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-
-        $validator = \Validator::make(
-            $request->all(), [
-                'organization_name' => 'required|string|max:255',
-                'role_in_organization' => 'required|string|max:255',
-                'member_since' => 'required|date',
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($user->type == 'user') {
-            $membershipUser = Membership::create([
-                'organization_name' => $request['organization_name'],
-                'role_in_organization' => $request['role_in_organization'],
-                'member_since' => $request['member_since'],
-                'user_id' => $user->id,
-            ]);
-        } else {
-            $membershipUser = $employee->membership()->create([
-                'organization_name' => $request['organization_name'],
-                'role_in_organization' => $request['role_in_organization'],
-                'member_since' => $request['member_since'],
-                'user_id' => $request->employeeUser,
-
-            ]);
-            $membershipUser->save();
-        }
-        
-        return redirect()->back()->with(
-            'success', 'Add membership successfully.'
-        );
-    }
-
-    public function deleteMembershipUser($id) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-
-        $item = Membership::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete membership successfully.'
-        );
-    }
-
-    public function addTrainingUser(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-
-        $validator = \Validator::make(
-            $request->all(), [
-                'training_topic' => 'required|string|max:255',
-                'institution' => 'required|string|max:255',
-                'certificate_file' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-                'start_date' => 'required|date',
-                'hours' => 'required|integer',
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($request->hasFile('certificate_file')) {
-            $filenameWithExt = $request->file('certificate_file')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('certificate_file')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-
-            $settings = Utility::getStorageSetting();
-            if ($settings['storage_setting'] == 'local') {
-                $dir = 'uploads/certificate_file/';
-            } else {
-                $dir = 'uploads/certificate_file';
-            }
-
-            $url = '';
-            $path = Utility::upload_file($request, 'certificate_file', $fileNameToStore, $dir, []);
-        }
-
-        if ($user->type == 'user') {
-            $traningUser = Traning::create([
-                'training_topic' => $request['training_topic'],
-                'institution' => $request['institution'],
-                'start_date' => $request['start_date'],
-                'hours' => $request['hours'],
-                'certificate_file' => $fileNameToStore,
-                'user_id' => $user->id,
-            ]);
-        } else {
-            $traningUser = $employee->traning()->create([
-                'training_topic' => $request['training_topic'],
-                'institution' => $request['institution'],
-                'start_date' => $request['start_date'],
-                'hours' => $request['hours'],
-                'certificate_file' => $fileNameToStore,
-                'user_id' => $request->employeeUser,
-
-            ]);
-            $traningUser->save();
-        }
-        
-        return redirect()->back()->with(
-            'success', 'Add training successfully.'
-        );
-    }
-
-    public function addCertificateUser(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-
-        $validator = \Validator::make(
-            $request->all(), [
-                'certificate_file' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($request->hasFile('certificate_file')) {
-            $filenameWithExt = $request->file('certificate_file')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('certificate_file')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-
-            $settings = Utility::getStorageSetting();
-            if ($settings['storage_setting'] == 'local') {
-                $dir = 'uploads/certificate_file/';
-            } else {
-                $dir = 'uploads/certificate_file';
-            }
-
-            $url = '';
-            $path = Utility::upload_file($request, 'certificate_file', $fileNameToStore, $dir, []);
-        }
-
-        if ($user->type == 'user') {
-            $certificateUser = CertificateUser::create([
-                'certificate_file' => $fileNameToStore,
-                'user_id' => $user->id,
-            ]);
-        } else {
-            $certificateUser = $employee->certificateUser()->create([
-                'certificate_file' => $fileNameToStore,
-                'user_id' => $request->employeeUser,
-
-            ]);
-            $certificateUser->save();
-        }
-        
-        return redirect()->back()->with(
-            'success', 'Add certificate successfully.'
-        );
-    }
-
-    public function addCVUser(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-        
-        $validator = \Validator::make(
-            $request->all(), [
-                'cv_file' => 'required'
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($request->hasFile('cv_file')) {
-            $filenameWithExt = $request->file('cv_file')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $request->file('cv_file')->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-
-            $settings = Utility::getStorageSetting();
-            if ($settings['storage_setting'] == 'local') {
-                $dir = 'uploads/cv_file/';
-            } else {
-                $dir = 'uploads/cv_file';
-            }
-
-            $url = '';
-            $path = Utility::upload_file($request, 'cv_file', $fileNameToStore, $dir, []);
-        }
-
-        if ($user->type == 'user') {
-            $cvUser = CVUser::create([
-                'cv_file' => $fileNameToStore,
-                'user_id' => $user->id,
-            ]);
-        } else {
-            $cvUser = $employee->cvUser()->create([
-                'cv_file' => $fileNameToStore,
-                'user_id' => $request->employeeUser,
-
-            ]);
-            $cvUser->save();
-        }
-        
-        return redirect()->back()->with(
-            'success', 'Add CV successfully.'
-        );
-    }
-
-
-    public function deleteCertificateUser($id) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-
-        $item = CertificateUser::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete certificate successfully.'
-        );
-    }
-
-    public function deleteCVUser($id) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-
-        $item = CVUser::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete CV successfully.'
-        );
-    }
-
-    public function deleteTrainingUser($id) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-
-        $item = Traning::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete training successfully.'
-        );
-    }
-
-    public function addLangUser(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-
-        $validator = \Validator::make(
-            $request->all(), [
-                'language_name' => 'required|string|max:255',
-                'level' => 'required|string|max:255',
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($user->type == 'user') {
-            $langUser = UserLanguage::create([
-                'language_name' => $request['language_name'],
-                'level' => $request['level'],
-                'user_id' => $user->id,
-            ]);
-        } else {
-            $langUser = $employee->languageUser()->create([
-                'language_name' => $request['language_name'],
-                'level' => $request['level'],
-                'user_id' => $request->employeeUser,
-            ]);
-            $langUser->save();
-        }
-        
-        return redirect()->back()->with(
-            'success', 'Add language successfully.'
-        );
-    }
-
-    public function deleteeducation($id) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-
-        $item = Edu::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete education successfully.'
-        );
-    }
-    
-    public function addeducation(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first() ?? null;
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-        $validator = \Validator::make(
-            $request->all(), [
-                'educational_level' => 'required|string|max:255',
-                'university' => 'required|string|max:255',
-                'academic_major' => 'required|string|max:255',
-                'country_of_graduation' => 'required|string|max:255',
-                'graduation_date' => 'required|date|before:today',
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($user->type == 'user') {
-            $education = Edu::create([
-                'educational_level' => $request['educational_level'],
-                'university' => $request['university'],
-                'academic_major' => $request['academic_major'],
-                'country_of_graduation' => $request['country_of_graduation'],
-                'graduation_date' => $request['graduation_date'],
-                'user_id' => $user->id,
-            ]); 
-        } else {
-            $education = $employee->edus()->create([
-                'educational_level' => $request['educational_level'],
-                'university' => $request['university'],
-                'academic_major' => $request['academic_major'],
-                'country_of_graduation' => $request['country_of_graduation'],
-                'graduation_date' => $request['graduation_date'],
-                'user_id' => $request->employeeUser,
-
-            ]);
-            $education->save();
-        }
-        
-        return redirect()->back()->with(
-            'success', 'Add education successfully.'
-        );
-    }
-
-    public function deleteworkexperience($id) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-
-        $item = WorkExperience::findOrFail($id);
-        $item->delete();
-
-        return redirect()->back()->with(
-            'success', 'Delete work experience successfully.'
-        );
-    }
-
-    public function addworkexperience(Request $request) {
-        $userDetail = \Auth::user();
-        $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first() ?? null;
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
-
-        $validator = \Validator::make(
-            $request->all(), [
-                'job_title' => 'required|string|max:255',
-                'company_name' => 'required|string|max:255',
-                'start_date' => 'required|date|before:today',
-                'end_date' => 'nullable|date|before:today',
-                'job_detail' => 'nullable|string|max:1000',
-            ]
-        );
-        if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
-        }
-
-        if ($user->type == 'user') {
-            $experiences = WorkExperience::create([
-                'job_title' => $request['job_title'],
-                'company_name' => $request['company_name'],
-                'start_date' => $request['start_date'],
-                'job_detail' => $request['job_detail'],
-                'user_id' => $user->id,
-            ]);
-        } else {
-            $experiences = $employee->workExperiences()->create([
-                'job_title' => $request['job_title'],
-                'company_name' => $request['company_name'],
-                'start_date' => $request['start_date'],
-                'job_detail' => $request['job_detail'],
-                'user_id' => $request->employeeUser,
-
-            ]);
-        }
-
-        if (!$request->has('still_working')) {
-            if ($request['end_date']) {
-                $experiences['end_date'] = $request['end_date'];
-                $experiences->save();
-            } else {
-                return redirect()->back()->with('error', 'please add end date.');
-            }
-        }
-       
-        return redirect()->back()->with(
-            'success', 'Add work experience successfully.'
-        );
-
+        return view('user.profile', compact('userDetail', 'customFields'));
     }
 
     public function editprofile(Request $request)
     {
         $userDetail = \Auth::user();
         $user = User::findOrFail($userDetail['id']);
-        $employee = $user->employee()->first();
-
-        if ($userDetail->type == 'company') {
-            $userDetail = User::findOrFail($request->employeeUser);
-            $user = User::findOrFail($userDetail['id']);
-            $employee = $user->employee()->first();
-        }
 
         $validator = \Validator::make(
             $request->all(), [
                 'name' => 'required|max:120',
-                'dob' => 'required|date|before:today',
-                'country_of_residence' => 'required|string|max:255',
-                'nationality' => 'required|string|max:255',
-                'address' => 'required|string|max:255',
-                'gender' => 'required|in:male,female',
-                'phone' => 'required',
                 'email' => 'required|email|unique:users,email,' . $userDetail['id'],
             ]
         );
@@ -1072,28 +421,10 @@ class UserController extends Controller
         }
         $user['name'] = $request['name'];
         $user['email'] = $request['email'];
-        $user['country_of_residence'] = $request['country_of_residence'] ?? null;
-        $user['nationality'] = $request['nationality'] ?? null;
-        $user['dob'] = $request['dob'] ?? null;
-        $user['gender'] = $request['gender'] ?? null;
-        $user['address'] = $request['address'] ?? null;
-        $user['phone'] = $request['phone'] ?? null;
         $user->save();
         CustomField::saveData($user, $request->customField);
 
-        if ($employee) {
-            $employee['dob'] = $request['dob'] ?? null;
-            $employee['country_of_residence'] = $request['country_of_residence'] ?? null;
-            $employee['nationality'] = $request['nationality'] ?? null;
-            $employee['address'] = $request['address'] ?? null;
-            $employee['gender'] = $request['gender'] ?? null;
-            $employee['phone'] = $request['phone'] ?? null;
-            $employee['email'] = $request['email'] ?? null;
-            $employee['name'] = $request['name'] ?? null;
-            $employee->save();
-        }
-
-        return redirect()->back()->with(
+        return redirect()->route('profile', $user)->with(
             'success', 'Profile successfully updated.'
         );
     }

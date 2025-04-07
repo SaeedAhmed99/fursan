@@ -513,7 +513,7 @@ class FormBuilderController extends Controller
     }
 
     // Convert into lead Modal
-    public function formFieldBind($form_id)
+        public function formFieldBind($form_id)
     {
         $usr = \Auth::user();
         if($usr->type == 'company')

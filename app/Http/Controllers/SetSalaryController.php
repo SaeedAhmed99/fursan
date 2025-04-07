@@ -14,14 +14,12 @@ use App\Models\BankAccount;
 use App\Models\Overtime;
 use App\Models\PayslipType;
 use App\Models\SaturationDeduction;
-use App\Models\SocialSecurity;
 use Illuminate\Http\Request;
 
 class SetSalaryController extends Controller
 {
     public function index()
     {
-
         if(\Auth::user()->can('manage set salary'))
         {
             $employees = Employee::where('created_by' , \Auth::user()->creatorId())->with('salaryType')->get();
@@ -116,7 +114,6 @@ class SetSalaryController extends Controller
                     $value->tota_allow = $empsal;
                 }
             }
-
 
             foreach ( $saturationdeductions as  $value) {
                 if(  $value->type == 'percentage' )

@@ -27,10 +27,10 @@ $profile=\App\Models\Utility::get_file('uploads/avatar/');
 
 @section('action-btn')
     <div class="float-end d-flex">
-        <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('customer.file.import') }}" data-ajax-popup="true" data-title="{{__('Import customer CSV file')}}" class="btn btn-sm btn-primary me-2">
+        <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('customer.file.import') }}" data-ajax-popup="true" data-title="{{__('Import customer CSV file')}}" class="btn btn-sm bg-brown-subtitle me-2">
             <i class="ti ti-file-import"></i>
         </a>
-        <a href="{{route('customer.export')}}" data-bs-toggle="tooltip" title="{{__('Export')}}" class="btn btn-sm btn-primary me-2">
+        <a href="{{route('customer.export')}}" data-bs-toggle="tooltip" title="{{__('Export')}}" class="btn btn-sm btn-secondary me-2">
             <i class="ti ti-file-export"></i>
         </a>
 

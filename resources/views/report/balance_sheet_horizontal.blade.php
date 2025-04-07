@@ -48,7 +48,7 @@
 
 @section('action-btn')
     <div class="float-end">
-        <a href="#" onclick="saveAsPDF()" class="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip"
+        <a href="#" onclick="saveAsPDF()" class="btn btn-sm btn-primary-subtle me-1" data-bs-toggle="tooltip"
             title="{{ __('Print') }}" data-original-title="{{ __('Print') }}"><i class="ti ti-printer"></i></a>
     </div>
 
@@ -56,7 +56,7 @@
         {{ Form::open(['route' => ['balance.sheet.export']]) }}
         <input type="hidden" name="start_date" class="start_date">
         <input type="hidden" name="end_date" class="end_date">
-        <button type="submit" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" title="{{ __('Export') }}"
+        <button type="submit" class="btn btn-sm btn-secondary" data-bs-toggle="tooltip" title="{{ __('Export') }}"
             data-original-title="{{ __('Export') }}"><i class="ti ti-file-export"></i></button>
         {{ Form::close() }}
     </div>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="float-end me-2">
-        <a href="{{ route('report.balance.sheet', 'vertical') }}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip"
+        <a href="{{ route('report.balance.sheet', 'vertical') }}" class="btn btn-sm bg-light-blue-subtitle" data-bs-toggle="tooltip"
             title="{{ __('Vertical View') }}" data-original-title="{{ __('Vertical View') }}"><i
                 class="ti ti-separator-horizontal"></i></a>
     </div>

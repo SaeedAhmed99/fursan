@@ -13,7 +13,7 @@
 @section('action-btn')
     <div class="float-end">
         @can('manage bug report')
-            <a href="{{ route('task.bug.kanban',$project->id) }}" data-bs-toggle="tooltip" title="{{__('Kanban')}}" class="btn btn-sm btn-primary me-1">
+            <a href="{{ route('task.bug.kanban',$project->id) }}" data-bs-toggle="tooltip" title="{{__('Kanban')}}" class="btn btn-sm btn-primary-subtle me-1">
                 <i class="ti ti-grid-dots"></i>
             </a>
         @endcan

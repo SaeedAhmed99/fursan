@@ -204,7 +204,7 @@ $(document).on('click', 'a[data-ajax-popup="true"], button[data-ajax-popup="true
     var title = (title1 != undefined) ? title1 : title2;
     var title=(title != undefined) ? title : title3;
 
-    $('.modal-dialog').removeClass('modal-xl');
+    $('#commonModal .modal-dialog').removeClass('modal-sm modal-md modal-lg modal-xl modal-xxl');
     var size = ($(this).data('size') == '') ? 'md' : $(this).data('size');
 
     var url = $(this).data('url');
@@ -514,6 +514,7 @@ $(document).on('click', '.local_calender .fc-daygrid-event, .fc-timegrid-event',
     var size = 'md';
     var url = $(this).attr('href');
     $("#commonModal .modal-title").html(title);
+    $('#commonModal .modal-dialog').removeClass('modal-sm modal-md modal-lg modal-xl modal-xxl');
     $("#commonModal .modal-dialog").addClass('modal-' + size);
     $.ajax({
         url: url,
@@ -608,7 +609,7 @@ $(document).on('click', 'a[data-ajax-popup-over="true"], button[data-ajax-popup-
         id = $(validate).val();
     }
     var title_over = $(this).data('title');
-    $('#commonModalOver .modal-dialog').removeClass('modal-lg');
+    $('#commonModalOver .modal-dialog').removeClass('modal-sm modal-md modal-lg modal-xl modal-xxl');
     var size_over = ($(this).data('size') == '') ? 'md' : $(this).data('size');
 
     var url = $(this).data('url');

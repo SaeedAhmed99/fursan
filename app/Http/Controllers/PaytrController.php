@@ -158,7 +158,7 @@ class PaytrController extends Controller
                     'currency' => $currency,
                     'test_mode' => $test_mode
                 );
-                
+
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, "https://www.paytr.com/odeme/api/get-token");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -166,15 +166,15 @@ class PaytrController extends Controller
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $post_vals);
                 curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 20);
-                
-                
+
+
                 $result = @curl_exec($ch);
                 if (curl_errno($ch)) {
                     die("PAYTR IFRAME connection error. err:" . curl_error($ch));
                 }
 
                 curl_close($ch);
-                
+
                 $result = json_decode($result, 1);
 
                 if ($result['status'] == 'success') {
@@ -472,7 +472,7 @@ class PaytrController extends Controller
                         }
                         else
                         {
-                            return redirect()->back()->with('error', __('Webhook call failed.'));
+                            return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                         }
                     }
                     return redirect()->route('invoice.link.copy', \Crypt::encrypt($request->invoice_id))->with('success', __('Invoice paid Successfully!'));

@@ -1,5 +1,16 @@
 @extends('layouts.admin')
 @push('script-page')
+    <script>
+        $(document).on('click', '#billing_data', function() {
+            $("[name='shipping_name']").val($("[name='billing_name']").val());
+            $("[name='shipping_country']").val($("[name='billing_country']").val());
+            $("[name='shipping_state']").val($("[name='billing_state']").val());
+            $("[name='shipping_city']").val($("[name='billing_city']").val());
+            $("[name='shipping_phone']").val($("[name='billing_phone']").val());
+            $("[name='shipping_zip']").val($("[name='billing_zip']").val());
+            $("[name='shipping_address']").val($("[name='billing_address']").val());
+        })
+    </script>
 @endpush
 @section('page-title')
     {{__('Manage Vendor-Detail')}}
@@ -20,7 +31,7 @@
         @endcan
 
         @can('edit vender')
-            <a href="#" class="btn btn-sm btn-primary me-2" data-size="xl" data-url="{{ route('vender.edit',$vendor['id']) }}" data-ajax-popup="true" title="{{__('Edit')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}">
+            <a href="#" class="btn btn-sm btn-info me-2" data-size="xl" data-url="{{ route('vender.edit',$vendor['id']) }}" data-ajax-popup="true" title="{{__('Edit')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}">
                 <i class="ti ti-pencil"></i>
             </a>
         @endcan
@@ -174,10 +185,11 @@
                                             <span>
                                             @can('duplicate bill')
                                                     <div class="action-btn me-2">
-                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center bg-secondary" data-bs-toggle="tooltip" title="{{__('Duplicate Bill')}}" data-original-title="{{__('Duplicate')}}" data-confirm="You want to confirm this action. Press Yes to continue or Cancel to go back" data-confirm-yes="document.getElementById('duplicate-form-{{$bill->id}}').submit();">
+                                                        {!! Form::open(['method' => 'get', 'route' => ['bill.duplicate', $bill->id],'id'=>'duplicate-form-'.$bill->id]) !!}
+                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center bg-secondary bs-pass-para" data-bs-toggle="tooltip" title="{{__('Duplicate Bill')}}" data-original-title="{{__('Duplicate')}}" data-confirm="You want to confirm this action. Press Yes to continue or Cancel to go back" data-confirm-yes="document.getElementById('duplicate-form-{{$bill->id}}').submit();">
                                                             <i class="ti ti-copy text-white text-white"></i>
-                                                            {!! Form::open(['method' => 'get', 'route' => ['bill.duplicate', $bill->id],'id'=>'duplicate-form-'.$bill->id]) !!}{!! Form::close() !!}
                                                         </a>
+                                                        {!! Form::close() !!}
                                                     </div>
                                                 @endcan
                                                 @can('show bill')

@@ -155,7 +155,7 @@ class PaypalController extends Controller
     public function customerGetPaymentStatus(Request $request, $invoice_id,$amount)
     {
 
-        $invoice                 = Invoice::find($invoice_id);  
+        $invoice                 = Invoice::find($invoice_id);
         $this->invoiceData       = $invoice;
         $settings=Utility::settingsById($invoice->created_by);
 
@@ -259,7 +259,7 @@ class PaypalController extends Controller
                     }
                     else
                     {
-                        return redirect()->back()->with('error', __('Webhook call failed.'));
+                        return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                     }
                 }
                 return redirect()->back()->with('success', __('Payment successfully added'));

@@ -5,13 +5,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    {{ Form::label('deduction_option', __('Deduction Options')) }}<x-required></x-required>
+                    {{ Form::label('deduction_option', __('Deduction Options'), ['class' => 'form-label']) }}<x-required></x-required>
                     {{ Form::select('deduction_option',$deduction_options,null, array('class' => 'form-control select','required'=>'required')) }}
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    {{ Form::label('title', __('Title')) }}<x-required></x-required>
+                    {{ Form::label('title', __('Title'), ['class' => 'form-label']) }}<x-required></x-required>
                     {{ Form::text('title',null, array('class' => 'form-control ','required'=>'required', 'placeholder'=>__('Enter Title'))) }}
                 </div>
             </div>

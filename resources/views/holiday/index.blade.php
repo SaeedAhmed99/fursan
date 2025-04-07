@@ -11,7 +11,7 @@
 @section('action-btn')
     @can('create holiday')
         <div class="float-end d-flex">
-            <a href="{{ route('holiday.calender') }}" class="btn btn-sm btn-primary me-2" data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calender View')}}">
+            <a href="{{ route('holiday.calender') }}" class="btn btn-sm bg-light-blue-subtitle me-2" data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calender View')}}">
                 <i class="ti ti-calendar"></i>
             </a>
             <a href="#" data-size="lg" data-url="{{ route('holiday.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Holiday')}}" class="btn btn-sm btn-primary">

@@ -373,7 +373,7 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-xl-3">
-                    <div class="card sticky-top" style="top:30px">
+                    <div class="card sticky-top setting-sidebar" style="top:30px">
                         <div class="list-group list-group-flush" id="useradd-sidenav">
                             <a href="#brand-settings"
                                 class="list-group-item list-group-item-action border-0">{{ __('Brand Settings') }}
@@ -728,15 +728,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer text-end">
-                                    <div class="form-group">
-                                        <input class="btn btn-print-invoice btn-primary m-r-10" type="submit"
-                                            value="{{ __('Save Changes') }}">
-                                    </div>
-                                </div>
-                                {{ Form::close() }}
+
                             </div>
                         </div>
+                        <div class="card-footer text-end">
+                            <div class="form-group mb-0">
+                                <input class="btn btn-print-invoice btn-primary" type="submit"
+                                    value="{{ __('Save Changes') }}">
+                            </div>
+                        </div>
+                        {{ Form::close() }}
                     </div>
 
                     <!--Email Settings-->
@@ -846,23 +847,21 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="card-footer d-flex justify-content-end">
-                                    <div class="form-group me-2">
-                                        <a href="#" data-url="{{ route('test.mail') }}"
-                                            data-title="{{ __('Send Test Mail') }}" class="btn btn-primary send_email ">
-                                            {{ __('Send Test Mail') }}
-                                        </a>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <input class="btn btn-primary" type="submit" value="{{ __('Save Changes') }}">
-                                    </div>
-                                </div>
-                            </div>
-                            {{ Form::close() }}
                         </div>
+
+                        <div class="row">
+                            <div class="card-footer d-flex justify-content-end">
+                                <div class="form-group me-4">
+                                    <a href="#" data-url="{{ route('test.mail') }}"
+                                        data-title="{{ __('Send Test Mail') }}" class="btn btn-primary send_email me-1">
+                                        {{ __('Send Test Mail') }}
+                                    </a>
+                                    <input class="btn btn-primary" type="submit" value="{{ __('Save Changes') }}">
+                                </div>
+
+                            </div>
+                        </div>
+                        {{ Form::close() }}
                     </div>
 
                     <!--Payment Settings-->
@@ -1081,7 +1080,7 @@
                                                             <div class="accordion-body">
                                                                 <div class="d-flex">
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -1094,7 +1093,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -1358,7 +1357,7 @@
                                                                     <br>
                                                                     <div class="d-flex">
                                                                         <div class="mr-2" style="margin-right: 15px;">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -1373,7 +1372,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="mr-2">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -1485,7 +1484,7 @@
                                                                     <br>
                                                                     <div class="d-flex">
                                                                         <div class="mr-2" style="margin-right: 15px;">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -1500,7 +1499,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="mr-2" style="margin-right: 15px;">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -1699,7 +1698,7 @@
                                                                     <br>
                                                                     <div class="d-flex">
                                                                         <div class="mr-2" style="margin-right: 15px;">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -1714,7 +1713,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="mr-2" style="margin-right: 15px;">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -2026,7 +2025,7 @@
                                                                         <div class="d-flex">
                                                                             <div class="mr-2"
                                                                                 style="margin-right: 15px;">
-                                                                                <div class="border card p-1">
+                                                                                <div class="border card p-3">
                                                                                     <div class="form-check">
                                                                                         <label
                                                                                             class="form-check-label text-dark">
@@ -2042,7 +2041,7 @@
                                                                             </div>
                                                                             <div class="mr-2"
                                                                                 style="margin-right: 15px;">
-                                                                                <div class="border card p-1">
+                                                                                <div class="border card p-3">
                                                                                     <div class="form-check">
                                                                                         <label
                                                                                             class="form-check-label text-dark">
@@ -2230,7 +2229,7 @@
                                                                                 class="form-label">{{ __('Region') }}</label>
                                                                             <input type="text" name="paytab_region"
                                                                                 id="paytab_region"
-                                                                                class="form-control form-control-label"
+                                                                                class="form-control form-label"
                                                                                 value="{{ isset($admin_payment_setting['paytab_region']) ? $admin_payment_setting['paytab_region'] : '' }}"
                                                                                 placeholder="{{ __('Region') }}" /><br>
                                                                             @if ($errors->has('paytab_region'))
@@ -2632,7 +2631,7 @@
                                                                     <br>
                                                                     <div class="d-flex">
                                                                         <div class="mr-2" style="margin-right: 15px;">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -2647,7 +2646,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="mr-2" style="margin-right: 15px;">
-                                                                            <div class="border card p-1">
+                                                                            <div class="border card p-3">
                                                                                 <div class="form-check">
                                                                                     <label
                                                                                         class="form-check-label text-dark">
@@ -2771,7 +2770,7 @@
                                                             <div class="accordion-body">
                                                                 <div class="d-flex">
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -2785,7 +2784,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -2962,7 +2961,7 @@
                                                             <div class="accordion-body">
                                                                 <div class="d-flex">
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -2976,7 +2975,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -3054,7 +3053,7 @@
                                                                 <br>
                                                                 <div class="d-flex">
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -3068,7 +3067,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -3216,7 +3215,7 @@
                                                                 <br>
                                                                 <div class="d-flex">
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -3230,7 +3229,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="mr-2" style="margin-right: 15px;">
-                                                                        <div class="border card p-1">
+                                                                        <div class="border card p-3">
                                                                             <div class="form-check">
                                                                                 <label class="form-check-label text-dark">
                                                                                     <input type="radio"
@@ -3508,9 +3507,11 @@
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <button class="btn-submit btn btn-primary" type="submit">
-                                {{ __('Save Changes') }}
-                            </button>
+                            <div class="form-group mb-0">
+                                <button class="btn-submit btn btn-primary" type="submit">
+                                    {{ __('Save Changes') }}
+                                </button>
+                            </div>
                         </div>
                         </form>
                     </div>
@@ -3573,8 +3574,8 @@
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <div class="form-group">
-                                <input class="btn btn-print-invoice  btn-primary m-r-10" type="submit"
+                            <div class="form-group mb-0">
+                                <input class="btn btn-print-invoice  btn-primary" type="submit"
                                     value="{{ __('Save Changes') }}">
                             </div>
                         </div>
@@ -3591,7 +3592,7 @@
                                     <div class="col-6">
                                         <h5 class="mb-2">{{ __('ReCaptcha Settings') }}</h5>
                                         <a href="https://phppot.com/php/how-to-get-google-recaptcha-site-and-secret-key/"
-                                            target="_blank" class="text-dark">
+                                            target="_blank" class="text-primary">
                                             <small>({{ __('How to Get Google reCaptcha Site and Secret key') }})</small>
                                         </a>
                                     </div>
@@ -3645,8 +3646,8 @@
                                 </div>
                             </div>
                             <div class="card-footer text-end">
-                                <div class="form-group">
-                                    <input class="btn btn-print-invoice btn-primary m-r-10" type="submit"
+                                <div class="form-group mb-0">
+                                    <input class="btn btn-print-invoice btn-primary" type="submit"
                                         value="{{ __('Save Changes') }}">
                                 </div>
                             </div>
@@ -3871,7 +3872,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <input class="btn btn-print-invoice  btn-primary m-r-10" type="submit"
+                            <input class="btn btn-print-invoice  btn-primary" type="submit"
                                 value="{{ __('Save Changes') }}">
                         </div>
                         {{ Form::close() }}
@@ -3941,7 +3942,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <input class="btn btn-print-invoice btn-primary m-r-10" type="submit"
+                            <input class="btn btn-print-invoice btn-primary" type="submit"
                                 value="{{ __('Save Changes') }}">
                         </div>
                         {{ Form::close() }}
@@ -4086,7 +4087,7 @@
                                 </div>
                             </div>
                             <div class="card-footer text-end">
-                                <input class="btn btn-print-invoice btn-primary m-r-10" type="submit"
+                                <input class="btn btn-print-invoice btn-primary" type="submit"
                                     value="{{ __('Cache Clear') }}">
                             </div>
                             {{ Form::close() }}
@@ -4111,7 +4112,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-end">
-                            <input class="btn btn-print-invoice btn-primary m-r-10" type="submit"
+                            <input class="btn btn-print-invoice btn-primary" type="submit"
                                 value="{{ __('Save Changes') }}">
                         </div>
                         {{ Form::close() }}

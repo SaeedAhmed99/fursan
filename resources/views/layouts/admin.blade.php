@@ -203,16 +203,16 @@
         <div class="dash-content">
             <div class="page-header">
                 <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                        <div>
                             <div class="page-header-title">
-                                <h4 class="m-b-10">@yield('page-title')</h4>
+                                <h4 class="mb-2">@yield('page-title')</h4>
                             </div>
                             <ul class="breadcrumb">
                                 @yield('breadcrumb')
                             </ul>
                         </div>
-                        <div class="col action-btn-col">
+                        <div class="action-btn-col">
                             @yield('action-btn')
                         </div>
                     </div>

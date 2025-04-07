@@ -100,22 +100,6 @@ class RegisteredUserController extends Controller
         ]);
         \Auth::login($user);
 
-        // if (!Role::where('name', 'user')->where('created_by', $user->id)->exists()) {
-            
-        // $userRole = Role::create(
-        //     [
-        //         'name' => 'user',
-        //         'guard_name' => 'web',
-        //         'created_by' => $user->id,
-        //     ]);
-
-        //     $userPermission = [
-        //         'manage employee profile',
-        //         'show employee profile',
-        //     ];
-        //     $userRole->givePermissionTo($userPermission);
-        // }
-
         $settings = Utility::settings();
 
         if ($settings['email_verification'] == 'on') {

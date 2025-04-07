@@ -187,7 +187,7 @@ class InvoiceController extends Controller
                 if ($status == true) {
                     return redirect()->route('invoice.index', $invoice->id)->with('success', __('Invoice successfully created.'));
                 } else {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Invoice successfully created, Webhook call failed.'));
                 }
             }
 
@@ -438,12 +438,14 @@ class InvoiceController extends Controller
                 TransactionLines::where('reference_sub_id',$productService->id)->where('reference','Invoice')->delete();
 
                 InvoiceProduct::where('id', '=', $request->id)->delete();
+                return response()->json(['status' => true, 'message' => __('Invoice product successfully deleted.')]);
+            } else {
+                return response()->json(['status' => false, 'message' => __('Invoice product not found!')]);
             }
-
-
-            return redirect()->back()->with('success', __('Invoice product successfully deleted.'));
+            // return redirect()->back()->with('success', __('Invoice product successfully deleted.'));
         } else {
-            return redirect()->back()->with('error', __('Permission denied.'));
+            return response()->json(['status' => false, 'message' => __('Permission denied.')]);
+            // return redirect()->back()->with('error', __('Permission denied.'));
         }
     }
 
@@ -729,7 +731,7 @@ class InvoiceController extends Controller
                     return redirect()->back()->with('success', __('Payment successfully added.') . ((isset($result) && $result != 1) ? '<br> <span class="text-danger">' . $result . '</span>' : '') . (($resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
 
                 } else {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                 }
             }
             return redirect()->back()->with('success', __('Payment successfully added.') . ((isset($result) && $result != 1) ? '<br> <span class="text-danger">' . $result . '</span>' : '') . (($resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));

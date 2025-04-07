@@ -5,7 +5,7 @@
 @endsection
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></li>
-    <li class="breadcrumb-item">{{ __('Deduction Option') }}</li>
+    <li class="breadcrumb-item">{{ __('Loan Option') }}</li>
 @endsection
 
 
@@ -30,7 +30,7 @@
             <div class="my-3 d-flex justify-content-end">
                 @can('create loan option')
                     <a href="#" data-url="{{ route('loanoption.create') }}" data-ajax-popup="true"
-                        data-title="{{ __('Create New Deduction Option') }}" data-bs-toggle="tooltip" title="{{ __('Create') }}"
+                        data-title="{{ __('Create New Loan Option') }}" data-bs-toggle="tooltip" title="{{ __('Create') }}"
                         class="btn btn-sm btn-primary">
                         <i class="ti ti-plus"></i>
                     </a>
@@ -44,7 +44,7 @@
                                 <table class="table datatable">
                                     <thead>
                                         <tr>
-                                            <th>{{ __('Deduction Option') }}</th>
+                                            <th>{{ __('Loan Option') }}</th>
                                             <th width="200px">{{ __('Action') }}</th>
                                         </tr>
                                     </thead>
@@ -58,7 +58,7 @@
                                                             <a href="#" class="mx-3 btn btn-sm align-items-center bg-info"
                                                                 data-url="{{ URL::to('loanoption/' . $loanoption->id . '/edit') }}"
                                                                 data-ajax-popup="true"
-                                                                data-title="{{ __('Edit Deduction Option') }}"
+                                                                data-title="{{ __('Edit Loan Option') }}"
                                                                 data-bs-toggle="tooltip" title="{{ __('Edit') }}"
                                                                 data-original-title="{{ __('Edit') }}">
                                                                 <i class="ti ti-pencil text-white"></i>

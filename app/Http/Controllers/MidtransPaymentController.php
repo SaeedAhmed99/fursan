@@ -155,7 +155,7 @@ class MidtransPaymentController extends Controller
 
     public function invoicePayWithMidtrans(Request $request)
     {
-   
+
         $invoice_id = \Illuminate\Support\Facades\Crypt::decrypt($request->invoice_id);
         $invoice = Invoice::find($invoice_id);
 
@@ -229,7 +229,7 @@ class MidtransPaymentController extends Controller
             try
             {
                 if (isset($response['status_code']) && $response['status_code'] == 200) {
-                   
+
 
                 $invoice_payment = new InvoicePayment();
                 $invoice_payment->invoice_id = $invoice->id;
@@ -263,7 +263,7 @@ class MidtransPaymentController extends Controller
             }
                 //for customer balance update
                 Utility::updateUserBalance('customer', $invoice->customer_id, $request->amount, 'debit');
-                
+
                 //For Notification
                 $setting = Utility::settingsById($invoice->created_by);
                 $customer = Customer::find($invoice->customer_id);
@@ -294,10 +294,10 @@ class MidtransPaymentController extends Controller
                         return redirect()->route('invoice.link.copy', \Crypt::encrypt($invoice->id))->with('error', __('Transaction has been failed.'));
                     } else {
                         // return redirect()->back()->with('error', __('Webhook call failed.'));
-                        return redirect()->route('invoice.link.copy', \Crypt::encrypt($invoice->id))->with('error', __('Webhook call failed.'));
+                        return redirect()->route('invoice.link.copy', \Crypt::encrypt($invoice->id))->with('error', __('Payment successfully, Webhook call failed.'));
                     }
                 }
-                
+
                 return redirect()->route('invoice.link.copy', \Crypt::encrypt($request->invoice_id))->with('success', __('Invoice paid Successfully!'));
 
             } catch (\Exception $e) {

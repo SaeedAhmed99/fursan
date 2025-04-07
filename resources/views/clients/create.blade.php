@@ -9,7 +9,7 @@
             {{ Form::label('email', __('E-Mail Address'),['class'=>'form-label']) }}<x-required></x-required>
             {{ Form::email('email', null, array('class' => 'form-control','placeholder'=>__('Enter Client Email'),'required'=>'required')) }}
         </div>
-        <div class="col-md-5 mb-3 form-group mt-4">
+        <div class="col-md-5 mb-3 form-group">
             <label for="password_switch">{{ __('Login is enable') }}</label>
             <div class="form-check form-switch custom-switch-v1 float-end">
                 <input type="checkbox" name="password_switch" class="form-check-input input-primary pointer" value="on" id="password_switch">

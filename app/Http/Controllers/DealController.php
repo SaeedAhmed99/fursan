@@ -336,7 +336,7 @@ class DealController extends Controller
                     }
                     else
                     {
-                        return redirect()->back()->with('error', __('Webhook call failed.'));
+                        return redirect()->back()->with('error', __('Deal successfully created, Webhook call failed.'));
                     }
                 }
                 return redirect()->back()->with('success', __('Deal successfully created!')  .((!empty ($resp) &&  $resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
@@ -2095,7 +2095,7 @@ class DealController extends Controller
 
         $html = '';
 
-        if ($request->file->getClientOriginalName() != '') {
+        if ($request->hasFile('file') && $request->file->getClientOriginalName() != '') {
             $file_array = explode(".", $request->file->getClientOriginalName());
 
             $extension = end($file_array);

@@ -125,32 +125,21 @@ else {
                                 <div class="job-card-body">
                                     <div class="d-flex mb-3 align-items-center justify-content-between ">
                                         <img src="{{ asset('/storage/uploads/job/figma.png') }}" alt="">
-                                        
+                                        @if (!empty($job->branches) ? $job->branches->name : '')
+                                            <span>{{ !empty($job->branches) ? $job->branches->name : '' }} <i
+                                                    class="ti ti-map-pin ms-1"></i></span>
+                                        @endif
                                     </div>
                                     <h5 class="mb-3">
                                         <a href="{{ route('job.requirement', [$job->code, !empty($job) ? (!empty($job->createdBy->lang) ? $job->createdBy->lang : 'en') : 'en']) }}"
                                             class="text-dark">{{ $job->title }}
                                         </a>
                                     </h5>
-                                    <p>{{ __('By') }} {{ $job->createdBy->name }}</p>
-
-                                    <p>{{ Str::limit(strip_tags($job->description), 100, '...') }}</p>
-
                                     <div
                                         class="d-flex mb-3 align-items-start flex-column flex-xl-row flex-md-row flex-lg-column">
                                         <span class="d-inline-block me-2"> <i class="ti ti-circle-plus "></i>
                                             {{ $job->position }} {{ __('position available') }}</span>
                                     </div>
-
-
-                                          
-                                    @if (!empty($job->branches) ? $job->branches->name : '')
-                                        <div
-                                            class="d-flex mb-3 align-items-start flex-column flex-xl-row flex-md-row flex-lg-column">
-                                            <span class="d-inline-block me-2"> <i class="ti ti-map-pin ms-1"></i>
-                                                {{ !empty($job->branches) ? $job->branches->name : '' }}</span>
-                                        </div>
-                                    @endif
 
                                     <div class="d-flex flex-wrap gap-1 align-items-center">
                                         @foreach (explode(',', $job->skill) as $skill)

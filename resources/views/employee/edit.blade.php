@@ -5,7 +5,7 @@
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{route('dashboard')}}">{{__('Dashboard')}}</a></li>
     <li class="breadcrumb-item"><a href="{{route('employee.index')}}">{{__('Employee')}}</a></li>
-    <li class="breadcrumb-item">{{\Auth::user()->employeeIdFormat($employee->id)}}</li>
+    <li class="breadcrumb-item">{{$employeesId}}</li>
 @endsection
 
 
@@ -27,15 +27,12 @@
                             {{-- {!! Form::label('phone', __('Phone'),['class'=>'form-label']) !!}<x-required></x-required>
                             {!! Form::number('phone',null, ['class' => 'form-control']) !!} --}}
                             <x-mobile label="{{__('Phone')}}" name="phone" value="{{$employee->phone}}" required placeholdeer="Enter employee phone"></x-mobile>
-                        </div>
-                        <div class="form-group col-md-12">
-                            {!! Form::label('email', __('Email'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::text('email', null, ['class' => 'form-control','required' => 'required','placeholder'=>__('Enter Email')]) !!}
+
                         </div>
                         <div class="form-group col-md-6">
 
                             {!! Form::label('dob', __('Date of Birth'),['class'=>'form-label']) !!}<x-required></x-required>
-                            {!! Form::date('dob', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                            {!! Form::date('dob', null, ['class' => 'form-control', 'required' => 'required', 'max' => date('Y-m-d')]) !!}
 
                         </div>
                         <div class="form-group col-md-6">
@@ -64,7 +61,7 @@
             </div>
         </div>
         @if(\Auth::user()->type!='Employee')
-            <div class="col-md-6 ">
+            <div class="col-md-6 d-flex">
                 <div class="card emp_details">
                     <div class="card-header"><h6 class="mb-0">{{__('Company Detail')}}</h6></div>
                     <div class="card-body employee-detail-edit-body">
@@ -72,7 +69,7 @@
                             @csrf
                             <div class="form-group col-md-12">
                                 {!! Form::label('employee_id', __('Employee ID'),['class'=>'form-label']) !!}
-                                {!! Form::text('employee_id',\Auth::user()->employeeIdFormat($employee->id), ['class' => 'form-control','disabled'=>'disabled']) !!}
+                                {!! Form::text('employee_id',$employeesId, ['class' => 'form-control','disabled'=>'disabled']) !!}
                             </div>
 
                             <div class="form-group col-md-6">
@@ -107,7 +104,7 @@
                 </div>
             </div>
         @else
-            <div class="col-md-6 ">
+            <div class="col-md-6 d-flex">
                 <div class="employee-detail-wrap ">
                     <div class="card emp_details">
                         <div class="card-header"><h6 class="mb-0">{{__('Company Detail')}}</h6></div>
@@ -147,37 +144,34 @@
     </div>
     @if(\Auth::user()->type!='Employee')
         <div class="row">
-            <div class="col-md-6 ">
-                <div class="card emp_details">
+            <div class="col-md-6 d-flex">
+                <div class="card emp_details w-100">
                     <div class="card-header"><h6 class="mb-0">{{__('Document')}}</h6></div>
-                    <div class="card-body employee-detail-edit-body row">
+                    <div class="card-body employee-detail-edit-body">
                         @php
                             $employeedoc = $employee->documents()->pluck('document_value',__('document_id'));
                         @endphp
 
                         @foreach($documents as $key=>$document)
-                            <div class="row col-6">
+                            <div class="row">
                                 <div class="form-group col-12">
-                                    <div class="float-left col-12">
+                                    <div class="float-left col-4">
                                         <label for="document" class="float-left pt-1 form-label">{{ $document->name }} @if($document->is_required == 1) <x-required></x-required> @endif</label>
                                     </div>
-                                    <div class="float-right col-12">
+                                    <div class="float-right col-4">
                                         <input type="hidden" name="emp_doc_id[{{ $document->id}}]" id="" value="{{$document->id}}">
-                                        <div class="choose-file form-group">
+                                        <div class="choose-file">
                                             <label for="document[{{ $document->id }}]">
-                                                <input class="form-control file-validate @if(!empty($employeedoc[$document->id])) float-left @endif @error('document') is-invalid @enderror border-0" @if($document->is_required == 1 && empty($employeedoc[$document->id]) ) required @endif name="document[{{ $document->id}}]"  onchange="document.getElementById('{{'blah'.$key}}').src = window.URL.createObjectURL(this.files[0])" type="file"  data-filename="{{ $document->id.'_filename'}}">
+                                                <input class="form-control file-validate @if(!empty($employeedoc[$document->id])) float-left @endif @error('document') is-invalid @enderror " @if($document->is_required == 1 && empty($employeedoc[$document->id]) ) required @endif name="document[{{ $document->id}}]"  onchange="document.getElementById('{{'blah'.$key}}').src = window.URL.createObjectURL(this.files[0])" type="file"  data-filename="{{ $document->id.'_filename'}}">
                                                 <p id="" class="file-error text-danger"></p>
                                             </label>
                                             <p class="{{ $document->id.'_filename'}}"></p>
 
                                             @php
-                                                $logo=asset('storage/uploads/document');
+                                                $logo=\App\Models\Utility::get_file('uploads/document/');
                                             @endphp
-                                            {{-- <span><a href="{{ (!empty($employeedoc[$document->id])?asset('storage/uploads/document').'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></span> --}}
-                                            <span><a href="{{ (isset($employeedoc[$document->id]) && !empty($employeedoc[$document->id])?$logo.'/'.$employeedoc[$document->id]:'') }}" target="_blank">{{ (!empty($employeedoc[$document->id])?$employeedoc[$document->id]:'') }}</a></span>
-
                                                 {{--                                            <img id="{{'blah'.$key}}" src=""  width="25%" />--}}
-                                                                                            {{-- <img id="{{'blah'.$key}}" src="{{ (isset($employeedoc[$document->id]) && !empty($employeedoc[$document->id])?$logo.'/'.$employeedoc[$document->id]:'') }}"  width="25%" /> --}}
+                                                                                            <img id="{{'blah'.$key}}" src="{{ (isset($employeedoc[$document->id]) && !empty($employeedoc[$document->id])?$logo.'/'.$employeedoc[$document->id]:'') }}"  width="25%" />
 
                                                                                         </div>
 
@@ -194,7 +188,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-flex">
                 <div class="card emp_details">
                     <div class="card-header"><h6 class="mb-0">{{__('Bank Account Detail')}}</h6></div>
                     <div class="card-body employee-detail-edit-body">
@@ -233,7 +227,7 @@
         </div>
     @else
         <div class="row">
-            <div class="col-md-6 ">
+            <div class="col-md-6 d-flex">
                 <div class="employee-detail-wrap">
                     <div class="card emp_details">
                         <div class="card-header"><h6 class="mb-0">{{__('Document Detail')}}</h6></div>
@@ -255,7 +249,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 ">
+            <div class="col-md-6 d-flex">
                 <div class="employee-detail-wrap">
                     <div class="card emp_details">
                         <div class="card-header"><h6 class="mb-0">{{__('Bank Account Detail')}}</h6></div>
@@ -307,10 +301,9 @@
     @endif
 
     @if(\Auth::user()->type != 'employee')
-        <div class="row">
-            <div class="col-12">
-                <input type="submit" value="{{__('Update')}}" class="btn btn-primary float-end">
-            </div>
+        <div class="float-end">
+            <input type="button" value="{{__('Cancel')}}" onclick="location.href = '{{route("employee.index")}}';" class="btn btn-secondary me-2">
+            <input type="submit" value="{{__('Update')}}" class="btn btn-primary ">
         </div>
     @endif
 {!! Form::close() !!}

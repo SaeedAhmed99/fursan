@@ -238,6 +238,7 @@ else {
 <script src="{{ asset('js/custom.js') }}"></script>
 
 </body>
+
 @if($message = Session::get('success'))
     <script>
         show_toastr('success', '{!! $message !!}');

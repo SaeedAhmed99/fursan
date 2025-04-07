@@ -40,7 +40,7 @@ class TerminationTypeController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:250|unique:termination_types,name',
+                                   'name' => 'required',
                                ]
             );
             if($validator->fails())
@@ -96,7 +96,8 @@ class TerminationTypeController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:250|unique:termination_types,name,' . $terminationtype->id,
+                                       'name' => 'required|max:20',
+
                                    ]
                 );
 

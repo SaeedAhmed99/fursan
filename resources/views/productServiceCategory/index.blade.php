@@ -47,7 +47,7 @@
                                         <span>
                                         @can('edit constant category')
                                                 <div class="action-btn me-2">
-                                                    <a href="#" class="mx-3 btn btn-sm align-items-center bg-info" data-url="{{ route('product-category.edit',$category->id) }}" data-ajax-popup="true" data-title="{{__('Edit Category')}}" data-bs-toggle="tooltip" title="{{__('Create')}}" data-original-title="{{__('Edit')}}">
+                                                    <a href="#" class="mx-3 btn btn-sm align-items-center bg-info" data-url="{{ route('product-category.edit',$category->id) }}" data-ajax-popup="true" data-title="{{__('Edit Category')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
                                                         <i class="ti ti-pencil text-white"></i>
                                                     </a>
                                                 </div>

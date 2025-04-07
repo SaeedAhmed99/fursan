@@ -104,7 +104,7 @@
                                         <a href="{{route('attendanceemployee.index')}}" class="btn btn-sm btn-danger me-1" data-bs-toggle="tooltip"  title="{{ __('Reset') }}" data-original-title="{{__('Reset')}}">
                                             <span class="btn-inner--icon"><i class="ti ti-refresh text-white-off "></i></span>
                                         </a>
-                                        <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('attendance.file.import') }}" data-ajax-popup="true" data-title="{{__('Import employee CSV file')}}" class="btn btn-sm btn-primary me-1">
+                                        <a href="#" data-size="md"  data-bs-toggle="tooltip" title="{{__('Import')}}" data-url="{{ route('attendance.file.import') }}" data-ajax-popup="true" data-title="{{__('Import employee attendance CSV file')}}" class="btn btn-sm bg-brown-subtitle text-white me-1">
                                             <i class="ti ti-file-import"></i>
                                         </a>
                                     </div>

@@ -93,9 +93,19 @@ class AnnouncementController extends Controller
 
             $announcement->save();
 
-            if(in_array('0', $request->employee_id))
+            if((in_array('0', $request->employee_id) && in_array('0', $request->department_id) && $request->branch_id == "0"))
             {
-                $departmentEmployee = Employee::whereIn('department_id', $request->department_id)->get()->pluck('id');
+                $departmentEmployee = Employee::where('created_by', Auth::user()->creatorId())->get()->pluck('id');
+                $departmentEmployee = $departmentEmployee;
+
+            } elseif (in_array('0', $request->employee_id) && in_array('0', $request->department_id) && $request->branch_id != "0")
+            {
+                $departmentEmployee = Employee::where('branch_id', $request->branch_id)->where('created_by', Auth::user()->creatorId())->get()->pluck('id');
+                $departmentEmployee = $departmentEmployee;
+
+            } elseif (in_array('0', $request->employee_id) && !in_array('0', $request->department_id))
+            {
+                $departmentEmployee = Employee::where('department_id', $request->department_id)->where('created_by', Auth::user()->creatorId())->get()->pluck('id');
                 $departmentEmployee = $departmentEmployee;
 
             }
@@ -154,7 +164,7 @@ class AnnouncementController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Announcement successfully created, Webhook call failed.'));
                 }
             }
 

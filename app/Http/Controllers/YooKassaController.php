@@ -393,7 +393,7 @@ class YooKassaController extends Controller
                         }
                         else
                         {
-                            return redirect()->back()->with('error', __('Webhook call failed.'));
+                            return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                         }
                     }
                     return redirect()->route('invoice.link.copy', \Crypt::encrypt($request->invoice_id))->with('success', __('Invoice paid Successfully!'));

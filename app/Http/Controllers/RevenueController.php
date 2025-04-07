@@ -218,7 +218,7 @@ class RevenueController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Revenue successfully created, Webhook call failed.'));
                 }
             }
 

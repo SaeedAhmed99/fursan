@@ -86,8 +86,8 @@
             </div>
         </div>
         <div class="mt-2 row">
-            <div class="col-lg-7">
-                <div class="sop-card card">
+            <div class="col-lg-7 mb-4">
+                <div class="sop-card card mb-0">
                     <div class="card-header p-2">
                         <div class="search-bar-left">
                             <form>
@@ -119,7 +119,7 @@
                     </div>
                     <div class="card-body p-2">
                         <div class="right-content">
-                            <div class="button-list b-bottom catgory-pad">
+                            <div class="button-list b-bottom catgory-pad mb-3">
                                 <div class="form-row m-0" id="categories-listing">
                                 </div>
                             </div>
@@ -134,13 +134,13 @@
             <div class="col-lg-5 ps-lg-0">
                 <div class="card m-0">
                     <div class="card-header p-2">
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="row gy-2">
+                            <div class="col-sm-6">
                                 {{ Form::select('customer_id', $customers, $customer, ['class' => 'form-control select customer_select', 'id' => 'customer', 'required' => 'required', 'placeholder' => __('Select Customer') ]) }}
                                 {{ Form::hidden('vc_name_hidden', '', ['id' => 'vc_name_hidden']) }}
 
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                                 {{ Form::select('warehouse_id', $warehouses, $warehouseId, ['class' => 'form-control select warehouse_select ', 'id' => 'warehouse', 'required' => 'required', 'placeholder' => __('Select Warehouse') ]) }}
                                 {{ Form::hidden('warehouse_name_hidden', '', ['id' => 'warehouse_name_hidden']) }}
                                 {{ Form::hidden('quotation_id', $id, ['id' => 'quotation_id', 'class' => 'quotation']) }}
@@ -249,45 +249,45 @@
                         </div>
                         <div class="total-section mt-3">
                             <div class="sub-total">
-                                <div class="d-flex text-end justify-content-end">
-                                    <h6 class="mb-0 text-dark">{{ __('Sub Total') }} :</h6>
-                                    <h6 class="mb-0 text-dark subtotal_price" id="displaytotal">
-                                        {{ Auth::user()->priceFormat($total) }}</h6>
-                                </div>
-                                <div class="row align-items-center">
-                                    <div class="col-6">
-                                        <div class="d-flex text-end justify-content-end align-items-center">
+                                <div class="d-flex flex-column flex-sm-row justify-content-between gap-3">
+                                    <div class="sub-total-left flex-1">
+                                        <div class="d-flex align-items-center gap-2 mb-3">
                                             <span
                                                 class="input-group-text bg-transparent">{{ \Auth::user()->currencySymbol() }}</span>
                                             {{ Form::number('discount', $discount, ['class' => ' form-control discount', 'required' => 'required', 'placeholder' => __('Discount')]) }}
                                             {{ Form::hidden('discount_hidden', $discount, ['id' => 'discount_hidden']) }}
                                         </div>
+                                        <button type="button" class="btn btn-primary rounded" data-ajax-popup="true"
+                                            data-size="xl" data-align="centered" data-url="{{ route('pos.create') }}"
+                                            data-title="{{ __('POS Invoice') }}"
+                                            @if (session($lastsegment) && !empty(session($lastsegment)) && count(session($lastsegment)) > 0) @else disabled="disabled" @endif>
+                                            {{ __('PAY') }}
+                                        </button>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                            <h6 class="">{{ __('Total') }} :</h6>
-                                            <h6 class="totalamount">{{ Auth::user()->priceFormat($netPrice) }}</h6>
+                                    <div class="sub-total-right flex-1">
+                                        <div class="d-flex align-items-center justify-content-sm-end mb-2">
+                                            <h6 class="mb-0 text-dark">{{ __('Sub Total') }} :</h6>
+                                            <h6 class="mb-0 text-dark subtotal_price" id="displaytotal">
+                                                {{ Auth::user()->priceFormat($total) }}</h6>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between pt-3" id="btn-pur">
-                                    <button type="button" class="btn btn-primary rounded" data-ajax-popup="true"
-                                        data-size="xl" data-align="centered" data-url="{{ route('pos.create') }}"
-                                        data-title="{{ __('POS Invoice') }}"
-                                        @if (session($lastsegment) && !empty(session($lastsegment)) && count(session($lastsegment)) > 0) @else disabled="disabled" @endif>
-                                        {{ __('PAY') }}
-                                    </button>
-                                    <div class="tab-content btn-empty text-end">
-                                        <a href="#" class="btn btn-danger bs-pass-para-pos rounded m-0"
-                                            data-toggle="tooltip" data-original-title="{{ __('Empty Cart') }}"
-                                            data-confirm="{{ __('Are You Sure?') }}"
-                                            data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
-                                            data-confirm-yes="delete-form-emptycart">{{ __('Empty Cart') }}
-                                        </a>
-                                        {!! Form::open(['method' => 'post', 'url' => ['empty-cart'], 'id' => 'delete-form-emptycart']) !!}
-                                        <input type="hidden" name="session_key" value="{{ $lastsegment }}"
-                                            id="empty_cart">
-                                        {!! Form::close() !!}
+                                        <div class="d-flex align-items-center justify-content-sm-end mb-3">
+                                            <h6 class="mb-0 text-dark">{{ __('Total') }} :</h6>
+                                            <h6 class="mb-0 text-dark totalamount">
+                                                {{ Auth::user()->priceFormat($netPrice) }}</h6>
+                                        </div>
+                                        <div class="tab-content btn-empty d-flex justify-content-sm-end">
+                                            <a href="#" class="btn btn-danger bs-pass-para-pos rounded m-0"
+                                                data-toggle="tooltip" data-original-title="{{ __('Empty Cart') }}"
+                                                data-confirm="{{ __('Are You Sure?') }}"
+                                                data-text="{{ __('This action can not be undone. Do you want to continue?') }}"
+                                                data-confirm-yes="delete-form-emptycart">
+                                                {{ __('Empty Cart') }}
+                                            </a>
+                                            {!! Form::open(['method' => 'post', 'url' => ['empty-cart'], 'id' => 'delete-form-emptycart']) !!}
+                                            <input type="hidden" name="session_key" value="{{ $lastsegment }}"
+                                                id="empty_cart">
+                                            {!! Form::close() !!}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

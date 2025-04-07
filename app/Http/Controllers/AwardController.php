@@ -135,7 +135,7 @@ class AwardController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Award successfully created, Webhook call failed.'));
                 }
             }
 

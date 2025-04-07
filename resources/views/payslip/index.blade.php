@@ -260,12 +260,13 @@
                                 var url = '{{ route('payslip.delete', ':id') }}';
                                 url = url.replace(':id', payslip_id);
 
+                                var deleted = '';
                                 @if (\Auth::user()->type != 'Employee')
                                     if (valueOfElement[7] != 0) {
-                                        var deleted = '<a href="#"  data-url="' + url +
+                                        deleted = '<a href="#"  data-url="' + url +
                                             '" class="payslip_delete view-btn btn btn-danger btn-sm"   data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}"><i class="ti ti-trash text-white"></i></a>';
                                     } else {
-                                        var deleted = '';
+                                        deleted = '';
                                     }
                                 @endif
                                 var url_employee = valueOfElement['url'];

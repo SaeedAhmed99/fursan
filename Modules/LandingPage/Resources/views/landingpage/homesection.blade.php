@@ -207,7 +207,7 @@
                                                 {{ Form::label('Banner', __('Banner'), ['class' => 'form-label']) }}
                                                 <div class="logo-content mt-4">
                                                     <img id="image" src="{{$logo.'/'. $settings['home_banner']}}"
-                                                        class="big-logo">
+                                                        class="big-logo img_setting">
                                                 </div>
                                                 <div class="choose-files mt-5">
                                                     <label for="home_banner">

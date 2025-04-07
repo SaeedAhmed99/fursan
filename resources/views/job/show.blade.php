@@ -11,7 +11,7 @@
 @section('action-btn')
     <div class="float-end">
     @can('edit job')
-            <a href="{{ route('job.edit',$job->id) }}" data-url="" data-ajax-popup="true" data-title="{{__('Edit Job')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}"  class="btn btn-sm btn-primary">
+            <a href="{{ route('job.edit',$job->id) }}" data-url="" data-ajax-popup="true" data-title="{{__('Edit Job')}}" data-bs-toggle="tooltip" title="{{__('Edit')}}"  class="btn btn-sm btn-info">
                 <i class="ti ti-pencil"></i>
             </a>
 
@@ -72,42 +72,6 @@
                                     @endforeach
                                 </td>
                             </tr>
-
-                            <tr>
-                                <td>{{__('Job type')}}</td>
-                                <td class="">{{$job->job_type}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{__('Years of experience')}}</td>
-                                <td class="">{{$job->years_of_experience}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{__('Show pay by')}}</td>
-                                <td class="">{{$job->show_pay_by}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{__('Starting salary')}}</td>
-                                <td class="">{{$job->starting_salary}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{__('Currency')}}</td>
-                                <td class="">{{$job->currency}}</td>
-                            </tr>
-                            {{-- <tr>
-                                <td>{{__('Rate')}}</td>
-                                <td class="">{{$job->rate}}</td>
-                            </tr> --}}
-                           
-                            <tr>
-                                <td>{{__('Academic Major')}}</td>
-                                <td class="">{{$job->major}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{__('Degree')}}</td>
-                                <td class="">{{$job->degree}}</td>
-                            </tr>
-                         
-                            
 
                             </tbody>
                         </table>

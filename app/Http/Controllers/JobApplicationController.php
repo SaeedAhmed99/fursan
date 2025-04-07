@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Branch;
-use App\Models\CertificateUser;
-use App\Models\CustomField;
 use App\Models\CustomQuestion;
-use App\Models\CVUser;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Document;
-use App\Models\Edu;
 use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Models\GenerateOfferLetter;
@@ -22,32 +18,20 @@ use App\Models\JobApplication;
 use App\Models\JobApplicationNote;
 use App\Models\JobOnBoard;
 use App\Models\JobStage;
-use App\Models\Membership;
 use App\Models\Plan;
-use App\Models\Skill;
-use App\Models\Traning;
 use App\Models\User;
-use App\Models\UserLanguage;
 use App\Models\Utility;
-use App\Models\WorkExperience;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Providers\UniversityService;
 
 class JobApplicationController extends Controller
 {
 
-    protected $universityService;
-
-    public function __construct(UniversityService $universityService)
-    {
-        $this->universityService = $universityService;
-    }
-
     public function index(Request $request)
     {
+
         if(\Auth::user()->can('manage job application'))
         {
             $stages = JobStage::where('created_by', '=', \Auth::user()->creatorId())->orderBy('order', 'asc')->get();
@@ -89,35 +73,6 @@ class JobApplicationController extends Controller
         {
             return redirect()->back()->with('error', __('Permission denied.'));
         }
-    }
-
-    public function jobApplicationUserCV($id) {
-        $user = User::where('id', $id)->first();
-        $userDetail = \Auth::user();
-        $customFields = CustomField::where('created_by', '=', \Auth::user()->creatorId())->where('module', '=', 'user')->get();
-        $employee = $user->employee()->first();
-        $employeeUser = User::where('id', $employee->user_id)->first();
-        $workExperiences = $employee->workExperiences ?? [];
-        $skills = $employee->skills ?? [];
-        $edus = $employee->edus ?? [];
-        $langUser = $employee->languageUser ?? [];
-        $membershipUser = $employee->membership ?? [];
-        $traningUser = $employee->traning ?? [];
-        $certificateUser = $employee->certificateUser ?? [];
-        $availableCountries = $this->universityService->getAvailableCountries(); 
-
-        $cvUser = $employee->cvUser ?? [];
-        if ($user->type == 'user') {
-            $workExperiences = WorkExperience::where('user_id', $user->id)->get();
-            $skills = Skill::where('user_id', $user->id)->get();
-            $edus = Edu::where('user_id', $user->id)->get();
-            $langUser = UserLanguage::where('user_id', $user->id)->get();  
-            $membershipUser = Membership::where('user_id', $user->id)->get();  
-            $membershipUser = Traning::where('user_id', $user->id)->get(); 
-            $certificateUser = CertificateUser::where('user_id', $user->id)->get(); 
-            $cvUser = CVUser::where('user_id', $user->id)->get();
-        }
-        return view('jobApplication.userCV', compact('userDetail', 'availableCountries', 'customFields', 'workExperiences', 'skills', 'edus', 'employee', 'user', 'langUser', 'membershipUser', 'traningUser', 'certificateUser', 'cvUser', 'employeeUser'));
     }
 
     public function create()
@@ -264,10 +219,15 @@ class JobApplicationController extends Controller
 
     public function show($ids)
     {
+
         if(\Auth::user()->can('show job application'))
         {
-            $id             = Crypt::decrypt($ids);
-            $jobApplication = JobApplication::find($id);
+            try{
+                $id             = Crypt::decrypt($ids);
+                $jobApplication = JobApplication::find($id);
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', __('Job application not found.'));
+            }
 
             $notes = JobApplicationNote::where('application_id', $id)->get();
 
@@ -493,6 +453,7 @@ class JobApplicationController extends Controller
                                 'salary_type'=>'required',
                                 'salary_duration'=>'required',
                                 'status' => 'required',
+                                'application' => 'required',
                            ]
         );
 
@@ -597,10 +558,6 @@ class JobApplicationController extends Controller
 
     }
 
-    public function jobBoardConvertDataDirect(Request $request, $id) {
-        
-    }
-
     public function jobBoardConvertData(Request $request, $id)
     {
         $validator = \Validator::make(
@@ -610,53 +567,39 @@ class JobApplicationController extends Controller
                                'gender' => 'required',
                                'phone' => 'required',
                                'address' => 'required',
-                               'email' => 'required|unique:users,email,' . $request->user_id,
-                              // 'password' => 'required',
+                               'email' => 'required|unique:users',
+                               'password' => 'required',
                                'department_id' => 'required',
                                'designation_id' => 'required',
-                               'user_id' => 'required',
 //                               'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
                            ]
         );
-
         if($validator->fails())
         {
-
             $messages = $validator->getMessageBag();
 
             return redirect()->back()->withInput()->with('error', $messages->first());
         }
-
         $objUser = \Auth::user();
         $employees        = User::where('type','!=','client')->where('type','!=','company')->where('created_by',\Auth::user()->creatorId())->get();
 
         $total_employee = $employees->count();
         $plan           = Plan::find($objUser->plan);
         // dd($plan);
-
         if($total_employee < $plan->max_users || $plan->max_users == -1)
         {
-            $user = User::findOrFail($request->user_id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->type = 'Employee';
-            $user->lang = 'en';
-            $user->created_by = \Auth::user()->creatorId();
+            $user = User::create(
+                [
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'password' => Hash::make($request['password']),
+                    'type' => 'employee',
+                    'lang' => 'en',
+                    'created_by' => \Auth::user()->creatorId(),
+                ]
+            );
             $user->save();
             $user->assignRole('Employee');
-
-            // $user = User::create(
-            //     [
-            //         'name' => $request['name'],
-            //         'email' => $request['email'],
-            //         'password' => Hash::make($request['password']),
-            //         'type' => 'employee',
-            //         'lang' => 'en',
-            //         'created_by' => \Auth::user()->creatorId(),
-            //     ]
-            // );
-            // $user->save();
-            // $user->assignRole('Employee');
         }
         else
         {
@@ -673,9 +616,9 @@ class JobApplicationController extends Controller
             $document_implode = null;
         }
 
-        $employee = Employee::where('user_id', $user->id)->first();
-        if (!$employee) {
-            $employee = Employee::create([
+
+        $employee = Employee::create(
+            [
                 'user_id' => $user->id,
                 'name' => $request['name'],
                 'dob' => $request['dob'],
@@ -683,7 +626,7 @@ class JobApplicationController extends Controller
                 'phone' => $request['phone'],
                 'address' => $request['address'],
                 'email' => $request['email'],
-                'password' => $user->password,
+                'password' => Hash::make($request['password']),
                 'employee_id' => $this->employeeNumber(),
                 'branch_id' => $request['branch_id'],
                 'department_id' => $request['department_id'],
@@ -697,46 +640,8 @@ class JobApplicationController extends Controller
                 'branch_location' => $request['branch_location'],
                 'tax_payer_id' => $request['tax_payer_id'],
                 'created_by' => \Auth::user()->creatorId(),
-                'country_of_residence' => $user->country_of_residence,
-                'nationality' => $user->nationality,
-            ]);        
-        }
-
-        WorkExperience::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-        Edu::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-        Skill::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-        UserLanguage::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-        Membership::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-        Traning::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-        CertificateUser::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-        CVUser::whereIn('user_id', [$user->id])->update(['employee_id' => $employee->id]);
-
-        // $employee = Employee::create(
-        //     [
-        //         'user_id' => $user->id,
-        //         'name' => $request['name'],
-        //         'dob' => $request['dob'],
-        //         'gender' => $request['gender'],
-        //         'phone' => $request['phone'],
-        //         'address' => $request['address'],
-        //         'email' => $request['email'],
-        //         'password' => Hash::make($request['password']),
-        //         'employee_id' => $this->employeeNumber(),
-        //         'branch_id' => $request['branch_id'],
-        //         'department_id' => $request['department_id'],
-        //         'designation_id' => $request['designation_id'],
-        //         'company_doj' => $request['company_doj'],
-        //         'documents' => $document_implode,
-        //         'account_holder_name' => $request['account_holder_name'],
-        //         'account_number' => $request['account_number'],
-        //         'bank_name' => $request['bank_name'],
-        //         'bank_identifier_code' => $request['bank_identifier_code'],
-        //         'branch_location' => $request['branch_location'],
-        //         'tax_payer_id' => $request['tax_payer_id'],
-        //         'created_by' => \Auth::user()->creatorId(),
-        //     ]
-        // );
-        
+            ]
+        );
 
         if(!empty($employee))
         {

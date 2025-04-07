@@ -28,8 +28,8 @@
 @section('content')
 
     <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
+        <div class="col-lg-7 mb-4">
+            <div class="card h-100 mb-0">
                 <div class="card-header">
                     <div class="row">
                         <div class="col-lg-6">
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-lg-6">
                             @if (isset($setting['google_calendar_enable']) && $setting['google_calendar_enable'] == 'on')
-                                <select class="form-control" name="calender_type" id="calender_type"  onchange="get_data()">
+                                <select class="form-control" name="calender_type" id="calender_type" onchange="get_data()">
                                     <option value="goggle_calender">{{__('Google Calender')}}</option>
                                     <option value="local_calender" selected="true">{{__('Local Calender')}}</option>
                                 </select>
@@ -51,62 +51,60 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card">
+        <div class="col-lg-5 mb-4">
+            <div class="card h-100 mb-0">
+                <div class="card-header">
+                    <h5 class="mb-0">{{__('Schedule List')}}</h5>
+                </div>
                 <div class="card-body">
-                    <h4 class="mb-4">{{__('Schedule List')}}</h4>
-                    <ul class="event-cards list-group list-group-flush mt-3 w-100">
-                        <li class="list-group-item card mb-3">
-                            <div class="row align-items-center justify-content-between">
-                                <div class=" align-items-center">
-                                    @if(!$schedules->isEmpty())
-                                        @foreach ($schedules as $schedule)
-                                            <div class="card mb-3 border shadow-none">
-                                                <div class="px-3">
-                                                    <div class="row align-items-center">
-                                                        <div class="col ml-n2">
-                                                            <h5 class="text-sm mb-0">
-                                                                <a href="#!">{{!empty($schedule->applications) ? !empty($schedule->applications->jobs) ? $schedule->applications->jobs->title : '' : ''}}</a>
-                                                            </h5>
-                                                            <p class="card-text small text-muted">
-                                                                {{ !empty($schedule->applications)?$schedule->applications->name:'' }}
-                                                            </p>
-                                                            <p class="card-text small text-muted">
-                                                                {{  \Auth::user()->dateFormat($schedule->date).' '. \Auth::user()->timeFormat($schedule->time) }}
-                                                            </p>
-                                                        </div>
-                                                        <div class="col-auto text-right">
-                                                            @can('edit interview schedule')
-                                                                <div class="action-btn me-2">
-                                                                    <a href="#" data-url="{{ route('interview-schedule.edit',$schedule->id) }}" data-title="{{__('Edit Interview Schedule')}}" data-ajax-popup="true" class="mx-3 btn btn-sm  align-items-center bg-info" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
-                                                                </div>
-                                                            @endcan
-                                                            @can('delete interview schedule')
-                                                                    <div class="action-btn ">
-                                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['interview-schedule.destroy', $schedule->id],'id'=>'delete-form-'.$schedule->id]) !!}
-                                                                            <a href="#" class="mx-3 btn btn-sm align-items-center bs-pass-para bg-danger" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$schedule->id}}').submit();"><i class="ti ti-trash text-white"></i></a>
-                                                                        {!! Form::close() !!}
-                                                                    </div>
-                                                            @endcan
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <div class="text-center">
-                                            {{__('No Interview Scheduled!')}}
-                                        </div>
-                                    @endif
+                    <div class="schedule-wrp">
+                        @if(!$schedules->isEmpty())
+                        @foreach ($schedules as $schedule)
+                        <div class="schedule-item d-flex align-items-center">
+                            <div class="schedule-item-left">
+                                <span class="date f-w-600 d-block mb-1">
+                                    {{  \Auth::user()->dateFormat($schedule->date) }}
+                                </span>
+                                <span>
+                                    {{  \Auth::user()->timeFormat($schedule->time) }}
+                                </span>
+                            </div>
+                            <div class="schedule-item-right d-flex align-items-center flex-1">
+                                <div class="schedule-info flex-1">
+                                    <h6 class="mb-2">
+                                        <a href="#!" class="dashboard-link">{{!empty($schedule->applications) ? !empty($schedule->applications->jobs) ? $schedule->applications->jobs->title : '' : ''}}</a>
+                                    </h6>
+                                    <p class="text-muted mb-0">
+                                        {{ !empty($schedule->applications)?$schedule->applications->name:'' }}
+                                    </p>
+                                </div>
+                                <div class="action-btns d-flex flex-column gap-2">
+                                    @can('edit interview schedule')
+                                        <a href="#" data-url="{{ route('interview-schedule.edit',$schedule->id) }}" data-title="{{__('Edit Interview Schedule')}}" data-ajax-popup="true" class="btn btn-sm bg-white shadow-sm p-1 d-flex" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}">
+                                            <i class="ti ti-pencil text-info"></i>
+                                        </a>
+                                    @endcan
+                                    @can('delete interview schedule')
+                                        {!! Form::open(['method' => 'DELETE', 'route' => ['interview-schedule.destroy', $schedule->id],'id'=>'delete-form-'.$schedule->id]) !!}
+                                        <a href="#" class="btn btn-sm bs-pass-para bg-white shadow-sm d-flex p-1" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$schedule->id}}').submit();">
+                                            <i class="ti ti-trash text-danger"></i>
+                                        </a>
+                                        {!! Form::close() !!}
+                                    @endcan
                                 </div>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                        @endforeach
+                        @else
+                            <div class="text-center">
+                               <h6>{{__('No Interview Scheduled!')}}</h6>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 @endsection
 

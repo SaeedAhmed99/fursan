@@ -39,7 +39,7 @@
 
 @section('action-btn')
     <div class="float-end">
-        <a href="{{ route('zoom-meeting.calender') }}" class="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calender View')}}">
+        <a href="{{ route('zoom-meeting.calender') }}" class="btn btn-sm btn-primary-subtle me-1" data-bs-toggle="tooltip" title="{{__('Calender View')}}" data-original-title="{{__('Calender View')}}">
             <i class="ti ti-calendar"></i>
         </a>
         @can('create zoom meeting')

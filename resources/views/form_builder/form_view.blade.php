@@ -13,6 +13,7 @@
 
     $setting = App\Models\Utility::settingsById($form->created_by);
     $color = !empty($setting['color']) ? $setting['color'] : 'theme-3';
+    $company_logo = isset($setting['company_logo_dark']) ? $setting['company_logo_dark'] : 'logo-dark.png';
 
 if(isset($setting['color_flag']) && $setting['color_flag'] == 'true')
 {
@@ -92,7 +93,7 @@ else {
                     <div class="col-sm-8 col-lg-5">
                         <div class="row justify-content-center mb-3">
                             <a class="navbar-brand" href="#">
-                                <img src="{{asset(Storage::url('uploads/logo/logo-dark.png'))}}" class="navbar-brand-img big-logo">
+                                <img src="{{ $logo . '/' . $setting['company_logo_dark'] }}" class="navbar-brand-img big-logo">
                             </a>
                         </div>
                         <div class="card shadow zindex-100 mb-0">

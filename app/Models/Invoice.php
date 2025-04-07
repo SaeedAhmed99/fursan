@@ -109,7 +109,8 @@ class Invoice extends Model
                 $taxes += !empty($taxData[$tax]['rate']) ? $taxData[$tax]['rate'] : 0;
             }
 
-            $totalTax += ($taxes / 100) * ($product->price * $product->quantity);
+            $discount = isset($product->discount) ? $product->discount : 0;
+            $totalTax += ($taxes / 100) * (($product->price - $discount) * $product->quantity);
         }
 
         return $totalTax;

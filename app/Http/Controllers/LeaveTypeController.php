@@ -42,7 +42,7 @@ class LeaveTypeController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                'title' => 'required|max:250|unique:leave_types,title',
+                'title' => 'required',
                 'days' => 'required',
             ]
             );
@@ -57,7 +57,6 @@ class LeaveTypeController extends Controller
             $leavetype             = new LeaveType();
             $leavetype->title      = $request->title;
             $leavetype->days       = $request->days;
-            $leavetype->description       = $request->description;
             $leavetype->created_by = \Auth::user()->creatorId();
             $leavetype->save();
 
@@ -102,7 +101,7 @@ class LeaveTypeController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                    'title' => 'required|max:250|unique:leave_types,title,' . $leavetype->id,
+                    'title' => 'required',
                     'days' => 'required',
                 ]
                 );
@@ -116,7 +115,6 @@ class LeaveTypeController extends Controller
 
                 $leavetype->title = $request->title;
                 $leavetype->days  = $request->days;
-                $leavetype->description       = $request->description;
                 $leavetype->save();
 
                 return redirect()->route('leavetype.index')->with('success', __('LeaveType successfully updated.'));

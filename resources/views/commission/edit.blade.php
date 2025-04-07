@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    {{ Form::label('title', __('Title')) }}<x-required></x-required>
+                    {{ Form::label('title', __('Title'), ['class' => 'form-label']) }}<x-required></x-required>
                     {{ Form::text('title',null, array('class' => 'form-control ','required'=>'required', 'placeholder'=>__('Enter Title'))) }}
                 </div>
             </div>

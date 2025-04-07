@@ -301,7 +301,6 @@ class DashboardController extends Controller
         }
     }
 
-
     public function hrm_dashboard_index()
     {
 

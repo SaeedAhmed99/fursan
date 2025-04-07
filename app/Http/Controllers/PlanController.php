@@ -62,21 +62,21 @@ class PlanController extends Controller
         {
             $admin_payment_setting = Utility::getAdminPaymentSetting();
 
-            if(!empty($admin_payment_setting) && ($admin_payment_setting['is_manually_payment_enabled'] == 'on'
-                    || $admin_payment_setting['is_bank_transfer_enabled'] == 'on' || $admin_payment_setting['is_stripe_enabled'] == 'on'
-                    || $admin_payment_setting['is_paypal_enabled'] == 'on' || $admin_payment_setting['is_paystack_enabled'] == 'on'
-                    || $admin_payment_setting['is_flutterwave_enabled'] == 'on' || $admin_payment_setting['is_razorpay_enabled'] == 'on'
-                    || $admin_payment_setting['is_mercado_enabled'] == 'on' || $admin_payment_setting['is_paytm_enabled'] == 'on'
-                    || $admin_payment_setting['is_mollie_enabled'] == 'on' || $admin_payment_setting['is_skrill_enabled'] == 'on'
-                    || $admin_payment_setting['is_coingate_enabled'] == 'on'|| $admin_payment_setting['is_paymentwall_enabled'] == 'on'
-                    || $admin_payment_setting['is_toyyibpay_enabled'] == 'on' || $admin_payment_setting['is_payfast_enabled'] == 'on'
-                    || $admin_payment_setting['is_iyzipay_enabled'] == 'on' || $admin_payment_setting['is_sspay_enabled'] == 'on'
-                    || $admin_payment_setting['is_paytab_enabled'] == 'on'  || $admin_payment_setting['is_benefit_enabled'] == 'on'
-                    || $admin_payment_setting['is_cashfree_enabled'] == 'on'  || $admin_payment_setting['is_aamarpay_enabled'] == 'on'
-                    || $admin_payment_setting['is_paytr_enabled'] == 'on' || $admin_payment_setting['is_yookassa_enabled'] ='on'
-                    || $admin_payment_setting['is_midtrans_enabled'] == 'on' || $admin_payment_setting['is_xendit_enabled'] == 'on'
-                    || $admin_payment_setting['is_nepalste_enabled'] == 'on'))
-            {
+            // if(!empty($admin_payment_setting) && ($admin_payment_setting['is_manually_payment_enabled'] == 'on'
+            //         || $admin_payment_setting['is_bank_transfer_enabled'] == 'on' || $admin_payment_setting['is_stripe_enabled'] == 'on'
+            //         || $admin_payment_setting['is_paypal_enabled'] == 'on' || $admin_payment_setting['is_paystack_enabled'] == 'on'
+            //         || $admin_payment_setting['is_flutterwave_enabled'] == 'on' || $admin_payment_setting['is_razorpay_enabled'] == 'on'
+            //         || $admin_payment_setting['is_mercado_enabled'] == 'on' || $admin_payment_setting['is_paytm_enabled'] == 'on'
+            //         || $admin_payment_setting['is_mollie_enabled'] == 'on' || $admin_payment_setting['is_skrill_enabled'] == 'on'
+            //         || $admin_payment_setting['is_coingate_enabled'] == 'on'|| $admin_payment_setting['is_paymentwall_enabled'] == 'on'
+            //         || $admin_payment_setting['is_toyyibpay_enabled'] == 'on' || $admin_payment_setting['is_payfast_enabled'] == 'on'
+            //         || $admin_payment_setting['is_iyzipay_enabled'] == 'on' || $admin_payment_setting['is_sspay_enabled'] == 'on'
+            //         || $admin_payment_setting['is_paytab_enabled'] == 'on'  || $admin_payment_setting['is_benefit_enabled'] == 'on'
+            //         || $admin_payment_setting['is_cashfree_enabled'] == 'on'  || $admin_payment_setting['is_aamarpay_enabled'] == 'on'
+            //         || $admin_payment_setting['is_paytr_enabled'] == 'on' || $admin_payment_setting['is_yookassa_enabled'] ='on'
+            //         || $admin_payment_setting['is_midtrans_enabled'] == 'on' || $admin_payment_setting['is_xendit_enabled'] == 'on'
+            //         || $admin_payment_setting['is_nepalste_enabled'] == 'on'))
+            // {
 
                 $validation                  = [];
                 $validation['name']          = 'required|unique:plans';
@@ -148,11 +148,11 @@ class PlanController extends Controller
                     return redirect()->back()->with('error', __('Something is wrong.'));
                 }
 
-            }
-            else
-            {
-                return redirect()->back()->with('error', __('Please set stripe or paypal api key & secret key for add new plan.'));
-            }
+            // }
+            // else
+            // {
+            //     return redirect()->back()->with('error', __('Please set stripe or paypal api key & secret key for add new plan.'));
+            // }
         }
         else
         {

@@ -39,7 +39,7 @@ class RazorpayPaymentController extends Controller
 
     public function companyPaymentConfig()
     {
- 
+
             $payment_setting = Utility::getCompanyPaymentSetting($this->invoiceData->created_by);
             $setting = Utility::settingsById($this->invoiceData->created_by);
 
@@ -345,7 +345,7 @@ class RazorpayPaymentController extends Controller
                         }
                         else
                         {
-                            return redirect()->back()->with('error', __('Webhook call failed.'));
+                            return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                         }
                     }
                     return redirect()->route('invoice.link.copy', Crypt::encrypt($invoice->id))->with('success', __(' Payment successfully added.'));

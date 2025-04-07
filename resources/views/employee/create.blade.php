@@ -17,7 +17,7 @@
     <div class="">
         <div class="">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex">
                     <div class="card em-card">
                         <div class="card-header">
                             <h5>{{ __('Personal Detail') }}</h5>
@@ -36,7 +36,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         {!! Form::label('dob', __('Date of Birth'), ['class' => 'form-label']) !!}<x-required></x-required>
-                                        {{ Form::date('dob', null, ['class' => 'form-control ', 'required' => 'required', 'autocomplete' => 'off','placeholder'=>'Select Date of Birth']) }}
+                                        {{ Form::date('dob', null, ['class' => 'form-control ', 'required' => 'required', 'autocomplete' => 'off','placeholder'=>'Select Date of Birth', 'max' => date('Y-m-d')]) }}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -73,22 +73,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 d-flex">
                     <div class="card em-card">
                         <div class="card-header">
                             <h5>{{ __('Company Detail') }}</h5>
                         </div>
                         <div class="card-body employee-detail-create-body">
-                            @php
-                                use App\Models\Employee;
-                                $idNewEmp = Employee::latest()->first()->id;
-                                $idNewEmp = $idNewEmp + 1
-                            @endphp
                             <div class="row">
                                 @csrf
                                 <div class="form-group ">
                                     {!! Form::label('employee_id', __('Employee ID'), ['class' => 'form-label']) !!}
-                                    {!! Form::text('employee_id', \Auth::user()->employeeIdFormat($idNewEmp), ['class' => 'form-control', 'disabled' => 'disabled']) !!}
+                                    {!! Form::text('employee_id', $employeesId, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
                                 </div>
 
                                 <div class="form-group col-md-6">
@@ -131,8 +126,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 ">
-                    <div class="card em-card">
+                <div class="col-md-6 d-flex">
+                    <div class="card em-card w-100">
                         <div class="card-header">
                             <h5>{{ __('Document') }}</h6>
                         </div>
@@ -175,7 +170,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 ">
+                <div class="col-md-6 d-flex">
                     <div class="card em-card">
                         <div class="card-header">
                             <h5>{{ __('Bank Account Detail') }}</h5>
@@ -218,6 +213,7 @@
         </div>
 
         <div class="float-end">
+            <input type="button" value="{{__('Cancel')}}" onclick="location.href = '{{route("employee.index")}}';" class="btn btn-secondary me-2">
             <button type="submit" class="btn  btn-primary">{{ 'Create' }}</button>
         </div>
     </div>

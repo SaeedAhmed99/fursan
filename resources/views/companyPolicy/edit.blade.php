@@ -5,7 +5,7 @@
         $plan= \App\Models\Utility::getChatGPTSettings();
     @endphp
     @if($plan->chatgpt == 1)
-    <div class="text-end">
+    <div class="text-end mb-3">
         <a href="#" data-size="md" class="btn  btn-primary btn-icon btn-sm" data-ajax-popup-over="true" data-url="{{ route('generate',['company policy']) }}"
            data-bs-placement="top" data-title="{{ __('Generate content with AI') }}">
             <i class="fas fa-robot"></i> <span>{{__('Generate with AI')}}</span>
@@ -33,8 +33,9 @@
             </div>
         </div>
         <div class="col-md-12">
+            <div class="form-group mb-0">
             {{Form::label('attachment',__('Attachment'),['class'=>'form-label'])}}
-            <div class="choose-file form-group">
+            <div class="choose-file">
                 <label for="attachment" class="form-label">
                     @php
                         $policyPath=\App\Models\Utility::get_file('uploads/companyPolicy/');
@@ -49,6 +50,7 @@
 
                 </label>
             </div>
+        </div>
         </div>
 
     </div>

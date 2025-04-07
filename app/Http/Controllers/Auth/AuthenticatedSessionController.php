@@ -55,23 +55,21 @@ class AuthenticatedSessionController extends Controller
      */
 
 
-    protected function authenticated(Request $request, $user)
-       {
-        if ($user->type == 'user') {
-            return redirect('/profile');
-        } 
+    // protected function authenticated(Request $request)
+    //    {
 
-            // $user = Auth::user();
-            // if($user->delete_status == 0)
-            // {
-            //     auth()->logout();
-            // }
 
-            // if($user->is_active == 0)
-            // {
-            //     auth()->logout();
-            // }
-       }
+    //             $user = Auth::user();
+    //        if($user->delete_status == 0)
+    //        {
+    //            auth()->logout();
+    //        }
+
+    //        if($user->is_active == 0)
+    //        {
+    //            auth()->logout();
+    //        }
+    //    }
 
 
     public function store(LoginRequest $request)
@@ -223,9 +221,7 @@ class AuthenticatedSessionController extends Controller
 
         }
         //end for user log
-        if ($user->type =='user') {
-            return redirect()->route('profile');
-        }
+
         if($user->type =='company' || $user->type =='super admin' || $user->type =='client')
         {
             return redirect()->intended(RouteServiceProvider::HOME);
@@ -347,7 +343,6 @@ class AuthenticatedSessionController extends Controller
 
     public function showLoginForm($lang = '')
     {
-        
         if($lang == '')
         {
             $lang = Utility::getValByName('default_language');

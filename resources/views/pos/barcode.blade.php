@@ -13,7 +13,7 @@
 @section('action-btn')
     <div class="float-end">
         @can('create barcode')
-            <a href="{{ route('pos.print') }}" class="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip" title="{{__('Print Barcode')}}">
+            <a href="{{ route('pos.print') }}" class="btn btn-sm btn-primary-subtle me-1" data-bs-toggle="tooltip" title="{{__('Print Barcode')}}">
                 <i class="ti ti-scan text-white"></i>
             </a>
             <a data-url="{{ route('pos.setting') }}" data-ajax-popup="true" data-bs-toggle="tooltip" data-title="{{__('Barcode Setting')}}" title="{{__('Barcode Setting')}}" class="btn btn-sm btn-primary">

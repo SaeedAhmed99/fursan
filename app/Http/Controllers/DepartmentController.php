@@ -46,7 +46,7 @@ class DepartmentController extends Controller
             $validator = \Validator::make(
                 $request->all(), [
                                    'branch_id' => 'required',
-                                   'name' => 'required|max:250',
+                                   'name' => 'required|max:20',
                                ]
             );
             if($validator->fails())
@@ -54,14 +54,6 @@ class DepartmentController extends Controller
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->with('error', $messages->first());
-            }
-
-            $exists = Department::where('branch_id', $request->branch_id)
-            ->where('name', $request->name)
-            ->exists();
-
-            if ($exists) {
-            return redirect()->back()->with('error', 'The department name must be unique within the branch.');
             }
 
             $department             = new Department();
@@ -113,7 +105,7 @@ class DepartmentController extends Controller
                 $validator = \Validator::make(
                     $request->all(), [
                                        'branch_id' => 'required',
-                                       'name' => 'required|max:250',
+                                       'name' => 'required|max:20',
                                    ]
                 );
                 if($validator->fails())
@@ -121,16 +113,6 @@ class DepartmentController extends Controller
                     $messages = $validator->getMessageBag();
 
                     return redirect()->back()->with('error', $messages->first());
-                }
-
-                if ($request->name != $department->name) {
-                    $exists = Department::where('branch_id', $request->branch_id)
-                    ->where('name', $request->name)
-                    ->exists();
-
-                    if ($exists) {
-                    return redirect()->back()->with('error', 'The department name must be unique within the branch.');
-                    }
                 }
 
                 $department->branch_id = $request->branch_id;

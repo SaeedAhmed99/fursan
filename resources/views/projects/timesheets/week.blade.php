@@ -59,10 +59,10 @@
         <tr class="bg-primary">
             <td>{{ __('Total') }}</td>
             @foreach ($totalDateTimes as $key => $totaldatetime)
-                <td class="total-date-time"> <input class="form-control bg-transparent {{ $totaldatetime != '00:00' ? 'border-dark' : 'border-white' }}  wid-120" type="text" value="{{ $totaldatetime != '00:00' ? $totaldatetime : '00:00' }}"> </td>
+                <td class="total-date-time"> <input class="form-control bg-transparent {{ $totaldatetime != '00:00' ? 'border-dark' : 'border-dark' }}  wid-120" type="text" value="{{ $totaldatetime != '00:00' ? $totaldatetime : '00:00' }}"> </td>
             @endforeach
             <td class="text-center total-value1">
-                <input class="form-control bg-transparent {{ $calculatedtotaltaskdatetime != '00:00' ? 'border-dark' : 'border-white' }} wid-120" type="text" value="{{ $calculatedtotaltaskdatetime != '00:00' ? $calculatedtotaltaskdatetime : '00:00' }}">
+                <input class="form-control bg-transparent {{ $calculatedtotaltaskdatetime != '00:00' ? 'border-dark' : 'border-dark' }} wid-120" type="text" value="{{ $calculatedtotaltaskdatetime != '00:00' ? $calculatedtotaltaskdatetime : '00:00' }}">
             </td>
         </tr>
     </tfooter>

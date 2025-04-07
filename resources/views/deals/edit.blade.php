@@ -5,7 +5,7 @@
         $plan= \App\Models\Utility::getChatGPTSettings();
     @endphp
     @if($plan->chatgpt == 1)
-    <div class="text-end">
+    <div class="text-end mb-3">
         <a href="#" data-size="md" class="btn  btn-primary btn-icon btn-sm" data-ajax-popup-over="true" data-url="{{ route('generate',['deal']) }}"
            data-bs-placement="top" data-title="{{ __('Generate content with AI') }}">
             <i class="fas fa-robot"></i> <span>{{__('Generate with AI')}}</span>
@@ -18,7 +18,7 @@
             {{ Form::label('name', __('Deal Name'),['class'=>'form-label']) }}<x-required></x-required>
             {{ Form::text('name', null, array('class' => 'form-control','required'=>'required', 'placeholder'=>__('Enter Deal Name'))) }}
         </div>
-        <div class="col-6 form-group">
+        <div class="col-6">
             {{-- {{ Form::label('phone', __('Phone'),['class'=>'form-label']) }}<x-required></x-required>
             {{ Form::text('phone', null, array('class' => 'form-control','required'=>'required')) }} --}}
             <x-mobile label="{{__('Phone')}}" name="phone" value="{{$deal->phone}}" required placeholder="Enter Phone"></x-mobile>

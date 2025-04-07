@@ -5,7 +5,7 @@
 @endsection
 
 
-   
+
 @section('content')
 <div class="row" >
 
@@ -13,22 +13,22 @@
         <div class="container">
             <div>
                 <div class="card mt-5" id="printTable" style="margin-left: 180px;margin-right: -57px;">
-                
+
                     <div class="card-body" id="boxes">
                             <div class="row invoice-title mt-2">
                                 <div class="col-xs-12 col-sm-12 col-nd-6 col-lg-6 col-12 ">
                                     {{-- <img  src="{{$img}}" style="max-width: 150px;"/> --}}
                                 </div>
-                                
+
                                 <p data-v-f2a183a6="" >
                                 {{-- @dd($Offerletter) --}}
-                                
-                                    <div >{!!$experience_certificate->content!!}</div>
-                                
+
+                                    <div class="px-5 py-2">{!!$experience_certificate->content!!}</div>
+
                                     {{-- <br>
                                     <div>{!!$contract->contract_description!!}</div> --}}
                                 </p>
-                        
+
 
                         </div>
                  </div>
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    
+
 </div>
 
 @endsection
@@ -61,7 +61,7 @@
             html2pdf().set(opt).from(element).save().then(closeScript);
         });
 
-        
+
     </script>
-    
+
 @endpush

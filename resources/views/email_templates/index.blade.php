@@ -79,9 +79,9 @@
                         <tr>
                             <th scope="col" class="sort" data-sort="name"> {{__('Name')}}</th>
                             @if(\Auth::user()->type=='company')
-                                <th class="text-end">{{__('On / Off')}}</th>
+                                <th class="">{{__('On / Off')}}</th>
                             @else
-                                <th class="text-end">{{__('Action')}}</th>
+                                <th class="">{{__('Action')}}</th>
                             @endif
                         </tr>
                         </thead>
@@ -92,7 +92,7 @@
                                 <td>{{ $EmailTemplate->name }}</td>
                                 <td>
                                     @if(\Auth::user()->type=='super admin')
-                                        <div class="text-end">
+                                        <div class="">
                                             <div class="action-btn ms-2">
                                                 <a href="{{ route('manage.email.language',[$EmailTemplate->id,\Auth::user()->lang]) }}" class="mx-3 btn btn-sm align-items-center  bg-warning" data-bs-toggle="tooltip" data-bs-original-title="{{__('View')}}">
                                                     <i class="ti ti-eye text-white"></i>
@@ -102,7 +102,7 @@
                                     @endif
 
                                     @if(\Auth::user()->type=='company')
-                                        <div class="text-end">
+                                        <div class="">
 
                                             <div class="form-check form-switch d-inline-block">
                                                 <label class="form-check-label form-switch">

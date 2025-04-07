@@ -37,21 +37,68 @@
                     // for item SearchBox ( this function is  custom Js )
                     JsSearchBox();
 
-                    if($('.select2').length) {
-                        $('.select2').select2();
-                    }
+                    // if($('.select2').length) {
+                    //     $('.select2').select2();
+                    // }
                 },
                 hide: function (deleteElement) {
 
-                    $(this).slideUp(deleteElement);
-                    $(this).remove();
-                    var inputs = $(".amount");
-                    var subTotal = 0;
-                    for (var i = 0; i < inputs.length; i++) {
-                        subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                    if (confirm('Are you sure you want to delete this element?')) {
+                        var el = $(this);
+                        var id = $(el.find('.id')).val();
+                        var amount = $(el.find('.amount')).html();
+                        var account_id = $(el.find('.account_id')).val();
+
+                        $(".price").change();
+                        $(".discount").change();
+                        $('.item option').prop('hidden', false);
+                        $('.item :selected').each(function () {
+                            var ids = $(this).val();
+                            if (ids) {
+                                $('.item').not(this).find("option[value=" + ids + "]").prop('hidden', true);
+                            }
+                        });
+
+                        if (id != undefined && id != null && id != '') {
+                            $.ajax({
+                                url: '{{route('bill.product.destroy')}}',
+                                type: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': jQuery('#token').val()
+                                },
+                                data: {
+                                    'id': id,
+                                    'amount': amount,
+                                    'account_id':account_id,
+
+                                },
+                                cache: false,
+                                success: function (data) {
+                                    $('.item option').prop('hidden', false);
+                                    $('.item :selected').each(function () {
+                                        var id = $(this).val();
+                                        $(".item option[value=" + id + "]").prop("hidden", true);
+                                    });
+
+                                    if (data.status) {
+                                        show_toastr('success', data.message);
+                                    } else {
+                                        show_toastr('error', data.message);
+                                    }
+                                },
+                            });
+                        }
+
+                        $(this).slideUp(deleteElement);
+                        $(this).remove();
+                        var inputs = $(".amount");
+                        var subTotal = 0;
+                        for (var i = 0; i < inputs.length; i++) {
+                            subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                        }
+                        $('.subTotal').html(subTotal.toFixed(2));
+                        $('.totalAmount').html(subTotal.toFixed(2));
                     }
-                    $('.subTotal').html(subTotal.toFixed(2));
-                    $('.totalAmount').html(subTotal.toFixed(2));
 
                 },
                 ready: function (setIndexes) {
@@ -228,9 +275,11 @@
                                     accountAmount = 0;
                                 }
 
-                                var itemTotal = (parseFloat(priceInput[j].value) * parseFloat(inputs_quantity[j].value) + accountAmount);
+                                if (!isNaN(parseFloat(priceInput[j].value))) {
+                                    var itemTotal = (parseFloat(priceInput[j].value) * parseFloat(inputs_quantity[j].value) + accountAmount);
 
-                                totalItemPrice += itemTotal;
+                                    totalItemPrice += itemTotal;
+                                }
                             }
 
 
@@ -238,13 +287,14 @@
                             var totalItemTaxPrice = 0;
                             var itemTaxPriceInput = $('.itemTaxPrice');
                             for (var j = 0; j < itemTaxPriceInput.length; j++) {
-                                totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
-                                if (billItems != null) {
-                                    $(el.parent().parent().parent().find('.amount')).html(parseFloat(amount)+parseFloat(itemTaxPrice)-parseFloat(discount));
-                                } else {
-                                    $(el.parent().parent().parent().find('.amount')).html(parseFloat(item.totalAmount)+parseFloat(itemTaxPrice));
+                                if (!isNaN(parseFloat(itemTaxPriceInput[j].value))) {
+                                    totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
+                                    if (billItems != null) {
+                                        $(el.parent().parent().parent().find('.amount')).html(parseFloat(amount)+parseFloat(itemTaxPrice)-parseFloat(discount));
+                                    } else {
+                                        $(el.parent().parent().parent().find('.amount')).html(parseFloat(item.totalAmount)+parseFloat(itemTaxPrice));
+                                    }
                                 }
-
                             }
 
 
@@ -252,7 +302,9 @@
                             var itemDiscountPriceInput = $('.discount');
 
                             for (var k = 0; k < itemDiscountPriceInput.length; k++) {
-                                totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                                if (!isNaN(parseFloat(itemDiscountPriceInput[k].value))) {
+                                    totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                                }
                             }
 
 
@@ -456,8 +508,9 @@
             var totalItemDiscountPrice = 0;
             var itemDiscountPriceInput = $('.discount');
             for (var k = 0; k < itemDiscountPriceInput.length; k++) {
-
-                totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                if (!isNaN(parseFloat(itemDiscountPriceInput[k].value))) {
+                    totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                }
             }
 
             var totalAccount = 0;
@@ -560,7 +613,9 @@
             $('.item option').prop('hidden', false);
             $('.item :selected').each(function () {
                 var id = $(this).val();
-                $(".item option[value=" + id + "]").prop("hidden", true);
+                if (id) {
+                    $(".item option[value=" + id + "]").prop("hidden", true);
+                }
             });
         });
 
@@ -568,41 +623,43 @@
             $('.item option').prop('hidden', false);
             $('.item :selected').each(function () {
                 var id = $(this).val();
-                $(".item option[value=" + id + "]").prop("hidden", true);
+                if (id) {
+                    $(".item option[value=" + id + "]").prop("hidden", true);
+                }
             });
         })
 
         $(document).on('click', '[data-repeater-delete]', function () {
             // $('.delete_item').click(function () {
-            if (confirm('Are you sure you want to delete this element?')) {
-                var el = $(this).parent().parent();
-                var id = $(el.find('.id')).val();
-                var amount = $(el.find('.amount')).html();
-                var account_id = $(el.find('.account_id')).val();
+            // if (confirm('Are you sure you want to delete this element?')) {
+            //     var el = $(this).parent().parent();
+            //     var id = $(el.find('.id')).val();
+            //     var amount = $(el.find('.amount')).html();
+            //     var account_id = $(el.find('.account_id')).val();
 
-                $.ajax({
-                    url: '{{route('bill.product.destroy')}}',
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('#token').val()
-                    },
-                    data: {
-                        'id': id,
-                        'amount': amount,
-                        'account_id':account_id,
+            //     $.ajax({
+            //         url: '{{route('bill.product.destroy')}}',
+            //         type: 'POST',
+            //         headers: {
+            //             'X-CSRF-TOKEN': jQuery('#token').val()
+            //         },
+            //         data: {
+            //             'id': id,
+            //             'amount': amount,
+            //             'account_id':account_id,
 
-                    },
-                    cache: false,
-                    success: function (data) {
-                        $('.item option').prop('hidden', false);
-                        $('.item :selected').each(function () {
-                            var id = $(this).val();
-                            $(".item option[value=" + id + "]").prop("hidden", true);
-                        });
-                    },
-                });
+            //         },
+            //         cache: false,
+            //         success: function (data) {
+            //             $('.item option').prop('hidden', false);
+            //             $('.item :selected').each(function () {
+            //                 var id = $(this).val();
+            //                 $(".item option[value=" + id + "]").prop("hidden", true);
+            //             });
+            //         },
+            //     });
 
-            }
+            // }
         });
 
         $('.accountAmount').trigger('keyup');
@@ -610,10 +667,10 @@
     </script>
 
     <script>
-        $(document).on('click', '[data-repeater-delete]', function () {
-            $(".price").change();
-            $(".discount").change();
-        });
+        // $(document).on('click', '[data-repeater-delete]', function () {
+        //     $(".price").change();
+        //     $(".discount").change();
+        // });
     </script>
 @endpush
 @section('content')
@@ -753,7 +810,7 @@
                                     <td>
                                         @can('delete proposal product')
                                         <div class="action-btn me-2">
-                                            <a href="#" class="ti ti-trash text-white btn btn-sm repeater-action-btn bg-danger ms-2 bs-pass-para" data-repeater-delete></a>
+                                            <a href="#" class="ti ti-trash text-white btn btn-sm repeater-action-btn bg-danger ms-2 " data-bs-toggle="tooltip" title="{{ __('Delete') }}" data-repeater-delete></a>
                                         </div>
                                         @endcan
                                     </td>

@@ -32,21 +32,53 @@
                             max_size: 2048
                         });
                     }
-                    if($('.select2').length) {
-                        $('.select2').select2();
-                    }
+                    // if($('.select2').length) {
+                    //     $('.select2').select2();
+                    // }
                 },
                 hide: function (deleteElement) {
 
-                    $(this).slideUp(deleteElement);
-                    $(this).remove();
-                    var inputs = $(".amount");
-                    var subTotal = 0;
-                    for (var i = 0; i < inputs.length; i++) {
-                        subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                    // var inputs = $(".amount");
+                    // var subTotal = 0;
+                    // for (var i = 0; i < inputs.length; i++) {
+                    //     subTotal = parseFloat(subTotal) + parseFloat($(inputs[i]).html());
+                    // }
+                    // $('.subTotal').html(subTotal.toFixed(2));
+                    // $('.totalAmount').html(subTotal.toFixed(2));
+
+                    if (confirm('Are you sure you want to delete this element?')) {
+                        $(this).slideUp(deleteElement);
+                        $(this).remove();
+
+                        $(".price").change();
+                        $(".discount").change();
+                        $('.item option').prop('hidden', false);
+                        $('.item :selected').each(function () {
+                            var ids = $(this).val();
+                            if (ids) {
+                                $('.item').not(this).find("option[value=" + ids + "]").prop('hidden', true);
+                            }
+                        });
+
+                        var el = $(this);
+                        var id = $(el.find('.id')).val();
+
+                        $.ajax({
+                            url: '{{route('quotation.product.destroy')}}',
+                            type: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': jQuery('#token').val()
+                            },
+                            data: {
+                                'id': id
+                            },
+                            cache: false,
+                            success: function (data) {
+
+                            },
+                        });
+
                     }
-                    $('.subTotal').html(subTotal.toFixed(2));
-                    $('.totalAmount').html(subTotal.toFixed(2));
 
                 },
                 ready: function (setIndexes) {
@@ -198,7 +230,9 @@
                             var inputs_quantity = $(".quantity");
                             var priceInput = $('.price');
                             for (var j = 0; j < priceInput.length; j++) {
-                                totalItemPrice += (parseFloat(priceInput[j].value) * parseFloat(inputs_quantity[j].value));
+                                if (!isNaN(parseFloat(priceInput[j].value))) {
+                                    totalItemPrice += (parseFloat(priceInput[j].value) * parseFloat(inputs_quantity[j].value));
+                                }
                             }
 
 
@@ -206,13 +240,14 @@
                             var totalItemTaxPrice = 0;
                             var itemTaxPriceInput = $('.itemTaxPrice');
                             for (var j = 0; j < itemTaxPriceInput.length; j++) {
-                                totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
-                                if (quotationItems != null) {
-                                    $(el.parent().parent().parent().find('.amount')).html(parseFloat(amount)+parseFloat(itemTaxPrice)-parseFloat(discount));
-                                } else {
-                                    $(el.parent().parent().parent().find('.amount')).html(parseFloat(item.totalAmount)+parseFloat(itemTaxPrice));
+                                if (!isNaN(parseFloat(itemTaxPriceInput[j].value))) {
+                                    totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
+                                    if (quotationItems != null) {
+                                        $(el.parent().parent().parent().find('.amount')).html(parseFloat(amount)+parseFloat(itemTaxPrice)-parseFloat(discount));
+                                    } else {
+                                        $(el.parent().parent().parent().find('.amount')).html(parseFloat(item.totalAmount)+parseFloat(itemTaxPrice));
+                                    }
                                 }
-
                             }
 
 
@@ -220,7 +255,9 @@
                             var itemDiscountPriceInput = $('.discount');
 
                             for (var k = 0; k < itemDiscountPriceInput.length; k++) {
-                                totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                                if (!isNaN(parseFloat(itemDiscountPriceInput[k].value))) {
+                                    totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                                }
                             }
 
 
@@ -414,8 +451,9 @@
             var itemDiscountPriceInput = $('.discount');
 
             for (var k = 0; k < itemDiscountPriceInput.length; k++) {
-
-                totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                if (!isNaN(parseFloat(itemDiscountPriceInput[k].value))) {
+                    totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                }
             }
 
             $('.subTotal').html(totalItemPrice.toFixed(2));
@@ -428,41 +466,44 @@
         })
 
         $(document).on('click', '[data-repeater-create]', function () {
+            $('.item option').prop('hidden', false);
             $('.item :selected').each(function () {
                 var id = $(this).val();
-                $(".item option[value=" + id + "]").prop("disabled", true);
+                if (id) {
+                    $(".item option[value=" + id + "]").prop("hidden", true);
+                }
             });
         })
 
-        $(document).on('click', '[data-repeater-delete]', function () {
-            // $('.delete_item').click(function () {
-            if (confirm('Are you sure you want to delete this element?')) {
-                var el = $(this).parent().parent();
-                var id = $(el.find('.id')).val();
+        // $(document).on('click', '[data-repeater-delete]', function () {
+        //     // $('.delete_item').click(function () {
+        //     if (confirm('Are you sure you want to delete this element?')) {
+        //         var el = $(this).parent().parent();
+        //         var id = $(el.find('.id')).val();
 
-                $.ajax({
-                    url: '{{route('quotation.product.destroy')}}',
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': jQuery('#token').val()
-                    },
-                    data: {
-                        'id': id
-                    },
-                    cache: false,
-                    success: function (data) {
+        //         $.ajax({
+        //             url: '{{route('quotation.product.destroy')}}',
+        //             type: 'POST',
+        //             headers: {
+        //                 'X-CSRF-TOKEN': jQuery('#token').val()
+        //             },
+        //             data: {
+        //                 'id': id
+        //             },
+        //             cache: false,
+        //             success: function (data) {
 
-                    },
-                });
+        //             },
+        //         });
 
-            }
-        });
+        //     }
+        // });
     </script>
     <script>
-        $(document).on('click', '[data-repeater-delete]', function () {
-            $(".price").change();
-            $(".discount").change();
-        });
+        // $(document).on('click', '[data-repeater-delete]', function () {
+        //     $(".price").change();
+        //     $(".discount").change();
+        // });
     </script>
 @endpush
 
@@ -594,7 +635,7 @@
                                 <td>
                                     @can('delete proposal product')
                                     <div class="action-btn me-2">
-                                        <a href="#" class="ti ti-trash text-white btn btn-sm repeater-action-btn bg-danger ms-2 bs-pass-para" data-repeater-delete></a>
+                                        <a href="#" class="ti ti-trash text-white btn btn-sm repeater-action-btn bg-danger ms-2 bs-pass-para" data-repeater-delete data-bs-toggle="tooltip" title="{{__('Delete')}}"></a>
                                     </div>
                                     @endcan
                                 </td>

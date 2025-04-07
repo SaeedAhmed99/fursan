@@ -84,7 +84,7 @@
                             <tr>
                                 <th scope="col" class="sort" data-sort="name"> {{ __('Name') }}</th>
                                 @if (\Auth::user()->type == 'company')
-                                    <th class="text-end">{{ __('Action') }}</th>
+                                    <th class="">{{ __('Action') }}</th>
                                 @endif
                             </tr>
                         </thead>
@@ -94,7 +94,7 @@
                                     <td>{{ $notification_template->name }}</td>
                                     <td>
                                         @if (\Auth::user()->type == 'company')
-                                            <div class="text-end">
+                                            <div class="">
                                                 <div class="dt-buttons">
                                                     <span>
                                                         <div class="action-btn">

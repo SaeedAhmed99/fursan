@@ -179,7 +179,7 @@ class ContractController extends Controller
                 }
                 else
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Contract successfully created, Webhook call failed.'));
                 }
             }
 
@@ -672,7 +672,7 @@ class ContractController extends Controller
         $contract = Contract::find($id);
         $clients       = User::where('type', '=', 'Client')->get()->pluck('name', 'id');
         $contractTypes = ContractType::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-        $project       = Project::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('title','id');
+        $project       = Project::where('created_by', '=', \Auth::user()->creatorId())->get()->pluck('project_name','id');
         $date         = $contract->start_date . ' to ' . $contract->end_date;
         $contract->setAttribute('date', $date);
 

@@ -169,7 +169,7 @@ class ProjectTaskController extends Controller
                 if ($status == true) {
                     return redirect()->back()->with('success', __('Task added successfully.'));
                 } else {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Task added successfully, Webhook call failed.'));
                 }
             }
 
@@ -672,7 +672,7 @@ class ProjectTaskController extends Controller
                 if ($status == true) {
                     return redirect()->back()->with('success', __('Comment added successfully.'));
                 } else {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Comment added successfully, Webhook call failed.'));
                 }
             }
             return $comment->toJson();
@@ -786,7 +786,7 @@ class ProjectTaskController extends Controller
                     if ($status == true) {
                         return redirect()->back()->with('success', __('Task successfully updated!'));
                     } else {
-                        return redirect()->back()->with('error', __('Webhook call failed.'));
+                        return redirect()->back()->with('error', __('Task successfully updated, Webhook call failed.'));
                     }
                 }
 

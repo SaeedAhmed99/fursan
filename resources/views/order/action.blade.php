@@ -7,7 +7,6 @@
         <div class="col-12">
             <table class="table modal-table">
                 <tr role="row">
-                    {{--                    @dd($order)--}}
                     <th>{{__('Order Id')}}</th>
                     <td>{{$order->order_id}}</td>
                 </tr>
@@ -36,9 +35,11 @@
                     <tr>
                         <th>{{__('Payment Receipt')}}</th>
                         <td>
-                            <a  class="action-btn bg-primary ms-2 btn btn-sm align-items-center" href="{{ $path . '/' . $order->receipt }}" download=""  data-bs-toggle="tooltip" title="{{__('Download')}}" target="_blank">
-                                <i class="ti ti-download text-white"></i>
-                            </a>
+                            <div class="action-btn">
+                                <a  class=" bg-primary ms-2 btn btn-sm align-items-center" href="{{ $path . '/' . $order->receipt }}" download=""  data-bs-toggle="tooltip" title="{{__('Download')}}" target="_blank">
+                                    <i class="ti ti-download text-white"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @endif
@@ -49,7 +50,7 @@
 
 </div>
 <div class="modal-footer">
-    <input type="submit" value="{{__('Approval')}}" class="btn btn-secondary" data-bs-dismiss="modal" name="status">
+    <input type="submit" value="{{__('Approval')}}" class="btn btn-success" data-bs-dismiss="modal" name="status">
     <input type="submit" value="{{__('Reject')}}" class="btn btn-danger" name="status">
 </div>
 {{Form::close()}}

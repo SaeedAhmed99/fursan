@@ -283,14 +283,10 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   }
 .fc .fc-toolbar {
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: space-between;
     align-items: center;
-  }
-.fc .fc-toolbar.fc-header-toolbar {
-    margin-bottom: 1.5em;
-  }
-.fc .fc-toolbar.fc-footer-toolbar {
-    margin-top: 1.5em;
   }
 .fc .fc-toolbar-title {
     font-size: 1.75em;

@@ -7,7 +7,7 @@
             {{ Form::text('title',null, array('class' => 'form-control ','required'=>'required', 'placeholder'=>__('Enter Title'))) }}
         </div>
         <div class="form-group col-md-6">
-            {{ Form::label('loan_option', __('Deduction Options'),['class'=>'form-label']) }}<x-required></x-required>
+            {{ Form::label('loan_option', __('Loan Options'),['class'=>'form-label']) }}<x-required></x-required>
             {{ Form::select('loan_option',$loan_options,null, array('class' => 'form-control select','required'=>'required')) }}
         </div>
         <div class="form-group col-md-6">
@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-group col-md-6">
-            {{ Form::label('amount', __('Deduction Amount'),['class'=>'form-label amount_label']) }}<x-required></x-required>
+            {{ Form::label('amount', __('Loan Amount'),['class'=>'form-label amount_label']) }}<x-required></x-required>
             {{ Form::number('amount',null, array('class' => 'form-control ','required'=>'required','step'=>'0.01', 'placeholder'=>__('Enter Amount'))) }}
         </div>
 {{--        <div class="form-group col-md-6">--}}
@@ -30,7 +30,7 @@
 
         <div class="col-md-12">
             <div class="form-group">
-                {{ Form::label('reason', __('Reason')) }}<x-required></x-required>
+                {{ Form::label('reason', __('Reason'), ['class' => 'form-label']) }}<x-required></x-required>
                 {{ Form::textarea('reason',null, array('class' => 'form-control ','required'=>'required','rows' => 3, 'placeholder'=>__('Enter Reason'))) }}
             </div>
         </div>

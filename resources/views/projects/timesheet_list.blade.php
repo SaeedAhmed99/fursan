@@ -9,15 +9,13 @@
 @endsection
 
 @section('action-btn')
-    <div class="row justify-content-end align-items-end text-end">
-        <div class="col-xl-3 col-lg-4 col-md-3 col-sm-6 weekly-dates-div me-2">
-            <a href="#" class="action-item previous"><i class="ti ti-arrow-left"></i></a>
-            <span class="weekly-dates"></span>
-            <input type="hidden" id="weeknumber" value="0">
-            <input type="hidden" id="selected_dates">
-            <a href="#" class="action-item next"><i class="ti ti-arrow-right"></i>
-            </a>
-        </div>
+    <div class="weekly-dates-div d-flex align-items-center gap-2 p-2 px-3 bg-primary rounded text-white">
+        <a href="#" class="action-item previous"><i class="ti ti-arrow-left text-white"></i></a>
+        <span class="weekly-dates"></span>
+        <input type="hidden" id="weeknumber" value="0">
+        <input type="hidden" id="selected_dates">
+        <a href="#" class="action-item next"><i class="ti ti-arrow-right text-white"></i>
+        </a>
     </div>
 @endsection
 
@@ -27,9 +25,9 @@
             <div class="card ">
                 <div class="card-wrapper project-timesheet overflow-auto"></div>
                 <div class="text-center notfound-timesheet d-none">
-                    <div class="empty-project-text text-center p-3 min-h-300">
-                        <h5 class="pt-5">{{ __("We couldn't find any data") }}</h5>
-                        <p class="m-0">{{ __("Sorry we can't find any timesheet records on this week.") }}</p>
+                    <div class="empty-project-text text-center p-4 min-h-300">
+                        <h5>{{ __("We couldn't find any data") }}</h5>
+                        <p class="mb-1">{{ __("Sorry we can't find any timesheet records on this week.") }}</p>
                         <p class="m-0">{{ __("To add timesheet record go to ") }}<a href="{{route('projects.index')}}">{{__('projects')}}</a>.</p>
                     </div>
                 </div>

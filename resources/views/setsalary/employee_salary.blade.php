@@ -22,7 +22,7 @@
                                 </div>
                                 @can('create set salary')
                                     <div class="col text-end">
-                                        <a href="#" data-url="{{ route('employee.basic.salary',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Set Basic Sallary')}}" data-toggle="tooltip" data-original-title="{{__('Basic Salary')}}" class="btn btn-sm btn-primary">
+                                        <a href="#" data-url="{{ route('employee.basic.salary',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Set Basic Sallary')}}" data-bs-toggle="tooltip" data-bs-original-title="{{__('Create')}}" class="btn btn-sm btn-primary">
                                             <i class="ti ti-plus"></i>
                                         </a>
                                     </div>
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="card-body table-border-style full-card">
-                            <div class="project-info d-flex text-sm">
+                            <div class="project-info d-flex">
                                 <div class="project-info-inner mr-3 col-4">
                                     <b class="m-0"> {{__('Payslip Type') }} </b>
                                     <div class="project-amnt pt-1">@if(!empty($employee->salaryType)){{ $employee->salaryType->name }}@else -- @endif</div>
@@ -206,11 +206,11 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col">
-                                    <h6 class="mb-0">{{__('Deduction')}}</h6>
+                                    <h6 class="mb-0">{{__('Loan')}}</h6>
                                 </div>
                                 @can('create loan')
                                     <div class="col text-end">
-                                        <a href="#" data-url="{{ route('loans.create',$employee->id) }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Deduction')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" data-original-title="{{__('Deduction')}}" class="apply-btn btn btn-sm btn-primary">
+                                        <a href="#" data-url="{{ route('loans.create',$employee->id) }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Create Loan')}}" data-bs-toggle="tooltip"  title="{{__('Create')}}" data-original-title="{{__('Create Loan')}}" class="apply-btn btn btn-sm btn-primary">
                                             <i class="ti ti-plus"></i>
                                         </a>
                                     </div>
@@ -224,10 +224,10 @@
                                         <thead>
                                         <tr>
                                             <th>{{__('Employee')}}</th>
-                                            <th>{{__('Deduction Options')}}</th>
+                                            <th>{{__('Loan Options')}}</th>
                                             <th>{{__('Title')}}</th>
                                             <th>{{__('Type')}}</th>
-                                            <th>{{__('Deduction Amount')}}</th>
+                                            <th>{{__('Loan Amount')}}</th>
 {{--                                            <th>{{__('Start Date')}}</th>--}}
 {{--                                            <th>{{__('End Date')}}</th>--}}
                                             @if(\Auth::user()->type != 'Employee')
@@ -255,7 +255,7 @@
                                                 <td class="">
                                                     @can('edit loan')
                                                         <div class="action-btn me-2">
-                                                            <a href="#" data-url="{{ URL::to('loan/'.$loan->id.'/edit') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Deduction')}}" class="mx-3 btn btn-sm align-items-center bg-info" title="{{__('Edit')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
+                                                            <a href="#" data-url="{{ URL::to('loan/'.$loan->id.'/edit') }}" data-size="lg" data-ajax-popup="true" data-title="{{__('Edit Loan')}}" class="mx-3 btn btn-sm align-items-center bg-info" title="{{__('Edit')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
                                                         </div>
                                                     @endcan
                                                     @can('delete loan')
@@ -274,7 +274,7 @@
                                     </table>
                                 @else
                                     <div class="mt-2 text-center">
-                                        No Deduction Data Found!
+                                        No Loan Data Found!
                                     </div>
                                 @endif
                             </div>
@@ -441,7 +441,7 @@
                                 </div>
                                 @can('create overtime')
                                     <div class="col text-end">
-                                        <a href="#" data-url="{{ route('overtimes.create',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Create Overtime')}}" data-toggle="tooltip" data-original-title="{{__('Create Overtime')}}" class="apply-btn btn btn-sm btn-primary">
+                                        <a href="#" data-url="{{ route('overtimes.create',$employee->id) }}" data-size="md" data-ajax-popup="true" data-title="{{__('Create Overtime')}}" data-bs-toggle="tooltip" data-bs-original-title="{{__('Create')}}" class="apply-btn btn btn-sm btn-primary">
                                             <i class="ti ti-plus"></i>
                                         </a>
                                     </div>

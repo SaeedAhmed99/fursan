@@ -122,7 +122,7 @@
 
             <div class="all-button-box mx-2">
 
-                <a href="{{ route('purchase.pdf', \Crypt::encrypt($purchase->id))}}" target="_blank" class="btn btn-primary mt-3" download="">
+                <a href="{{ route('purchase.pdf', \Crypt::encrypt($purchase->id))}}" target="_blank" class="btn btn-primary mt-3" >
                     {{__('Download')}}
                 </a>
             </div>

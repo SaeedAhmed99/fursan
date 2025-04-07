@@ -28,7 +28,7 @@
 
         <div class="form-group col-md-12">
             {{ Form::label('quantity', __('Quantity'),['class'=>'form-label']) }}<x-required></x-required>
-            {{ Form::number('quantity',"", array('class' => 'form-control','required'=>'required')) }}
+            {{ Form::number('quantity',"", array('class' => 'form-control','required'=>'required', 'placeholder' => __('Enter Quantity'))) }}
         </div>
     </div>
 </div>

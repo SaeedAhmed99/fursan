@@ -1,5 +1,5 @@
 <div class="modal-body">
-    <div class="row py-4">
+    <div class="row">
         <div class="col-md-12 ">
             <div class="info text-sm">
                 <strong>{{__('Branch')}} : </strong>
@@ -24,7 +24,7 @@
     @foreach($performance as $performances)
     <div class="row">
         <div class="col-md-12 mt-3">
-            <h6>{{$performances->name}}</h6>
+            <h6 class="mb-3">{{$performances->name}}</h6>
             <hr class="mt-0">
         </div>
         @foreach($performances->types as $types)

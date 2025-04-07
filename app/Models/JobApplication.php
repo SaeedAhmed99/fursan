@@ -26,17 +26,10 @@ class JobApplication extends Model
         'is_archive',
         'custom_question',
         'created_by',
-        'user_id',
     ];
 
     public function jobs()
     {
         return $this->hasOne('App\Models\Job', 'id', 'job');
-    }
-
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 }

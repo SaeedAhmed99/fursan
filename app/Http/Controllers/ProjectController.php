@@ -213,7 +213,7 @@ class ProjectController extends Controller
                 $status = Utility::WebhookCall($webhook['url'],$parameter,$webhook['method']);
                 if($status == false)
                 {
-                    return redirect()->back()->with('error', __('Webhook call failed.'));
+                    return redirect()->back()->with('error', __('Project add successfully, Webhook call failed.'));
                 }
 
             }
@@ -905,9 +905,11 @@ class ProjectController extends Controller
             {
 
                 $user_data = User::find($user->user_id);
-                $key = $user->user_id;
-                $user_name = !empty($user_data)? $user_data->name:'';
-                $users[$key] = $user_name;
+                if(isset($user_data)){
+                    $key = $user->user_id;
+                    $user_name = !empty($user_data)? $user_data->name:'';
+                    $users[$key] = $user_name;
+                }
             }
 
             return view('projects.bugCreate', compact('status', 'project_id', 'priority', 'users'));
@@ -1003,10 +1005,12 @@ class ProjectController extends Controller
             $users        = array();
             foreach($project_user as $user)
             {
-              $user_data = User::where('id',$user->user_id)->first();
-              $key = $user->user_id;
-              $user_name = !empty($user_data) ? $user_data->name:'';
-              $users[$key] = $user_name;
+                $user_data = User::where('id',$user->user_id)->first();
+                if(isset($user_data)){
+                    $key = $user->user_id;
+                    $user_name = !empty($user_data)? $user_data->name:'';
+                    $users[$key] = $user_name;
+                }
             }
 
             return view('projects.bugEdit', compact('status', 'project_id', 'priority', 'users', 'bug'));

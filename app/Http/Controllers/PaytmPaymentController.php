@@ -61,7 +61,7 @@ class PaytmPaymentController extends Controller
         $authuser   = \Auth::user();
         $payment    = $this->paymentConfig();
 
-    
+
         $coupons_id = '';
         if($plan)
         {
@@ -176,7 +176,7 @@ class PaytmPaymentController extends Controller
                 $payment  = $this->paymentConfig();
                 $transaction = PaytmWallet::with('receive');
                 // $response    = $transaction->response();
-                
+
                 // if($transaction->isSuccessful())
                 // {
 
@@ -384,7 +384,7 @@ class PaytmPaymentController extends Controller
                         }
                         else
                         {
-                            return redirect()->back()->with('error', __('Webhook call failed.'));
+                            return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                         }
                     }
 

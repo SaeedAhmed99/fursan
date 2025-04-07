@@ -11,16 +11,15 @@ use App\Models\OtherPayment;
 use App\Models\Overtime;
 use App\Models\Resignation;
 use App\Models\PaySlip;
-use App\Models\PayslipPDF;
 use App\Models\SaturationDeduction;
 use App\Models\Utility;
 use App\Models\Termination;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
-use NumberFormatter;
 
 class PaySlipController extends Controller
 {
@@ -166,7 +165,7 @@ class PaySlipController extends Controller
                         }
                         else
                         {
-                            return redirect()->back()->with('error', __('Webhook call failed.'));
+                            return redirect()->back()->with('error', __('Payslip successfully created, Webhook call failed.'));
                         }
                     }
                 }
@@ -331,66 +330,22 @@ class PaySlipController extends Controller
 
     }
 
-
-
     public function pdf($id, $month)
     {
         $payslip  = PaySlip::where('employee_id', $id)->where('salary_month', $month)->where('created_by', \Auth::user()->creatorId())->first();
         $employee = Employee::find($payslip->employee_id);
 
+       // dd($employee);
 
         $payslipDetail = Utility::employeePayslipDetail($id,$month);
 
-        return view('payslip.pdf1', compact('payslip', 'employee', 'payslipDetail'));
+
+        return view('payslip.pdf', compact('payslip', 'employee', 'payslipDetail'));
     }
-
-    public function payslipFile() {
-        $allFiles = PayslipPDF::orderBy('created_at', 'desc')->get();
-        return view('payslip.allfile', compact('allFiles'));
-    }
-
-
-    public function savePdf(Request $request)
-    {
-        if ($request->hasFile('pdf')) {
-            $file = $request->file('pdf');
-
-            // الحصول على الاسم والامتداد
-            $filenameWithExt = $file->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-
-            // تحديد مسار التخزين
-            $settings = Utility::getStorageSetting();
-            $dir = ($settings['storage_setting'] == 'local') ? 'uploads/payslip/' : 'uploads/payslip';
-
-            // رفع الملف
-            $path = Utility::upload_file($request, 'pdf', $fileNameToStore, $dir, []);
-            $emp = Employee::find($request->empId);
-            PayslipPDF::create([
-                'pdf_file' => $fileNameToStore,
-                'employee_id' => $emp->id,
-                'user_id' => $emp->user_id,
-            ]);
-            if ($path) {
-                return response()->json([
-                    'success' => true,
-                    'download_url' => asset('storage/uploads/payslip/' . $fileNameToStore)
-                ]);
-            } else {
-                return response()->json(['success' => false, 'message' => 'فشل رفع الملف'], 400);
-            }
-        }
-
-        return response()->json(['success' => false, 'message' => 'لم يتم العثور على الملف'], 400);
-    }
-    
 
     public function send($id, $month)
     {
         $setings = Utility::settings();
-//        dd($setings);
         if($setings['payslip_sent'] == 1)
         {
             $payslip  = PaySlip::where('employee_id', $id)->where('salary_month', $month)->where('created_by', \Auth::user()->creatorId())->first();
@@ -400,8 +355,7 @@ class PaySlipController extends Controller
             $payslip->email = $employee->email;
 
             $payslipId    = Crypt::encrypt($payslip->id);
-            $payslip->url = route('payslip.payslipPdf', $payslipId);
-//            dd($payslip->url);
+            $payslip->url = route('payslip.payslipPdf', [$payslipId, $month]);
 
             $payslipArr = [
 
@@ -423,56 +377,17 @@ class PaySlipController extends Controller
 
     }
 
-    public function sendCustomEmail(Request $request, $id, $month)
-    {
-        $setings = Utility::settings();
-//        dd($setings);
-        if($setings['payslip_sent'] == 1)
-        {
-            $payslip  = PaySlip::where('employee_id', $id)->where('salary_month', $month)->where('created_by', \Auth::user()->creatorId())->first();
-            $employee = Employee::find($payslip->employee_id);
-
-            $payslip->name  = $employee->name;
-            $payslip->email = $employee->email;
-
-            $payslipId    = Crypt::encrypt($payslip->id);
-            $payslip->url = route('payslip.payslipPdf', $payslipId);
-//            dd($payslip->url);
-
-            $payslipArr = [
-
-                'employee_name'=> $employee->name,
-                'employee_email' => $employee->email,
-                'payslip_name' =>   $payslip->name,
-                'payslip_salary_month' => $payslip->salary_month,
-                'payslip_url' =>$payslip->url,
-
-            ];
-            $resp = Utility::sendEmailTemplate('payslip_sent', [$employee->id => $request->email], $payslipArr);
-
-
-
-            return redirect()->back()->with('success', __('Payslip successfully sent.') .(($resp['is_success'] == false && !empty($resp['error'])) ? '<br> <span class="text-danger">' . $resp['error'] . '</span>' : ''));
-        }
-
-        return redirect()->back()->with('success', __('Payslip successfully sent.'));
-
-    }
-
-    public function addressBook(){
-        return view('payslip.addressBook');
-    }
-
-    public function payslipPdf($id)
+    public function payslipPdf($id, $month)
     {
         $payslipId = Crypt::decrypt($id);
-
-        $payslip  = PaySlip::where('id', $payslipId)->where('created_by', \Auth::user()->creatorId())->first();
+        // $payslip  = PaySlip::where('id', $payslipId)->where('created_by', \Auth::user()->creatorId())->first();
+        $payslip  = PaySlip::where('id', $payslipId)->first();
         $employee = Employee::find($payslip->employee_id);
+        $user = User::where('id', $employee->user_id)->first();
 
-        $payslipDetail = Utility::employeePayslipDetail($payslip->employee_id);
+        $payslipDetail = Utility::employeePayslipDetail($payslip->employee_id, $month);
 
-        return view('payslip.payslipPdf', compact('payslip', 'employee', 'payslipDetail'));
+        return view('payslip.payslipPdf', compact('payslip', 'employee', 'payslipDetail', 'user'));
     }
 
     public function editEmployee($paySlip)

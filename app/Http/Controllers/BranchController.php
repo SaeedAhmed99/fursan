@@ -43,7 +43,7 @@ class BranchController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:250|unique:branches,name',
+                                   'name' => 'required',
                                ]
             );
             if($validator->fails())
@@ -99,7 +99,7 @@ class BranchController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:250|unique:branches,name,' . $branch->id,
+                                       'name' => 'required',
                                    ]
                 );
                 if($validator->fails())

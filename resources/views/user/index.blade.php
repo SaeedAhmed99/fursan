@@ -10,8 +10,6 @@
         {{ __('Manage User') }}
     @endif
 @endsection
-@push('script-page')
-@endpush
 @section('breadcrumb')
     <li class="breadcrumb-item">
         <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
@@ -23,398 +21,208 @@
     @endif
 @endsection
 @section('action-btn')
-    
     <div class="float-end">
         @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'HR')
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-sm btn-primary me-1" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <i class="ti ti-search"></i>
-            </button>
-        @endif
-        @if (\Auth::user()->type == 'company' || \Auth::user()->type == 'HR')
-            <a href="{{ route('user.userlog') }}" class="btn btn-primary btn-sm me-1 {{ Request::segment(1) == 'user' }}"
+            <a href="{{ route('user.userlog') }}" class="btn btn-primary-subtle btn-sm me-1 {{ Request::segment(1) == 'user' }}"
                 data-bs-toggle="tooltip" data-bs-placement="top" title="{{ __('User Logs History') }}"><i
                     class="ti ti-user-check"></i>
             </a>
         @endif
         @can('create user')
             <a href="#" data-size="lg" data-url="{{ route('users.create') }}" data-ajax-popup="true"
-                data-bs-toggle="tooltip" data-title="{{ \Auth::user()->type == 'super admin' ?  __('Create Company')  : __('Create User') }}" data-bs-original-title="{{ \Auth::user()->type == 'super admin' ?  __('Create Company')  : __('Create User') }}" class="btn btn-sm btn-primary me-1 ml-3">
+                data-bs-toggle="tooltip" data-title="{{ \Auth::user()->type == 'super admin' ?  __('Create Company')  : __('Create User') }}" data-bs-original-title="{{ \Auth::user()->type == 'super admin' ?  __('Create Company')  : __('Create User') }}" class="btn btn-sm btn-primary me-1">
                 <i class="ti ti-plus"></i>
             </a>
         @endcan
     </div>
 @endsection
 @section('content')
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Data sorting and search</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form method="GET" action="{{ route('users.index') }}">
-            @csrf
-            <div class="modal-body">
-                        
-                        <div class="row">
+<div class="row">
+    @foreach ($users as $user)
+        <div class="col-xxl-3 col-lg-4 col-sm-6 mb-4">
+            <div class="user-card d-flex flex-column h-100">
+                <div class="user-card-top d-flex align-items-center justify-content-between flex-1 gap-2 mb-3">
+                    @if (\Auth::user()->type == 'super admin')
+                        <div class="badge bg-primary p-1 px-2">
+                            {{ !empty($user->currentPlan) ? $user->currentPlan->name : '' }}
+                        </div>
+                    @else
+                        <div class="badge bg-primary p-1 px-2">
+                            {{ ucfirst($user->type) }}
+                        </div>
+                    @endif
+                    @if (Gate::check('edit user') || Gate::check('delete user'))
+                        <div class="btn-group card-option">
+                            @if ($user->is_active == 1 && $user->is_disable == 1)
+                                <button type="button" class="btn p-0 border-0" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="ti ti-dots-vertical"></i>
+                                </button>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="email" class="form-label">Email</label>
-                                <input class="form-control" placeholder="Enter User Email" value="{{ request('email') }}" name="email" type="email" >
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="name" class="form-label">Name</label>
-                                <input class="form-control" placeholder="Enter User Name" value="{{ request('name') }}" name="name" type="text">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nationality" class="form-label">Nationality</label>
-                                <input class="form-control" placeholder="Enter User Nationality" value="{{ request('nationality') }}" name="nationality" type="text" >
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="country_of_residence" class="form-label">Country Of Residence</label>
-                                <input class="form-control" placeholder="Enter User country Of Residence" value="{{ request('country_of_residence') }}" name="country_of_residence" type="text" >
-                            </div>
-                        </div>
-                        <div class="col-md-12 mt-3">
-                            <div class="input-group ">
-                                <label class="input-group-text bg-primary text-white" for="sort">sort by</label>
-                                <select class="form-select" name="sort" id="sort">
-                                    <option value="">Select Option</option>
-                                    <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>oldest to newest</option>
-                                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>newest to oldest</option>
-                                    <option value="age_asc" {{ request('sort') == 'age_asc' ? 'selected' : '' }}>age ascending</option>
-                                    <option value="age_desc" {{ request('sort') == 'age_desc' ? 'selected' : '' }}>age descending</option>
-                                    <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>name Alphabetically (A-Z)</option>
-                                    <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>name Alphabetically (Z-A)</option>
-                                </select>
-                            </div>
-                    </div>
-                    </div>        
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  @if (\Auth::user()->type != 'super admin')
-  <div class="row mt-3">
-    <div class="col-xl-12">
-        <div class="card">
-        <div class="card-body table-border-style">
-                    <div class="table-responsive">
-                    <table class="table datatable">
-                            <thead>
-                            <tr>
-                                <th>{{__('Name')}}</th>
-                                <th>{{__('Email')}}</th>
-                                <th>{{__('Role') }}</th>
-                                <th width="200px">{{__('Action')}}</th>
+                                <div class="dropdown-menu icon-dropdown dropdown-menu-end">
+                                    @can('edit user')
+                                        <a href="#!" data-size="lg" data-url="{{ route('users.edit', $user->id) }}"
+                                            data-ajax-popup="true" class="dropdown-item"
+                                            data-bs-original-title="{{ \Auth::user()->type == 'super admin' ? __('Edit Company') : __('Edit User') }}">
+                                            <i class="ti ti-pencil"></i>
+                                            <span>{{ __('Edit') }}</span>
+                                        </a>
+                                    @endcan
 
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($users as $user)
-                                <tr>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ ucfirst($user->type) }}</td>
-                                    <td>
-                                        @if (Gate::check('edit user') || Gate::check('delete user'))
-                                        <div class="card-header-right">
-                                            <div class="btn-group card-option">
-                                                @if ($user->is_active == 1 && $user->is_disable == 1)
-                                                    <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
-                                                        <i class="ti ti-dots-vertical"></i>
-                                                    </button>
-        
-                                                    <div class="dropdown-menu dropdown-menu-end">
-        
-                                                        @can('edit user')
-                                                            <a href="#!" data-size="lg"
-                                                                data-url="{{ route('users.edit', $user->id) }}"
-                                                                data-ajax-popup="true" class="dropdown-item"
-                                                                data-bs-original-title="{{ \Auth::user()->type == 'super admin' ?  __('Edit Company')  : __('Edit User') }}">
-                                                                <i class="ti ti-pencil"></i>
-                                                                <span>{{ __('Edit') }}</span>
-                                                            </a>
-                                                        @endcan
-        
-                                                        @can('delete user')
-                                                            {!! Form::open([
-                                                                'method' => 'DELETE',
-                                                                'route' => ['users.destroy', $user['id']],
-                                                                'id' => 'delete-form-' . $user['id'],
-                                                            ]) !!}
-                                                            <a href="#!" class="dropdown-item bs-pass-para">
-                                                                <i class="ti ti-archive"></i>
-                                                                <span>
-                                                                    @if ($user->delete_status != 0)
-                                                                        {{ __('Delete') }}
-                                                                    @else
-                                                                        {{ __('Restore') }}
-                                                                    @endif
-                                                                </span>
-                                                            </a>
-                                                            {!! Form::close() !!}
-                                                        @endcan
-        
-                                                        @if (Auth::user()->type == 'super admin')
-                                                            <a href="{{ route('login.with.company', $user->id) }}"
-                                                                class="dropdown-item"
-                                                                data-bs-original-title="{{ __('Login As Company') }}">
-                                                                <i class="ti ti-replace"></i>
-                                                                <span> {{ __('Login As Company') }}</span>
-                                                            </a>
-                                                        @endif
-        
-                                                        <a href="#!"
-                                                            data-url="{{ route('users.reset', \Crypt::encrypt($user->id)) }}"
-                                                            data-ajax-popup="true" data-size="md" class="dropdown-item"
-                                                            data-bs-original-title="{{ __('Reset Password') }}">
-                                                            <i class="ti ti-adjustments"></i>
-                                                            <span> {{ __('Reset Password') }}</span>
-                                                        </a>
-        
-                                                        @if ($user->is_enable_login == 1)
-                                                        <a href="{{ route('users.login', \Crypt::encrypt($user->id)) }}"
-                                                            class="dropdown-item">
-                                                            <i class="ti ti-road-sign"></i>
-                                                            <span class="text-danger"> {{ __('Login Disable') }}</span>
-                                                        </a>
-                                                    @elseif ($user->is_enable_login == 0 && $user->password == null)
-                                                        <a href="#" data-url="{{ route('users.reset', \Crypt::encrypt($user->id)) }}"
-                                                            data-ajax-popup="true" data-size="md" class="dropdown-item login_enable"
-                                                            data-title="{{ __('New Password') }}" class="dropdown-item">
-                                                            <i class="ti ti-road-sign"></i>
-                                                            <span class="text-success"> {{ __('Login Enable') }}</span>
-                                                        </a>
-                                                    @else
-                                                        <a href="{{ route('users.login', \Crypt::encrypt($user->id)) }}"
-                                                            class="dropdown-item">
-                                                            <i class="ti ti-road-sign"></i>
-                                                            <span class="text-success"> {{ __('Login Enable') }}</span>
-                                                        </a>
-                                                    @endif
-                                                    </div>
+                                    @can('delete user')
+                                        {!! Form::open([
+                                            'method' => 'DELETE',
+                                            'route' => ['users.destroy', $user['id']],
+                                            'id' => 'delete-form-' . $user['id'],
+                                        ]) !!}
+                                        <a href="#!" class="dropdown-item bs-pass-para">
+                                            <i class="ti ti-trash"></i>
+                                            <span>
+                                                @if ($user->delete_status != 0)
+                                                    {{ __('Delete') }}
                                                 @else
-                                                    <a href="#" class="action-item text-lg"><i class="ti ti-lock"></i></a>
+                                                    {{ __('Restore') }}
                                                 @endif
-        
-                                            </div>
-                                        </div>
+                                            </span>
+                                        </a>
+                                        {!! Form::close() !!}
+                                    @endcan
+
+                                    @if (Auth::user()->type == 'super admin')
+                                        <a href="{{ route('login.with.company', $user->id) }}" class="dropdown-item"
+                                            data-bs-original-title="{{ __('Login As Company') }}">
+                                            <i class="ti ti-replace"></i>
+                                            <span> {{ __('Login As Company') }}</span>
+                                        </a>
                                     @endif
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                        <div >
-                            <small class="p-2">To show the movement cursor, place the mouse below the text.</small>
+
+                                    <a href="#!" data-url="{{ route('users.reset', \Crypt::encrypt($user->id)) }}"
+                                        data-ajax-popup="true" data-size="md" class="dropdown-item"
+                                        data-bs-original-title="{{ __('Reset Password') }}">
+                                        <i class="ti ti-adjustments"></i>
+                                        <span> {{ __('Reset Password') }}</span>
+                                    </a>
+
+                                    @if ($user->is_enable_login == 1)
+                                        <a href="{{ route('users.login', \Crypt::encrypt($user->id)) }}"
+                                            class="dropdown-item">
+                                            <i class="ti ti-road-sign"></i>
+                                            <span class="text-danger"> {{ __('Login Disable') }}</span>
+                                        </a>
+                                    @elseif ($user->is_enable_login == 0 && $user->password == null)
+                                        <a href="#"
+                                            data-url="{{ route('users.reset', \Crypt::encrypt($user->id)) }}"
+                                            data-ajax-popup="true" data-size="md" class="dropdown-item login_enable"
+                                            data-title="{{ __('New Password') }}" class="dropdown-item">
+                                            <i class="ti ti-road-sign"></i>
+                                            <span class="text-success"> {{ __('Login Enable') }}</span>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('users.login', \Crypt::encrypt($user->id)) }}"
+                                            class="dropdown-item">
+                                            <i class="ti ti-road-sign"></i>
+                                            <span class="text-success"> {{ __('Login Enable') }}</span>
+                                        </a>
+                                    @endif
+
+                                </div>
+                            @else
+                                <a href="#" class="action-item text-lg"><i class="ti ti-lock"></i></a>
+                            @endif
                         </div>
+                    @endif
+                </div>
+                <div class="user-info-wrp d-flex align-items-center gap-3 border-bottom pb-3 mb-3">
+                    <div class="user-image rounded-1 border-1 border border-primary">
+                        <img src="{{ !empty($user->avatar) ? Utility::get_file('uploads/avatar/') . $user->avatar : asset(Storage::url('uploads/avatar/avatar.png')) }}"
+                            alt="user-image" height="100%" width="100%">
+                    </div>
+                    <div class="user-info flex-1">
+                        <h5 class="mb-1">{{ $user->name }}</h5>
+                        @if ($user->delete_status == 0)
+                            <h6 class="mb-1">{{ __('Soft Deleted') }}</h6>
+                        @endif
+                        <span class="text-sm text-muted text-break">{{ $user->email }}</span>
                     </div>
                 </div>
+                <div class="date-wrp d-flex align-items-center justify-content-between gap-2">
+                    @php
+                        $date = \Carbon\Carbon::parse($user->last_login_at)->format('Y-m-d');
+                        $time = \Carbon\Carbon::parse($user->last_login_at)->format('H:i:s');
+                    @endphp
+                    <div class="date d-flex align-items-center gap-2">
+                        <div class="date-icon d-flex align-items-center justify-content-center">
+                            <i class="f-16 ti ti-calendar text-white"></i>
+                        </div>
+                        <span class="text-sm">{{ $date }}</span>
+                    </div>
+                    <div class="time d-flex align-items-center gap-2">
+                        <div class="time-icon d-flex align-items-center justify-content-center">
+                            <i class="f-16 ti ti-clock text-white"></i>
+                        </div>
+                        <span class="text-sm">{{ $time }}</span>
+                    </div>
+                </div>
+                @if (\Auth::user()->type == 'super admin')
+                    <div class="btn-wrp d-flex align-items-center gap-2 border-bottom border-top py-3 my-3">
+                        <a href="#" data-url="{{ route('plan.upgrade', $user->id) }}" data-size="lg"
+                            data-ajax-popup="true" class="btn btn-primary p-2 px-1 w-100"
+                            data-title="{{ __('Upgrade Plan') }}">{{ __('Upgrade Plan') }}</a>
+                        <a href="#" data-url="{{ route('company.info', $user->id) }}" data-size="lg"
+                            data-ajax-popup="true" class="btn btn-light-primary p-2 px-1 w-100"
+                            data-title="{{ __('Company Info') }}">{{ __('Admin Hub') }}</a>
+                    </div>
+                    <div class="text-center pb-3 mb-3 border-bottom">
+                        <span class="text-sm">
+                            {{ __('Plan Expired : ') }}
+                            {{ !empty($user->plan_expire_date) ? \Auth::user()->dateFormat($user->plan_expire_date) : __('Lifetime') }}
+                        </span>
+                    </div>
+                    <div
+                        class="user-count-wrp d-flex align-items-center justify-content-between gap-2">
+                        <div class="user-count d-flex align-items-center gap-2" data-bs-toggle="tooltip"
+                            title="{{ __('Users') }}">
+                            <div class="user-icon d-flex align-items-center justify-content-center">
+                                <i class="f-16 ti ti-users text-white"></i>
+                            </div>
+                            {{ $user->totalCompanyUser($user->id) }}
+                        </div>
+                        <div class="user-count d-flex align-items-center gap-2" data-bs-toggle="tooltip"
+                            title="{{ __('Customers') }}">
+                            <div class="user-icon d-flex align-items-center justify-content-center">
+                                <i class="f-16 ti ti-users text-white"></i>
+                            </div>
+                            {{ $user->totalCompanyCustomer($user->id) }}
+                        </div>
+                        <div class="user-count d-flex align-items-center gap-2" data-bs-toggle="tooltip"
+                            title="{{ __('Vendors') }}">
+                            <div class="user-icon d-flex align-items-center justify-content-center">
+                                <i class="f-16 ti ti-users text-white"></i>
+                            </div>
+                            {{ $user->totalCompanyVender($user->id) }}
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
+    @endforeach
+    <div class="col-xxl-3 col-lg-4 col-sm-6 mb-4">
+        <a href="#" class="btn-addnew-project border-primary" data-ajax-popup="true"
+            data-url="{{ route('users.create') }}"
+            data-title="{{ \Auth::user()->type == 'super admin' ? __('Create Company') : __('Create User') }}"
+            data-bs-toggle="tooltip" title=""
+            data-bs-original-title="{{ \Auth::user()->type == 'super admin' ? __('Create Company') : __('Create User') }}">
+            <div class="bg-primary proj-add-icon">
+                <i class="ti ti-plus"></i>
+            </div>
+            <h6 class="mt-3 mb-2">
+                {{ \Auth::user()->type == 'super admin' ? __('Create Company') : __('Create User') }}</h6>
+            <p class="text-muted text-center mb-0">
+                {{ \Auth::user()->type == 'super admin' ? __('Click here to add new company') : __('Click here to add new user') }}
+            </p>
+        </a>
     </div>
 </div>
-  @endif
-    
-  @if (\Auth::user()->type == 'super admin')
-  <div class="row">
-    <div class="col-xxl-12">
-        <div class="row">
-            @foreach ($users as $user)
-                <div class="col-md-3 mb-4">
-                    <div class="card text-center card-2">
-                        <div class="card-header border-0 pb-0">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">
-                                    @if (\Auth::user()->type == 'super admin')
-                                        <div class="badge bg-primary p-2 px-3 rounded">
-                                            {{ !empty($user->currentPlan) ? $user->currentPlan->name : '' }}
-                                        </div>
-                                    @else
-                                        <div class="badge bg-primary p-2 px-3 rounded">
-                                            {{ ucfirst($user->type) }}
-                                        </div>
-                                    @endif
-                                </h6>
-                            </div>
-                            @if (Gate::check('edit user') || Gate::check('delete user'))
-                                <div class="card-header-right">
-                                    <div class="btn-group card-option">
-                                        @if ($user->is_active == 1 && $user->is_disable == 1)
-                                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <i class="ti ti-dots-vertical"></i>
-                                            </button>
-
-                                            <div class="dropdown-menu dropdown-menu-end">
-
-                                                @can('edit user')
-                                                    <a href="#!" data-size="lg"
-                                                        data-url="{{ route('users.edit', $user->id) }}"
-                                                        data-ajax-popup="true" class="dropdown-item"
-                                                        data-bs-original-title="{{ \Auth::user()->type == 'super admin' ?  __('Edit Company')  : __('Edit User') }}">
-                                                        <i class="ti ti-pencil"></i>
-                                                        <span>{{ __('Edit') }}</span>
-                                                    </a>
-                                                @endcan
-
-                                                @can('delete user')
-                                                    {!! Form::open([
-                                                        'method' => 'DELETE',
-                                                        'route' => ['users.destroy', $user['id']],
-                                                        'id' => 'delete-form-' . $user['id'],
-                                                    ]) !!}
-                                                    <a href="#!" class="dropdown-item bs-pass-para">
-                                                        <i class="ti ti-archive"></i>
-                                                        <span>
-                                                            @if ($user->delete_status != 0)
-                                                                {{ __('Delete') }}
-                                                            @else
-                                                                {{ __('Restore') }}
-                                                            @endif
-                                                        </span>
-                                                    </a>
-                                                    {!! Form::close() !!}
-                                                @endcan
-
-                                                @if (Auth::user()->type == 'super admin')
-                                                    <a href="{{ route('login.with.company', $user->id) }}"
-                                                        class="dropdown-item"
-                                                        data-bs-original-title="{{ __('Login As Company') }}">
-                                                        <i class="ti ti-replace"></i>
-                                                        <span> {{ __('Login As Company') }}</span>
-                                                    </a>
-                                                @endif
-
-                                                <a href="#!"
-                                                    data-url="{{ route('users.reset', \Crypt::encrypt($user->id)) }}"
-                                                    data-ajax-popup="true" data-size="md" class="dropdown-item"
-                                                    data-bs-original-title="{{ __('Reset Password') }}">
-                                                    <i class="ti ti-adjustments"></i>
-                                                    <span> {{ __('Reset Password') }}</span>
-                                                </a>
-
-                                                @if ($user->is_enable_login == 1)
-                                                <a href="{{ route('users.login', \Crypt::encrypt($user->id)) }}"
-                                                    class="dropdown-item">
-                                                    <i class="ti ti-road-sign"></i>
-                                                    <span class="text-danger"> {{ __('Login Disable') }}</span>
-                                                </a>
-                                            @elseif ($user->is_enable_login == 0 && $user->password == null)
-                                                <a href="#" data-url="{{ route('users.reset', \Crypt::encrypt($user->id)) }}"
-                                                    data-ajax-popup="true" data-size="md" class="dropdown-item login_enable"
-                                                    data-title="{{ __('New Password') }}" class="dropdown-item">
-                                                    <i class="ti ti-road-sign"></i>
-                                                    <span class="text-success"> {{ __('Login Enable') }}</span>
-                                                </a>
-                                            @else
-                                                <a href="{{ route('users.login', \Crypt::encrypt($user->id)) }}"
-                                                    class="dropdown-item">
-                                                    <i class="ti ti-road-sign"></i>
-                                                    <span class="text-success"> {{ __('Login Enable') }}</span>
-                                                </a>
-                                            @endif
-                                            </div>
-                                        @else
-                                            <a href="#" class="action-item text-lg"><i class="ti ti-lock"></i></a>
-                                        @endif
-
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="card-body full-card">
-                            <div class="img-fluid rounded-circle card-avatar">
-                                <img src="{{ !empty($user->avatar) ? Utility::get_file('uploads/avatar/').$user->avatar : asset(Storage::url('uploads/avatar/avatar.png')) }}"
-                                    class="img-user img-fluid rounded border-2 border border-primary" width="120px" height="120px" alt="user-image">
-                            </div>
-                            <h4 class=" mt-3 text-primary">{{ $user->name }}</h4>
-                            @if ($user->delete_status == 0)
-                                <h5 class="office-time mb-0">{{ __('Soft Deleted') }}</h5>
-                            @endif
-                            <small class="text-primary">{{ $user->email }}</small>
-                            <p></p>
-                            <div class="text-center" data-bs-toggle="tooltip" title="{{ __('Last Login') }}">
-                                {{ !empty($user->last_login_at) ? $user->last_login_at : '' }}
-                            </div>
-                            @if (\Auth::user()->type == 'super admin')
-                                <div class="mt-4">
-                                    <div class="row justify-content-between align-items-center">
-                                        <div class="col-6 text-center Id ">
-                                            <a href="#" data-url="{{ route('plan.upgrade', $user->id) }}"
-                                                data-size="lg" data-ajax-popup="true" class="btn btn-outline-primary"
-                                                data-title="{{ __('Upgrade Plan') }}">{{ __('Upgrade Plan') }}</a>
-                                        </div>
-                                        <div class="col-6 text-center Id ">
-                                            <a href="#" data-url="{{ route('company.info', $user->id) }}"
-                                                data-size="lg" data-ajax-popup="true" class="btn btn-outline-primary"
-                                                data-title="{{ __('Company Info') }}">{{ __('AdminHub') }}</a>
-                                        </div>
-                                        <div class="col-12">
-                                            <hr class="my-3">
-                                        </div>
-                                        <div class="col-12 text-center pb-2">
-                                            <span class="text-dark text-xs">{{ __('Plan Expired : ') }}
-                                                {{ !empty($user->plan_expire_date) ? \Auth::user()->dateFormat($user->plan_expire_date) : __('Lifetime') }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-12 col-sm-12">
-                                        <div class="card mb-0">
-                                            <div class="card-body p-3">
-                                                <div class="row">
-                                                    <div class="col-4">
-                                                        <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip"
-                                                            title="{{ __('Users') }}"><i
-                                                                class="ti ti-users card-icon-text-space"></i>{{ $user->totalCompanyUser($user->id) }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip"
-                                                            title="{{ __('Customers') }}"><i
-                                                                class="ti ti-users card-icon-text-space"></i>{{ $user->totalCompanyCustomer($user->id) }}
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <p class="text-muted text-sm mb-0" data-bs-toggle="tooltip"
-                                                            title="{{ __('Vendors') }}"><i
-                                                                class="ti ti-users card-icon-text-space"></i>{{ $user->totalCompanyVender($user->id) }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-  @endif
-   
 @endsection
 
 @push('script-page')

@@ -14,7 +14,7 @@
 @section('action-btn')
 <div class="float-end">
 
-    <a href="#" class="btn btn-primary btn-sm me-1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-toggle="tooltip" title="{{ __('Filter') }}" data-original-title="{{ __('Filter') }}">
+    <a href="#" class="btn bg-light-green-subtitle text-white btn-sm me-1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-toggle="tooltip" title="{{ __('Filter') }}" data-original-title="{{ __('Filter') }}">
         <span class="btn-inner--icon"><i class="ti ti-filter"></i></span>
     </a>
     <div class="dropdown-menu dropdown-menu-right dropdown-steady" id="task_sort">
@@ -32,7 +32,7 @@
             </a>
         </div>
 
-    <a href="#" class="btn btn-primary btn-sm me-1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a href="#" class="btn btn-primary-subtle text-white btn-sm me-1" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="btn-inner--icon">{{__('Status')}}</span>
         </a>
     <div class="dropdown-menu dropdown-menu-right task-filter-actions dropdown-steady" id="task_status">

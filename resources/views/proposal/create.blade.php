@@ -31,12 +31,22 @@
                             max_size: 2048
                         });
                     }
-                    $('.select2').select2();
+                    // $('.select2').select2();
                 },
                 hide: function (deleteElement) {
                     if (confirm('Are you sure you want to delete this element?')) {
                         $(this).slideUp(deleteElement);
                         $(this).remove();
+
+                        $(".price").change();
+                        $(".discount").change();
+                        $('.item option').prop('hidden', false);
+                        $('.item :selected').each(function () {
+                            var id = $(this).val();
+                            if (id) {
+                                $('.item').not(this).find("option[value=" + id + "]").prop('hidden', true);
+                            }
+                        });
 
                         var inputs = $(".amount");
                         var subTotal = 0;
@@ -157,14 +167,18 @@
                     var totalItemPrice = 0;
                     var priceInput = $('.price');
                     for (var j = 0; j < priceInput.length; j++) {
-                        totalItemPrice += parseFloat(priceInput[j].value);
+                        if (!isNaN(parseFloat(priceInput[j].value))) {
+                            totalItemPrice += parseFloat(priceInput[j].value);
+                        }
                     }
 
                     var totalItemTaxPrice = 0;
                     var itemTaxPriceInput = $('.itemTaxPrice');
                     for (var j = 0; j < itemTaxPriceInput.length; j++) {
-                        totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
-                        $(el.parent().parent().find('.amount')).html(parseFloat(item.totalAmount)+parseFloat(itemTaxPriceInput[j].value));
+                        if (!isNaN(parseFloat(itemTaxPriceInput[j].value))) {
+                            totalItemTaxPrice += parseFloat(itemTaxPriceInput[j].value);
+                            $(el.parent().parent().find('.amount')).html(parseFloat(item.totalAmount)+parseFloat(itemTaxPriceInput[j].value));
+                        }
                     }
 
 
@@ -173,8 +187,9 @@
                     var itemDiscountPriceInput = $('.discount');
 
                     for (var k = 0; k < itemDiscountPriceInput.length; k++) {
-
-                        totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                        if (!isNaN(parseFloat(itemDiscountPriceInput[k].value))) {
+                            totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                        }
                     }
 
                     $('.subTotal').html(totalItemPrice.toFixed(2));
@@ -339,8 +354,9 @@
             var itemDiscountPriceInput = $('.discount');
 
             for (var k = 0; k < itemDiscountPriceInput.length; k++) {
-
-                totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                if (!isNaN(parseFloat(itemDiscountPriceInput[k].value))) {
+                    totalItemDiscountPrice += parseFloat(itemDiscountPriceInput[k].value);
+                }
             }
 
 
@@ -367,7 +383,9 @@
             $('.item option').prop('hidden', false);
             $('.item :selected').each(function () {
                 var id = $(this).val();
-                $(".item option[value=" + id + "]").prop("hidden", true);
+                if (id) {
+                    $(".item option[value=" + id + "]").prop("hidden", true);
+                }
             });
         });
 
@@ -375,20 +393,22 @@
             $('.item option').prop('hidden', false);
             $('.item :selected').each(function () {
                 var id = $(this).val();
-                $(".item option[value=" + id + "]").prop("hidden", true);
+                if (id) {
+                    $(".item option[value=" + id + "]").prop("hidden", true);
+                }
             });
         })
 
-        $(document).on('click', '[data-repeater-delete]', function () {
-            $(".price").change();
-            $(".discount").change();
+        // $(document).on('click', '[data-repeater-delete]', function () {
+        //     $(".price").change();
+        //     $(".discount").change();
 
-            $('.item option').prop('hidden', false);
-            $('.item :selected').each(function () {
-                var id = $(this).val();
-                $(".item option[value=" + id + "]").prop("hidden", true);
-            });
-        });
+        //     $('.item option').prop('hidden', false);
+        //     $('.item :selected').each(function () {
+        //         var id = $(this).val();
+        //         $(".item option[value=" + id + "]").prop("hidden", true);
+        //     });
+        // });
     </script>
 @endpush
 @section('content')
@@ -528,7 +548,7 @@
                                     {{-- <a href="#" class="ti ti-trash text-white text-danger" data-repeater-delete></a> --}}
 
                                     <div class="action-btn me-2">
-                                        <a href="#" class="ti ti-trash text-white btn btn-sm repeater-action-btn bg-danger ms-2 bs-pass-para" data-repeater-delete></a>
+                                        <a href="#" class="ti ti-trash text-white btn btn-sm repeater-action-btn bg-danger ms-2" data-bs-toggle="tooltip" title="{{ __('Delete') }}" data-repeater-delete></a>
                                     </a>
                                     </div>
                                 </td>

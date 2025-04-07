@@ -5,6 +5,49 @@
 @section('page-title')
     {{ __('Manage Plan') }}
 @endsection
+@push('css-page')
+<style>
+    /* 20.01  */
+    .price-card .list-unstyled .theme-avtar{
+        width: 20px ;
+        margin-right: 5px !important;
+    }
+
+        .request-btn .btn{
+        padding: 8px 12px !important;
+    }
+
+    @media screen and (max-width:991px){
+        .plan_card{
+            width: 50%;
+        }
+    }
+    @media screen and (max-width:767px){
+        .plan_card{
+            width: 100%;
+        }
+        .plan_card .price-card{
+            height: auto ;
+            margin-bottom: 0;
+        }
+    }
+    @media screen and (max-width:481px){
+        .plan_card .card-body .row .col-6{
+            width: 100%;
+        }
+        .plan_card .card-body .row .col-6:not(:first-of-type) .list-unstyled{
+            margin:0 0 20px!important;
+        }
+        .plan_card .card-body .row .col-6:first-of-type .list-unstyled{
+            margin:20px 0 7px!important;
+        }
+        .plan_card .price-card{
+            max-height: unset;
+        }
+    }
+/* 20.01  */
+</style>
+@endpush
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">{{ __('Plan') }}</li>
@@ -194,39 +237,41 @@
                                     $admin_payment_setting['is_yookassa_enabled'] == 'on' ||
                                     $admin_payment_setting['is_midtrans_enabled'] == 'on' ||
                                     $admin_payment_setting['is_xendit_enabled'] == 'on') --}}
-                                @if (\Auth::user()->type != 'super admin')
-                                    @if (
-                                        $plan->price > 0 &&
-                                            \Auth::user()->trial_plan == 0 &&
-                                            \Auth::user()->plan != $plan->id && $plan->trial == 1)
-                                            {{-- \Auth::user()->trial_expire_date > date('Y-m-d')) --}}
-                                        <a href="{{ route('plan.trial', \Illuminate\Support\Facades\Crypt::encrypt($plan->id)) }}"
-                                            class="btn btn-lg btn-primary btn-icon m-1">{{ __('Start Free Trial') }}</a>
-                                    @endif
-                                    @if ($plan->id != \Auth::user()->plan)
-                                        @if ($plan->price > 0)
-                                            <a href="{{ route('stripe', \Illuminate\Support\Facades\Crypt::encrypt($plan->id)) }}"
-                                                class="btn btn-lg btn-primary btn-icon m-1">{{ __('Buy Plan') }}</a>
+                                    @if (\Auth::user()->type != 'super admin')
+                                    <div class="request-btn">
+                                            @if (
+                                                $plan->price > 0 &&
+                                                    \Auth::user()->trial_plan == 0 &&
+                                                    \Auth::user()->plan != $plan->id && $plan->trial == 1)
+                                                    {{-- \Auth::user()->trial_expire_date > date('Y-m-d')) --}}
+                                                <a href="{{ route('plan.trial', \Illuminate\Support\Facades\Crypt::encrypt($plan->id)) }}"
+                                                    class="btn btn-lg btn-primary btn-icon m-1">{{ __('Start Free Trial') }}</a>
+                                            @endif
+                                            @if ($plan->id != \Auth::user()->plan)
+                                                @if ($plan->price > 0)
+                                                    <a href="{{ route('stripe', \Illuminate\Support\Facades\Crypt::encrypt($plan->id)) }}"
+                                                        class="btn btn-lg btn-primary btn-icon m-1">{{ __('Buy Plan') }}</a>
+                                                @endif
+                                            @endif
+                                            @if ($plan->id != 1 && $plan->id != \Auth::user()->plan)
+                                                @if (\Auth::user()->requested_plan != $plan->id)
+                                                    <a href="{{ route('send.request', [\Illuminate\Support\Facades\Crypt::encrypt($plan->id)]) }}"
+                                                        class="btn btn-lg btn-primary btn-icon m-1"
+                                                        data-title="{{ __('Send Request') }}" data-bs-toggle="tooltip"
+                                                        title="{{ __('Send Request') }}">
+                                                        <span class="btn-inner--icon"><i class="ti ti-corner-up-right"></i></span>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ route('request.cancel', \Auth::user()->id) }}"
+                                                        class="btn btn-lg btn-danger btn-icon m-1"
+                                                        data-title="{{ __('`Cancle Request') }}" data-bs-toggle="tooltip"
+                                                        title="{{ __('Cancle Request') }}">
+                                                        <span class="btn-inner--icon"><i class="ti ti-x"></i></span>
+                                                    </a>
+                                                @endif
+                                            @endif
+                                        </div>
                                         @endif
-                                    @endif
-                                    @if ($plan->id != 1 && $plan->id != \Auth::user()->plan)
-                                        @if (\Auth::user()->requested_plan != $plan->id)
-                                            <a href="{{ route('send.request', [\Illuminate\Support\Facades\Crypt::encrypt($plan->id)]) }}"
-                                                class="btn btn-lg btn-primary btn-icon m-1"
-                                                data-title="{{ __('Send Request') }}" data-bs-toggle="tooltip"
-                                                title="{{ __('Send Request') }}">
-                                                <span class="btn-inner--icon"><i class="ti ti-corner-up-right"></i></span>
-                                            </a>
-                                        @else
-                                            <a href="{{ route('request.cancel', \Auth::user()->id) }}"
-                                                class="btn btn-danger btn-icon m-1"
-                                                data-title="{{ __('`Cancle Request') }}" data-bs-toggle="tooltip"
-                                                title="{{ __('Cancle Request') }}">
-                                                <span class="btn-inner--icon"><i class="ti ti-x"></i></span>
-                                            </a>
-                                        @endif
-                                    @endif
-                                @endif
                             {{-- @endif
                         @endif --}}
 

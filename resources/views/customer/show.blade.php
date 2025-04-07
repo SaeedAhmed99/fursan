@@ -23,24 +23,34 @@
             // document.execCommand('copy');
             show_toastr('success', 'Url copied to clipboard', 'success');
         }
+
+        $(document).on('click', '#billing_data', function () {
+            $("[name='shipping_name']").val($("[name='billing_name']").val());
+            $("[name='shipping_country']").val($("[name='billing_country']").val());
+            $("[name='shipping_state']").val($("[name='billing_state']").val());
+            $("[name='shipping_city']").val($("[name='billing_city']").val());
+            $("[name='shipping_phone']").val($("[name='billing_phone']").val());
+            $("[name='shipping_zip']").val($("[name='billing_zip']").val());
+            $("[name='shipping_address']").val($("[name='billing_address']").val());
+        })
     </script>
 @endpush
 
 @section('action-btn')
     <div class="float-end d-flex">
         @can('create invoice')
-            <a href="{{ route('invoice.create',$customer->id) }}" class="btn btn-sm btn-primary me-2">
+            <a href="{{ route('invoice.create',$customer->id) }}" class="btn btn-sm bg-light-green-subtitle text-white me-2">
                 {{__('Create Invoice')}}
             </a>
         @endcan
         @can('create proposal')
-            <a href="{{ route('proposal.create',$customer->id) }}" class="btn btn-sm btn-primary me-2">
+            <a href="{{ route('proposal.create',$customer->id) }}" class="btn btn-sm btn-primary-subtle text-white me-2">
                 {{__('Create Proposal')}}
             </a>
         @endcan
 
         @can('edit customer')
-            <a href="#" data-size="lg" data-url="{{ route('customer.edit',$customer['id']) }}" data-ajax-popup="true" title="{{__('Edit Customer')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}" class="btn btn-sm btn-primary me-2">
+            <a href="#" data-size="lg" data-url="{{ route('customer.edit',$customer['id']) }}" data-ajax-popup="true" title="{{__('Edit Customer')}}" data-bs-toggle="tooltip" data-original-title="{{__('Edit')}}" class="btn btn-sm btn-info me-2">
                 <i class="ti ti-pencil"></i>
             </a>
         @endcan
@@ -61,8 +71,8 @@
             <div class="card customer-detail-box customer_card">
                 <div class="card-body">
                     <h5 class="card-title">{{__('Customer Info')}}</h5>
-                    <p class="card-text mb-0">{{$customer['name']}}</p>
-                    <p class="card-text mb-0">{{$customer['email']}}</p>
+                    <p class="card-text mb-1">{{$customer['name']}}</p>
+                    <p class="card-text mb-1">{{$customer['email']}}</p>
                     <p class="card-text mb-0">{{$customer['contact']}}</p>
                 </div>
             </div>
@@ -72,10 +82,10 @@
             <div class="card customer-detail-box customer_card">
                 <div class="card-body">
                     <h5 class="card-title">{{__('Billing Info')}}</h5>
-                    <p class="card-text mb-0">{{$customer['billing_name']}}</p>
-                    <p class="card-text mb-0">{{$customer['billing_address']}}</p>
-                    <p class="card-text mb-0">{{$customer['billing_city'].', '. $customer['billing_state'] .', '.$customer['billing_zip']}}</p>
-                    <p class="card-text mb-0">{{$customer['billing_country']}}</p>
+                    <p class="card-text mb-1">{{$customer['billing_name']}}</p>
+                    <p class="card-text mb-1">{{$customer['billing_address']}}</p>
+                    <p class="card-text mb-1">{{$customer['billing_city'].', '. $customer['billing_state'] .', '.$customer['billing_zip']}}</p>
+                    <p class="card-text mb-1">{{$customer['billing_country']}}</p>
                     <p class="card-text mb-0">{{$customer['billing_phone']}}</p>
                 </div>
             </div>
@@ -85,10 +95,10 @@
             <div class="card customer-detail-box customer_card">
                 <div class="card-body">
                     <h5 class="card-title">{{__('Shipping Info')}}</h5>
-                    <p class="card-text mb-0">{{$customer['shipping_name']}}</p>
-                    <p class="card-text mb-0">{{$customer['shipping_address']}}</p>
-                    <p class="card-text mb-0">{{$customer['shipping_city'].', '. $customer['shipping_state'] .', '.$customer['shipping_zip']}}</p>
-                    <p class="card-text mb-0">{{$customer['shipping_country']}}</p>
+                    <p class="card-text mb-1">{{$customer['shipping_name']}}</p>
+                    <p class="card-text mb-1">{{$customer['shipping_address']}}</p>
+                    <p class="card-text mb-1">{{$customer['shipping_city'].', '. $customer['shipping_state'] .', '.$customer['shipping_zip']}}</p>
+                    <p class="card-text mb-1">{{$customer['shipping_country']}}</p>
                     <p class="card-text mb-0">{{$customer['shipping_phone']}}</p>
                 </div>
             </div>
@@ -109,31 +119,31 @@
                         @endphp
                         <div class="col-md-3 col-sm-6">
                             <div class="p-4">
-                                <p class="card-text mb-0">{{__('Customer Id')}}</p>
+                                <p class="card-text mb-1">{{__('Customer Id')}}</p>
                                 <h6 class="report-text mb-3">{{AUth::user()->customerNumberFormat($customer['customer_id'])}}</h6>
-                                <p class="card-text mb-0">{{__('Total Sum of Invoices')}}</p>
+                                <p class="card-text mb-1">{{__('Total Sum of Invoices')}}</p>
                                 <h6 class="report-text mb-0">{{\Auth::user()->priceFormat($totalInvoiceSum)}}</h6>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="p-4">
-                                <p class="card-text mb-0">{{__('Date of Creation')}}</p>
+                                <p class="card-text mb-1">{{__('Date of Creation')}}</p>
                                 <h6 class="report-text mb-3">{{\Auth::user()->dateFormat($customer['created_at'])}}</h6>
-                                <p class="card-text mb-0">{{__('Quantity of Invoice')}}</p>
+                                <p class="card-text mb-1">{{__('Quantity of Invoice')}}</p>
                                 <h6 class="report-text mb-0">{{$totalInvoice}}</h6>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="p-4">
-                                <p class="card-text mb-0">{{__('Balance')}}</p>
+                                <p class="card-text mb-1">{{__('Balance')}}</p>
                                 <h6 class="report-text mb-3">{{\Auth::user()->priceFormat($customer['balance'])}}</h6>
-                                <p class="card-text mb-0">{{__('Average Sales')}}</p>
+                                <p class="card-text mb-1">{{__('Average Sales')}}</p>
                                 <h6 class="report-text mb-0">{{\Auth::user()->priceFormat($averageSale)}}</h6>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
                             <div class="p-4">
-                                <p class="card-text mb-0">{{__('Overdue')}}</p>
+                                <p class="card-text mb-1">{{__('Overdue')}}</p>
                                 <h6 class="report-text mb-3">{{\Auth::user()->priceFormat($customer->customerOverdue($customer['id']))}}</h6>
                             </div>
                         </div>
@@ -305,16 +315,18 @@
                                             <span>
                                                 @can('copy invoice')
                                                     <div class="action-btn me-2">
-                                                        <a href="#" id="{{ route('invoice.link.copy',$invoice->id) }}" class="mx-3 btn btn-sm align-items-center bg-secondary" onclick="copyToClipboard(this)" data-bs-toggle="tooltip" title="{{__('Copy Invoice')}}"><i class="ti ti-link text-white"></i></a>
+                                                        <a href="#" id="{{ route('invoice.link.copy',\Crypt::encrypt($invoice->id)) }}" class="mx-3 btn btn-sm align-items-center bg-secondary" onclick="copyToClipboard(this)" data-bs-toggle="tooltip" title="{{__('Copy Invoice')}}"><i class="ti ti-link text-white"></i></a>
                                                     </div>
                                                 @endcan
                                                 @can('duplicate invoice')
                                                     <div class="action-btn me-2">
-                                                        <a href="#" class="mx-3 btn btn-sm align-items-center bg-primary" data-bs-toggle="tooltip" data-original-title="{{__('Duplicate')}}" title="{{__('Duplicate Invoice')}}" data-confirm="You want to confirm this action. Press Yes to continue or Cancel to go back" data-confirm-yes="document.getElementById('duplicate-form-{{$invoice->id}}').submit();">
-                                                            <i class="ti ti-copy text-white text-white"></i>
-                                                            {!! Form::open(['method' => 'get', 'route' => ['invoice.duplicate', $invoice->id],'id'=>'duplicate-form-'.$invoice->id]) !!}
-                                                            {!! Form::close() !!}
-                                                        </a>
+                                                        {!! Form::open(['method' => 'get', 'route' => ['invoice.duplicate', $invoice->id],'id'=>'duplicate-form-'.$invoice->id]) !!}
+
+                                                            <a href="#" class="mx-3 btn btn-sm align-items-center bg-primary bs-pass-para" data-bs-toggle="tooltip" data-original-title="{{__('Duplicate')}}" title="{{__('Duplicate Invoice')}}" data-confirm="You want to confirm this action. Press Yes to continue or Cancel to go back" data-confirm-yes="document.getElementById('duplicate-form-{{$invoice->id}}').submit();">
+                                                                <i class="ti ti-copy text-white text-white"></i>
+                                                            </a>
+
+                                                        {!! Form::close() !!}
                                                     </div>
                                                 @endcan
                                                     @can('show invoice')

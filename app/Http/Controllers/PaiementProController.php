@@ -339,7 +339,7 @@ class PaiementProController extends Controller
                     if ($status == true) {
                         return redirect()->route('invoice.link.copy', \Crypt::encrypt($invoice->id))->with('error', __('Transaction has been failed.'));
                     } else {
-                        return redirect()->route('invoice.link.copy', \Crypt::encrypt($invoice->id))->with('error', __('Webhook call failed.'));
+                        return redirect()->route('invoice.link.copy', \Crypt::encrypt($invoice->id))->with('error', __('Payment successfully, Webhook call failed.'));
                     }
                 }
 

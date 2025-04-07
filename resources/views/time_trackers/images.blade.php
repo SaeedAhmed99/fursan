@@ -20,9 +20,11 @@
                                     <!-- <a href="#" class="delete-icon"  data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$image->id}}').submit();">
                                                 <i class="ti ti-trash"></i>
                                             </a> -->
-                                <a href="#" class="mt-2 mx-3 btn btn-sm  align-items-center action-btn bg-danger ms-2 bs-pass-para"  data-confirm-delete="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="removeImage({{$image->id}})">
-                                    <i class="ti ti-trash text-white"></i>
-                                </a>
+                                <div class="action-btn">
+                                    <a href="#" class="mt-2 btn btn-sm  align-items-center  bg-danger ms-2 " data-bs-toggle="tooltip" data-bs-original-title="{{ __('Delete') }}" title="{{ __('Delete') }}" onclick="delete_image({{$image->id}})" data-confirm-yes="removeImage({{$image->id}})">
+                                        <i class="ti ti-trash text-white"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -50,31 +52,26 @@
       </div>
   </div>
 <script type="text/javascript">
-    $('[data-confirm-delete]').each(function () {
-    var me = $(this),
-        me_data = me.data('confirm-delete');
-    me_data = me_data.split("|");
-    me.fireModal({
-        title: me_data[0],
-        body: me_data[1],
-        buttons: [
-            {
-                text: me.data('confirm-text-yes') || 'Yes',
-                class: 'btn btn-sm btn-danger rounded-pill',
-                handler: function (modal) {
-                    eval(me.data('confirm-yes'));
-                    $.destroyModal(modal);
-                }
-            },
-            {
-                text: me.data('confirm-text-cancel') || 'Cancel',
-                class: 'btn btn-sm btn-secondary rounded-pill',
-                handler: function (modal) {
-                    $.destroyModal(modal);
-                    eval(me.data('confirm-no'));
-                }
-            }
-        ]
+function delete_image(id){
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
     })
-});
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: "This action can not be undone. Do you want to continue?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            removeImage(id);
+        }
+    })
+}
 </script>

@@ -35,7 +35,7 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         if(\Auth::user()->can('manage employee'))
         {
@@ -45,70 +45,10 @@ class EmployeeController extends Controller
             }
             else
             {
-                $employees = Employee::where('created_by', \Auth::user()->creatorId())->with(['designation','branch','department']);
-                if ($request->filled('email')) {
-                    $employees->where('email', 'LIKE', '%' . $request->input('email') . '%');
-                }
-    
-                if ($request->filled('name')) {
-                    $employees->where('name', 'LIKE', '%' . $request->input('name') . '%');
-                }
-            
-                if ($request->filled('nationality')) {
-                    $employees->where('nationality', 'LIKE', '%' . $request->input('nationality') . '%');
-                }
-            
-                if ($request->filled('country_of_residence')) {
-                    $employees->where('country_of_residence', 'LIKE', '%' . $request->input('country_of_residence') . '%');
-                }
-
-                if ($request->filled('branch_id')) {
-                    $employees->where('branch_id', $request->input('branch_id'));
-                }
-
-                if ($request->filled('department_id')) {
-                    $employees->where('department_id', $request->input('department_id'));
-                }
-
-                if ($request->filled('designation_id')) {
-                    $employees->where('designation_id', $request->input('designation_id'));
-                }
-
-                if ($request->filled('company_doj')) {
-                    $employees->whereDate('company_doj', $request->input('company_doj'));
-                }
-    
-                switch ($request->input('sort')) {
-                    case 'oldest':
-                        $employees->orderBy('created_at', 'asc');
-                        break;
-                    case 'newest':
-                        $employees->orderBy('created_at', 'desc');
-                        break;
-                    case 'age_asc':
-                        $employees->orderBy('dob', 'asc');
-                        break;
-                    case 'age_desc':
-                        $employees->orderBy('dob', 'desc');
-                        break;
-                    case 'name_asc':
-                        $employees->orderBy('name', 'asc');
-                        break;
-                    case 'name_desc':
-                        $employees->orderBy('name', 'desc');
-                        break;
-                    default:
-                        $employees->orderBy('created_at', 'asc'); 
-                }
-                $employees = $employees->get();
-    
+                $employees = Employee::where('created_by', \Auth::user()->creatorId())->with(['designation','branch','department'])->get();
             }
-            $branches         = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $departments      = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            $designations     = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
-            
 
-            return view('employee.index', compact('employees', 'branches', 'departments', 'designations'));
+            return view('employee.index', compact('employees'));
         }
         else
         {
@@ -325,7 +265,6 @@ class EmployeeController extends Controller
                                    'gender' => 'required',
                                    'phone' => 'required|numeric',
                                    'address' => 'required',
-                                   'email' => 'required|email|unique:employees,email,' . $id,
 //                                   'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
                                ]
             );
@@ -404,15 +343,12 @@ class EmployeeController extends Controller
             }
             if($request->salary)
             {
-                // return redirect()->route('setsalary.index')->with('success', 'Employee successfully updated.');
-                return redirect()->back()->with('success', 'Employee successfully updated.');
-
+                return redirect()->route('setsalary.index')->with('success', 'Employee successfully updated.');
             }
 
             if(\Auth::user()->type != 'employee')
             {
-                //return redirect()->route('employee.index')->with('success', 'Employee successfully updated.');
-                return redirect()->back()->with('success', 'Employee successfully updated.');
+                return redirect()->route('employee.index')->with('success', 'Employee successfully updated.');
             }
             else
             {
@@ -458,23 +394,23 @@ class EmployeeController extends Controller
 
     public function show($id)
     {
+
         if(\Auth::user()->can('view employee'))
         {
             try {
                 $empId       = Crypt::decrypt($id);
+                $employee     = Employee::findOrFail($empId);
             } catch (\Throwable $th) {
                 return redirect()->back()->with('error', __('Employee Not Found.'));
             }
 
-            $empId        = Crypt::decrypt($id);
             $documents    = Document::where('created_by', \Auth::user()->creatorId())->get();
             $branches     = Branch::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $departments  = Department::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
             $designations = Designation::where('created_by', \Auth::user()->creatorId())->get()->pluck('name', 'id');
 
-            $employee     = Employee::where('id',$empId)->first();
 
-            $employeesId  = \Auth::user()->employeeIdFormat(!empty($employee) ? $employee->id : '');
+            $employeesId  = \Auth::user()->employeeIdFormat(!empty($employee) ? $employee->employee_id : '');
 
 
             return view('employee.show', compact('employee', 'employeesId', 'branches', 'departments', 'designations', 'documents'));
@@ -797,7 +733,7 @@ class EmployeeController extends Controller
 
         $html = '';
 
-        if ($request->file->getClientOriginalName() != '') {
+        if ($request->hasFile('file') && $request->file->getClientOriginalName() != '') {
             $file_array = explode(".", $request->file->getClientOriginalName());
 
             $extension = end($file_array);
@@ -1065,6 +1001,8 @@ class EmployeeController extends Controller
                             'created_by' => \Auth::user()->creatorId(),
                         ]
                     );
+                    $user->assignRole('Employee');
+
                     Employee::create([
                         'name' => $row[$request->name],
                         'user_id' => $user->id,

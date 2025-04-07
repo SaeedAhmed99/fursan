@@ -19,42 +19,41 @@
                         </div>
                         <div class="form-group col-md-6">
                             {!! Form::label('phone', __('Phone'),['class'=>'form-label']) !!}<span class="text-danger pl-1">*</span>
-                            {!! Form::text('phone', !empty($jobOnBoard->applications)?$jobOnBoard->applications->phone:'', ['class' => 'form-control','required' => 'required']) !!}
-                            <input type="number" name="user_id" value="{{ $jobOnBoard->applications->user->id }}" hidden>
+                            {!! Form::number('phone',!empty($jobOnBoard->applications)?$jobOnBoard->applications->phone:'', ['class' => 'form-control']) !!}
                         </div>
+
                             <div class="form-group col-md-6">
                                 {!! Form::label('dob', __('Date of Birth'),['class'=>'form-label']) !!}<span class="text-danger pl-1">*</span>
                                 {!! Form::date('dob', !empty($jobOnBoard->applications)?$jobOnBoard->applications->dob:'', ['class' => 'form-control datepicker']) !!}
-                               
                             </div>
+
+
                             <div class="form-group col-md-6 ">
                                 {!! Form::label('gender', __('Gender'),['class'=>'form-label']) !!}<span class="text-danger pl-1">*</span>
                                 <div class="d-flex radio-check mt-2">
                                     <div class="form-check form-check-inline form-group">
-                                        <input type="radio" id="g_male" value="Male" name="gender" class="form-check-input" {{(!empty($jobOnBoard->applications) && $jobOnBoard->applications->gender=='male')?'checked':''}}>
+                                        <input type="radio" id="g_male" value="Male" name="gender" class="form-check-input" {{(!empty($jobOnBoard->applications) && $jobOnBoard->applications->gender=='Male')?'checked':''}}>
                                         <label class="form-check-label" for="g_male">{{__('Male')}}</label>
                                     </div>
                                     <div class="form-check form-check-inline form-group">
-                                        <input type="radio" id="g_female" value="Female" name="gender" class="form-check-input" {{(!empty($jobOnBoard->applications) && $jobOnBoard->applications->gender=='female')?'checked':''}}>
+                                        <input type="radio" id="g_female" value="Female" name="gender" class="form-check-input" {{(!empty($jobOnBoard->applications) && $jobOnBoard->applications->gender=='Female')?'checked':''}}>
                                         <label class="form-check-label" for="g_female">{{__('Female')}}</label>
                                     </div>
                                 </div>
-                               
-                                
-
                             </div>
-                        <div class="form-group col-md-12">
+
+                        <div class="form-group col-md-6">
                             {!! Form::label('email', __('Email'),['class'=>'form-label']) !!}<span class="text-danger pl-1">*</span>
-                            {!! Form::email('email', $jobOnBoard->applications->email ?? '', ['class' => 'form-control','required' => 'required']) !!}
+                            {!! Form::email('email',old('email'), ['class' => 'form-control','required' => 'required']) !!}
                         </div>
-                        {{-- <div class="form-group col-md-6">
+                        <div class="form-group col-md-6">
                             {!! Form::label('password', __('Password'),['class'=>'form-label']) !!}<span class="text-danger pl-1">*</span>
                             {!! Form::password('password', ['class' => 'form-control','required' => 'required']) !!}
-                        </div> --}}
+                        </div>
                     </div>
                     <div class="form-group">
                         {!! Form::label('address', __('Address'),['class'=>'form-label']) !!}<span class="text-danger pl-1">*</span>
-                        {!! Form::textarea('address',$jobOnBoard->applications->user->address ?? '', ['class' => 'form-control','rows'=>2]) !!}
+                        {!! Form::textarea('address',old('address'), ['class' => 'form-control','rows'=>2]) !!}
                     </div>
                 </div>
             </div>

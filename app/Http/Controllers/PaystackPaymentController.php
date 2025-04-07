@@ -384,7 +384,7 @@ class PaystackPaymentController extends Controller
                         }
                         else
                         {
-                            return redirect()->back()->with('error', __('Webhook call failed.'));
+                            return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                         }
                     }
 

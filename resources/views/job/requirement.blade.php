@@ -35,7 +35,6 @@ else {
 
     <meta name="title" content="{{ $metatitle }}">
     <meta name="description" content="{{ $metsdesc }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -78,52 +77,7 @@ else {
         :root {
             --color-customColor: <?= $color ?>;    
         }
-        
-        .social-share {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.social-share h3 {
-    font-size: 18px;
-    margin-bottom: 20px;
-    color: #333;
-    font-weight: bold;
-}
-
-.social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.social-icons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.social-icons a:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
-}
-
-.facebook { background: #1877F2; }
-.twitter { background: #000; } 
-.whatsapp { background: #25D366; }
-.linkedin { background: #0077B5; }
-.telegram { background: #0088CC; }
-
-</style>
+    </style>
 
     <link rel="stylesheet" href="{{ asset('css/custom-color.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -159,17 +113,6 @@ else {
             <section class="apply-job-section">
                 <div class="container">
                     <div class="apply-job-wrapper bg-light">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-
                         <div class="section-title text-center">
                             <p><b>{{ $job->title }}</b></p>
                             <div class="d-flex flex-wrap justify-content-center gap-1 mb-4">
@@ -182,108 +125,18 @@ else {
                                 <p> <i class="ti ti-map-pin ms-1"></i>
                                     {{ !empty($job->branches) ? $job->branches->name : '' }}</p>
                             @endif
-                            {{-- @if (auth()->check())
-                                @if (auth()->user()->type == 'user')
-                                    <a href="{{ route('job.apply.data.direct', $job->code) }}"
-                                        class="btn btn-primary rounded">{{ __('Apply now') }} <i class="ti ti-send ms-2"></i>
-                                    </a>
-                                @endif
-                            @else
-                                <a href="{{ route('job.apply.user.login',  $currantLang) }}"
+
+                            <a href="{{ route('job.apply', [$job->code, $currantLang]) }}"
                                 class="btn btn-primary rounded">{{ __('Apply now') }} <i class="ti ti-send ms-2"></i>
-                                </a>
-                            @endif --}}
-                            
-                            {{-- @if(auth()->check())
-                                <a href="{{ route('job.apply', [$job->code, $currantLang]) }}"
-                                    class="btn btn-primary rounded">{{ __('Apply now') }} <i class="ti ti-send ms-2"></i>
-                                </a>
-                            @else
-                                <a href="{{ route('job.apply.user.login',  $currantLang) }}"
-                                    class="btn btn-primary rounded">{{ __('Apply now') }} <i class="ti ti-send ms-2"></i>
-                                </a>
-                            @endif --}}
-
+                            </a>
                         </div>
-                        <h3>{{ __('Description') }}</h3><br>
-                        {!! $job->description !!}
-
-                        <hr>
                         <h3>{{ __('Requirements') }}</h3>
                         <p>{!! $job->requirement !!}</p>
 
-                        <br>
-                        <h5>Job type: {{ $job->job_type }}</h5>
-                        <h5>Years of experience: {{ $job->years_of_experience }}</h5>
-                        <h5>Show pay by: {{ $job->show_pay_by }}</h5>
-                        <h5>Starting salary: {{ $job->starting_salary }}</h5>
-                        <h5>Currency: {{ $job->currency }}</h5>
-                        {{-- <h5>Rate: {{ $job->rate }}</h5> --}}
-                        <h5>Academic Major: {{ $job->major }}</h5>
-                        <h5>Degree: {{ $job->degree }}</h5>
-
-                        <br>
-                        @php
-                            $jobUrl = urlencode(request()->fullUrl());
-                        @endphp
-                        <div class="social-share">
-                            <h3>Share the job on social media</h3>
-
-                            <div class="social-icons">
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $jobUrl }}" target="_blank" >
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                            
-                                <a href="https://twitter.com/intent/tweet?url={{ $jobUrl }}" target="_blank">
-                                    <i class="fab fa-x"></i>
-                                </a>
-                            
-                                <a href="https://api.whatsapp.com/send?text={{ $jobUrl }}" target="_blank">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                            
-                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $jobUrl }}" target="_blank">
-                                    <i class="fab fa-linkedin-in"></i>
-                                </a>
-                            
-                                <a href="https://t.me/share/url?url={{ $jobUrl }}" target="_blank">
-                                    <i class="fab fa-telegram-plane"></i>
-                                </a>
-                            </div>
-                            
-                        </div>
+                        <hr>
+                        <h3>{{ __('Description') }}</h3><br>
+                        {!! $job->description !!}
                     </div>
-                    
-                    @if (auth()->check())
-                        @if (auth()->user()->type == 'user')
-                        {{Form::open(array('route'=>array('job.apply.data.direct',$job->code),'method'=>'post', 'enctype' => "multipart/form-data", 'class'=>'needs-validation', 'novalidate'))}}
-                        <div class="form-group col-md-12 mt-1">
-                            {{Form::label('cover_letter',__('Cover Letter'),['class'=>'form-label'])}}
-                            {{Form::textarea('cover_letter',null,array('class'=>'form-control','rows'=>'3', 'placeholder'=>__('Enter Cover Latter')))}}
-                        </div>
-                        <div class="col-12">
-                            <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-primary">{{__('Submit your application')}}</button>
-                            </div>
-                        </div>
-                        {{Form::close()}}
-
-                            {{-- <div class="form-group col-md-12 mt-1">
-                                {{Form::label('cover_letter',__('Cover Letter'),['class'=>'form-label'])}}
-                                {{Form::textarea('cover_letter',null,array('class'=>'form-control','rows'=>'3', 'placeholder'=>__('Enter Cover Latter')))}}
-                            </div>
-                            <a href="{{ route('job.apply.data.direct', $job->code) }}"
-                                class="btn btn-primary rounded center">{{ __('Apply now') }} <i class="ti ti-send ms-2"></i>
-                            </a> --}}
-                        @endif
-                    @else
-                        <a href="{{ route('job.apply.user.login',  $currantLang) }}"
-                        class="btn btn-primary rounded center">{{ __('Apply now') }} <i class="ti ti-send ms-2"></i>
-                        </a>
-                    @endif
-
-
-                    
                 </div>
             </section>
         </div>
@@ -293,18 +146,13 @@ else {
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/js/plugins/feather.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins/sweetalert2.all.min.js') }}"></script>
-
     <script src="{{ asset('js/site.core.js') }}"></script>
     <script src="{{ asset('js/site.js') }}"></script>
     <script src="{{ asset('js/demo.js') }} "></script>
-    <script src="{{ asset('js/custom.js') }}"></script>
-
 </body>
 
 @if ($get_cookie['enable_cookie'] == 'on')
     @include('layouts.cookie_consent')
-    
 @endif
 
 

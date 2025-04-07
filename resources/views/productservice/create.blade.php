@@ -5,7 +5,7 @@
         $plan= \App\Models\Utility::getChatGPTSettings();
     @endphp
     @if($plan->chatgpt == 1)
-    <div class="text-end">
+    <div class="text-end mb-3">
         <a href="#" data-size="md" class="btn  btn-primary btn-icon btn-sm" data-ajax-popup-over="true" data-url="{{ route('generate',['productservice']) }}"
            data-bs-placement="top" data-title="{{ __('Generate content with AI') }}">
             <i class="fas fa-robot"></i> <span>{{__('Generate with AI')}}</span>
@@ -74,7 +74,7 @@
             {{ Form::label('category_id', __('Category'),['class'=>'form-label']) }}<x-required></x-required>
             {{ Form::select('category_id', $category,null, array('class' => 'form-control select','required'=>'required')) }}
 
-            <div class=" text-xs">
+            <div class=" text-sm mt-1">
                 {{__('Please add constant category. ')}}<a href="{{route('product-category.index')}}"><b>{{__('Add Category')}}</b></a>
             </div>
         </div>

@@ -63,7 +63,7 @@
                             <div>
 
                             </div>
-                            <div>
+                            <div class="action-btn-col">
                                 @yield('action-button')
                             </div>
 

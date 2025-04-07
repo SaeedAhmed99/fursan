@@ -107,7 +107,7 @@ class JoinUsController extends Controller
         $join = JoinUs::find($id);
         $join->delete();
 
-        return redirect()->back()->with(['success'=> 'You are joined with our community']);
+        return redirect()->back()->with(['success'=> 'Joined user deleted successfully.']);
     }
 
 

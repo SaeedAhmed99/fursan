@@ -122,7 +122,7 @@
                 $(this).val(0);
                 return;
             }
-            
+
             var debit = 0;
             el.find('.debit').val(debit);
             el.find('.amount').html(credit);
@@ -149,7 +149,7 @@
     @endphp
     @if ($plan->chatgpt == 1)
         <div class="float-end">
-            <a href="#" data-size="md" class="btn  btn-primary btn-icon btn-sm" data-ajax-popup-over="true"
+            <a href="#" data-size="md" class="btn btn-primary btn-sm d-inline-flex align-items-center gap-2" data-ajax-popup-over="true"
                 data-url="{{ route('generate', ['journal entry']) }}" data-bs-placement="top"
                 data-title="{{ __('Generate content with AI') }}">
                 <i class="fas fa-robot"></i> <span>{{ __('Generate with AI') }}</span>
@@ -255,8 +255,9 @@
                                     </td>
                                     <td class="text-end amount">0.00</td>
                                     <td>
-                                        <a href="#" class="ti ti-trash text-white text-danger"
-                                            data-repeater-delete></a>
+                                        <div class="action-btn me-2">
+                                            <a href="#!" class="ti ti-trash text-white btn btn-sm repeater-action-btn bg-danger ms-2" data-repeater-delete data-bs-toggle="tooltip" title="{{ __('Delete') }}"></a>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -285,9 +286,9 @@
         </div>
     </div>
 
-    <div class="modal-footer">
+    <div class="modal-footer d-flex align-items-center gap-2 mb-3">
         <input type="button" value="{{ __('Cancel') }}" onclick="location.href = '{{ route('journal-entry.index') }}';"
-            class="btn btn-secondary me-2">
+            class="btn btn-secondary">
         <input type="submit" value="{{ __('Create') }}" class="btn btn-primary">
     </div>
     {{ Form::close() }}

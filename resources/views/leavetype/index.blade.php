@@ -3,8 +3,6 @@
 @section('page-title')
     {{ __('Manage Leave Type') }}
 @endsection
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a></li>
     <li class="breadcrumb-item">{{ __('Leave Type') }}</li>
@@ -52,10 +50,7 @@
                                     <tbody class="font-style">
                                         @foreach ($leavetypes as $leavetype)
                                             <tr>
-                                                <td>
-                                                    <a style="color: black;" href="#" onclick="showDescription('{{ $leavetype->title }}', '{{ $leavetype->description }}')">
-                                                        {{ $leavetype->title }}
-                                                    </a>
+                                                <td>{{ $leavetype->title }}</td>
                                                 <td>{{ $leavetype->days }}</td>
                                                 <td>
                                                     @can('edit leave type')
@@ -102,15 +97,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function showDescription(title, description) {
-            Swal.fire({
-                title: title,
-                text: 'description is: ' + description ,
-                icon: 'info',
-                confirmButtonText: 'ok'
-            });
-        }
-    </script>
 @endsection

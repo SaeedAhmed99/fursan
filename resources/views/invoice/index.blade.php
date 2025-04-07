@@ -31,7 +31,7 @@
         {{--            <i class="ti ti-filter"></i>--}}
         {{--        </a>--}}
 
-        <a href="{{ route('invoice.export') }}" class="btn btn-sm btn-primary me-2" data-bs-toggle="tooltip" title="{{__('Export')}}">
+        <a href="{{ route('invoice.export') }}" class="btn btn-sm btn-secondary me-2" data-bs-toggle="tooltip" title="{{__('Export')}}">
             <i class="ti ti-file-export"></i>
         </a>
 

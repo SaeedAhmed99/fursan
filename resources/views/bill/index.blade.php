@@ -25,7 +25,7 @@
 
 @section('action-btn')
     <div class="float-end d-flex">
-        <a href="{{ route('bill.export') }}" class="btn btn-sm btn-primary me-2" data-bs-toggle="tooltip" title="{{__('Export')}}">
+        <a href="{{ route('bill.export') }}" class="btn btn-sm btn-secondary me-2" data-bs-toggle="tooltip" title="{{__('Export')}}">
             <i class="ti ti-file-export"></i>
         </a>
         @can('create bill')

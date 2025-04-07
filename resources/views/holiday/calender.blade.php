@@ -17,7 +17,7 @@
 @section('action-btn')
     @can('create holiday')
         <div class="float-end d-flex">
-            <a href="{{ route('holiday.index') }}" class="btn btn-sm btn-primary me-2" data-bs-toggle="tooltip" title="{{__('List View')}}" data-original-title="{{__('List View')}}">
+            <a href="{{ route('holiday.index') }}" class="btn btn-sm bg-light-blue-subtitle me-2" data-bs-toggle="tooltip" title="{{__('List View')}}" data-original-title="{{__('List View')}}">
                 <i class="ti ti-list"></i>
             </a>
             <a href="#" data-size="lg" data-url="{{ route('holiday.create') }}" data-ajax-popup="true" data-bs-toggle="tooltip" title="{{__('Create')}}" data-title="{{__('Create New Holiday')}}" class="btn btn-sm btn-primary">
@@ -76,87 +76,91 @@
             </div>
         </div>
 
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <h5>{{ __('Calendar') }}</h5>
+        <div class="row">
+            <div class="col-lg-7 mb-4">
+                <div class="card h-100 mb-0">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h5>{{ __('Calendar') }}</h5>
+                            </div>
+                            <div class="col-lg-6">
+                                @if (isset($setting['google_calendar_enable']) && $setting['google_calendar_enable'] == 'on')
+                                    <select class="form-control" name="calender_type" id="calender_type" onchange="get_data()">
+                                        <option value="goggle_calender">{{ __('Google Calender') }}</option>
+                                        <option value="local_calender" selected="true">{{ __('Local Calender') }}</option>
+                                    </select>
+                                @endif
+                                <input type="hidden" id="holiday_calendar" value="{{ url('/') }}">
+                            </div>
                         </div>
-                        <div class="col-lg-6">
-                            @if (isset($setting['google_calendar_enable']) && $setting['google_calendar_enable'] == 'on')
-                                <select class="form-control" name="calender_type" id="calender_type" onchange="get_data()">
-                                    <option value="goggle_calender">{{__('Google Calender')}}</option>
-                                    <option value="local_calender" selected="true">{{__('Local Calender')}}</option>
-                                </select>
+                    </div>
+                    <div class="card-body">
+                        <div id='calendar' class='calendar'></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 mb-4">
+                <div class="card h-100 mb-0">
+                    <div class="card-header">
+                        <h5 class="mb-0">{{ __('Holiday List') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="event-wrp holiday-wrp">
+                            @if (!$holidays->isEmpty())
+                                @foreach ($holidays as $holiday)
+                                    <div class="event-item d-flex align-items-center">
+                                        <div class="event-content flex-1">
+                                            <h6 class="mb-2">
+                                                {{ $holiday->occasion }}
+                                            </h6>
+                                            <div class="date-wrp d-flex flex-wrap align-items-center">
+                                                <div class="date text-sm">
+                                                    <span
+                                                        class="f-w-600">{{ __('Start Date : ') }}</span>{{ \Auth::user()->dateFormat($holiday->date) }}
+                                                </div>
+                                                <div class="date text-sm">
+                                                    <span
+                                                        class="f-w-600">{{ __('End Date : ') }}</span>{{ \Auth::user()->dateFormat($holiday->end_date) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="action-btns d-flex flex-column gap-2">
+                                            @can('edit interview schedule')
+                                                <a href="#" data-url="{{ route('holiday.edit', $holiday->id) }}"
+                                                    data-title="{{ __('Edit Interview Schedule') }}" data-ajax-popup="true"
+                                                    class="btn btn-sm bg-white shadow-sm p-1 d-flex" data-bs-toggle="tooltip"
+                                                    title="{{ __('Edit') }}" data-original-title="{{ __('Edit') }}"><i
+                                                        class="ti ti-pencil text-info"></i></a>
+                                            @endcan
+                                            @can('delete interview schedule')
+                                                {!! Form::open([
+                                                    'method' => 'DELETE',
+                                                    'route' => ['holiday.destroy', $holiday->id],
+                                                    'id' => 'delete-form-' . $holiday->id,
+                                                ]) !!}
+                                                <a href="#"
+                                                    class="btn btn-sm bs-pass-para bg-white shadow-sm d-flex p-1"
+                                                    data-bs-toggle="tooltip" title="{{ __('Delete') }}"
+                                                    data-original-title="{{ __('Delete') }}"
+                                                    data-confirm="{{ __('Are You Sure?') . '|' . __('This action can not be undone. Do you want to continue?') }}"
+                                                    data-confirm-yes="document.getElementById('delete-form-{{ $holiday->id }}').submit();"><i
+                                                        class="ti ti-trash text-danger"></i></a>
+                                                {!! Form::close() !!}
+                                            @endcan
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="text-center">
+                                    <h6>{{ __('There is no holiday in this month') }}</h6>
+                                </div>
                             @endif
-                            <input type="hidden" id="holiday_calendar" value="{{url('/')}}">
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div id='calendar' class='calendar'></div>
-                </div>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="mb-4">{{__('Holiday List')}}</h4>
-                    <ul class="event-cards list-group list-group-flush mt-3 w-100">
-                        <li class="list-group-item card mb-3">
-                            <div class="row align-items-center justify-content-between">
-                                <div class=" align-items-center">
-                                    @if(!$holidays->isEmpty())
-                                        @foreach ($holidays as $holiday)
-                                            <div class="card mb-3 border shadow-none">
-                                                <div class="px-3">
-                                                    <div class="row align-items-center">
-                                                        <div class="col ml-n2">
-                                                            <h5 class="text-sm mb-0">
-                                                            </h5>
-                                                            <p class="card-text small text-primary">
-                                                                {{($holiday->occasion)}}
-                                                            </p>
-                                                            <p class="card-text small text-dark">
-                                                                {{__('Start Date :')}}
-                                                                {{  \Auth::user()->dateFormat($holiday->date) }}<br>
-                                                                {{__('End Date :')}}
-                                                                {{  \Auth::user()->dateFormat($holiday->end_date) }}
-                                                            </p>
-                                                        </div>
-                                                        <div class="col-auto text-right">
-                                                            @can('edit interview schedule')
-                                                                <div class="action-btn me-2">
-                                                                    <a href="#" data-url="{{ route('holiday.edit',$holiday->id) }}" data-title="{{__('Edit Interview Schedule')}}" data-ajax-popup="true" class="mx-3 btn btn-sm  align-items-center bg-info" data-bs-toggle="tooltip" title="{{__('Edit')}}" data-original-title="{{__('Edit')}}"><i class="ti ti-pencil text-white"></i></a>
-                                                                </div>
-                                                            @endcan
-                                                            @can('delete interview schedule')
-                                                                    <div class="action-btn ">
-                                                                        {!! Form::open(['method' => 'DELETE', 'route' => ['holiday.destroy', $holiday->id],'id'=>'delete-form-'.$holiday->id]) !!}
-                                                                        <a href="#" class="mx-3 btn btn-sm  align-items-center bs-pass-para bg-danger" data-bs-toggle="tooltip" title="{{__('Delete')}}" data-original-title="{{__('Delete')}}" data-confirm="{{__('Are You Sure?').'|'.__('This action can not be undone. Do you want to continue?')}}" data-confirm-yes="document.getElementById('delete-form-{{$holiday->id}}').submit();"><i class="ti ti-trash text-white"></i></a>
-                                                                        {!! Form::close() !!}
-                                                                    </div>
-                                                                @endcan
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <div class="text-center">
-                                            {{__('No Interview Scheduled!')}}
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 @endsection

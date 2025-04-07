@@ -43,7 +43,7 @@ class DesignationController extends Controller
     }
 
     public function store(Request $request)
-    {   
+    {
 
         if(\Auth::user()->can('create designation'))
         {
@@ -51,8 +51,7 @@ class DesignationController extends Controller
                 $request->all(), [
                                    'branch_id' => 'required',
                                    'department_id' => 'required',
-                                   //'name' => 'required|max:250|unique:designations,name',
-                                   'name' => 'required|max:250',
+                                   'name' => 'required|max:20',
                                ]
             );
             if($validator->fails())
@@ -61,14 +60,6 @@ class DesignationController extends Controller
 
                 return redirect()->back()->with('error', $messages->first());
             }
-            $exists = Designation::where('department_id', $request->department_id)
-                         ->where('name', $request->name)
-                         ->exists();
-
-            if ($exists) {
-                return redirect()->back()->with('error', 'The designation name must be unique within the department.');
-            }
-            
 
             $designation                = new Designation();
             $designation->branch_id     = $request->branch_id;
@@ -129,8 +120,7 @@ class DesignationController extends Controller
                     $request->all(), [
                                        'branch_id' => 'required',
                                        'department_id' => 'required',
-                                       //'name' => 'required|max:250|unique:designations,name,' . $designation->id,
-                                       'name' => 'required|max:250'
+                                       'name' => 'required|max:20',
                                    ]
                 );
                 if($validator->fails())
@@ -139,18 +129,6 @@ class DesignationController extends Controller
 
                     return redirect()->back()->with('error', $messages->first());
                 }
-
-                if ($request->name != $designation->name) {
-                    $exists = Designation::where('department_id', $request->department_id)
-                    ->where('name', $request->name)
-                    ->exists();
-
-                    if ($exists) {
-                        return redirect()->back()->with('error', 'The designation name must be unique within the department.');
-                    }
-                }
-               
-
                 try {
                     $branch = Department::where('id', $request->department_id)->where('created_by', '=', \Auth::user()->creatorId())->first()->branch->id;
                 } catch (\Exception $e) {

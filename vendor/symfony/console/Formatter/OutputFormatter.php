@@ -23,6 +23,7 @@ use function Symfony\Component\String\b;
  */
 class OutputFormatter implements WrappableOutputFormatterInterface
 {
+    private bool $decorated;
     private array $styles = [];
     private OutputFormatterStyleStack $styleStack;
 
@@ -66,10 +67,10 @@ class OutputFormatter implements WrappableOutputFormatterInterface
      *
      * @param OutputFormatterStyleInterface[] $styles Array of "name => FormatterStyle" instances
      */
-    public function __construct(
-        private bool $decorated = false,
-        array $styles = [],
-    ) {
+    public function __construct(bool $decorated = false, array $styles = [])
+    {
+        $this->decorated = $decorated;
+
         $this->setStyle('error', new OutputFormatterStyle('white', 'red'));
         $this->setStyle('info', new OutputFormatterStyle('green'));
         $this->setStyle('comment', new OutputFormatterStyle('yellow'));
@@ -105,7 +106,7 @@ class OutputFormatter implements WrappableOutputFormatterInterface
     public function getStyle(string $name): OutputFormatterStyleInterface
     {
         if (!$this->hasStyle($name)) {
-            throw new InvalidArgumentException(\sprintf('Undefined style: "%s".', $name));
+            throw new InvalidArgumentException(sprintf('Undefined style: "%s".', $name));
         }
 
         return $this->styles[strtolower($name)];

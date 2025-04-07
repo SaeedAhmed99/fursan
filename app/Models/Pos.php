@@ -146,7 +146,7 @@ class Pos extends Model
                 ->keyBy('pos');
         }
         $total = 0;
-        
+
 
         foreach($posProducts as $pos)
         {
@@ -160,12 +160,12 @@ class Pos extends Model
             }
 
             $total += ($pos->price  * $pos->quantity) + $totalTaxPrice - $pos->total_discount;
-            
+
         }
         return $total;
 
     }
-    
+
     public static function totalPosAmount($month = false)
     {
         $posAmount = self::getPosProductsData($month);

@@ -32,8 +32,6 @@ class Employee extends Model
         'account',
         'salary',
         'created_by',
-        'country_of_residence',
-        'nationality',
     ];
 
     public function documents()
@@ -59,11 +57,6 @@ class Employee extends Model
     public function loans()
     {
         return $this->hasMany(Loan::class);
-    }
-
-    public function socialSecuritys()
-    {
-        return $this->hasMany(SocialSecurity::class);
     }
 
     public function saturationDeductions()
@@ -101,11 +94,6 @@ class Employee extends Model
         return ($loan->type === 'fixed') ? $loan->amount : ($loan->amount * $this->salary / 100);
     });
 
-    // Calculate total SocialSecurity
-    $total_socialSecurity = $this->socialSecuritys->sum(function ($socialSecurity) {
-        return ($socialSecurity->type === 'fixed') ? $socialSecurity->amount : ($socialSecurity->amount * $this->salary / 100);
-    });
-
     // Calculate total saturation deductions
     $total_saturation_deduction = $this->saturationDeductions->sum(function ($deduction) {
         return ($deduction->type === 'fixed') ? $deduction->amount : ($deduction->amount * $this->salary / 100);
@@ -122,7 +110,7 @@ class Employee extends Model
     });
 
     // Calculate net salary
-    $net_salary = $this->salary + $total_allowance + $total_commission - $total_loan - $total_socialSecurity - $total_saturation_deduction + $total_other_payment + $total_over_time;
+    $net_salary = $this->salary + $total_allowance + $total_commission - $total_loan - $total_saturation_deduction + $total_other_payment + $total_over_time;
 
     return $net_salary;
 }
@@ -279,20 +267,6 @@ class Employee extends Model
         return $loan_json;
     }
 
-    public static function socialSecurity($id)
-    {
-        //SocialSecurity
-        $socialSecuritys     = SocialSecurity::where('employee_id', '=', $id)->get();
-        $total_socialSecurity = 0;
-        foreach($socialSecuritys as $socialSecurity)
-        {
-            $total_socialSecurity = $socialSecurity->amount + $total_socialSecurity;
-        }
-        $socialSecurity_json = json_encode($socialSecuritys);
-
-        return $socialSecurity_json;
-    }
-
     public static function saturation_deduction($id)
     {
         //Saturation Deduction
@@ -397,74 +371,8 @@ class Employee extends Model
         }
     }
 
-    public function workExperiences()
-    {
-        return $this->hasMany(WorkExperience::class);
-    }
 
 
-    public function skills()
-    {
-        return $this->hasMany(Skill::class);
-    }
-
-    public function edus()
-    {
-        return $this->hasMany(Edu::class);
-    }
-
-    public function languageUser()
-    {
-        return $this->hasMany(UserLanguage::class);
-    }
-
-    public function membership()
-    {
-        return $this->hasMany(Membership::class);
-    }
-
-    public function traning()
-    {
-        return $this->hasMany(Traning::class);
-    }
-
-    public function certificateUser()
-    {
-        return $this->hasMany(CertificateUser::class);
-    }
-
-    public function cvUser()
-    {
-        return $this->hasMany(CVUser::class);
-    }
-
-    public function payslipPDF()
-    {
-        return $this->hasMany(PayslipPDF::class);
-    }
-
-
-    public function assignedFiles()
-    {
-        return $this->belongsToMany(SignedFiles::class, 'file_assignments', 'selected_employees', 'file_id');
-    }
-
-    public function uploadedSignedFile($fileId)
-    {
-        $file = SignedFiles::findOrFail($fileId);
-
-        if (!isset($file->uploaded_files) || !is_array($file->uploaded_files)) {
-            return null;
-        }
-
-        foreach ($file->uploaded_files as $uploadedFile) {
-            if ($uploadedFile['employee_id'] == $this->id) {
-                return $uploadedFile['file_path']; // إرجاع مسار الملف
-            }
-        }
-
-        return null; // لم يرفع الموظف هذا الملف بعد
-    }
 
 
 }

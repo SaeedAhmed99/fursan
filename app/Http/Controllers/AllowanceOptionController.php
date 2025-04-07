@@ -40,7 +40,7 @@ class AllowanceOptionController extends Controller
 
             $validator = \Validator::make(
                 $request->all(), [
-                                   'name' => 'required|max:250|unique:allowance_options,name',
+                                   'name' => 'required|max:20',
                                ]
             );
             if($validator->fails())
@@ -96,7 +96,7 @@ class AllowanceOptionController extends Controller
             {
                 $validator = \Validator::make(
                     $request->all(), [
-                                       'name' => 'required|max:250|unique:allowance_options,name,' . $allowanceoption->id,
+                                       'name' => 'required|max:20',
 
                                    ]
                 );

@@ -94,10 +94,10 @@
 
                                             @if ($job->status == 'confirm' )
                                                 <div class="action-btn me-2">
-                                                    <a href="{{route('offerlatter.download.pdf',$job->id)}}" class="mx-3 btn btn-sm  align-items-center bg-primary " data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('OfferLetter PDF')}}" target="_blanks" download=""><i class="ti ti-download text-white"></i></a>
+                                                    <a href="{{route('offerlatter.download.pdf',$job->id)}}" class="mx-3 btn btn-sm  align-items-center bg-primary " data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('OfferLetter PDF')}}" target="_blanks" ><i class="ti ti-download text-white"></i></a>
                                                 </div>
                                                 <div class="action-btn ">
-                                                    <a href="{{route('offerlatter.download.doc',$job->id)}}" class="mx-3 btn btn-sm  align-items-center bg-primary " data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('OfferLetter DOC')}}" target="_blanks" download=""><i class="ti ti-download text-white"></i></a>
+                                                    <a href="{{route('offerlatter.download.doc',$job->id)}}" class="mx-3 btn btn-sm  align-items-center bg-primary " data-bs-toggle="tooltip" data-bs-placement="top" title="{{__('OfferLetter DOC')}}" target="_blanks" ><i class="ti ti-download text-white"></i></a>
                                                 </div>
                                             @endif
 

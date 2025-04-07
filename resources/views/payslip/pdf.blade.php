@@ -7,8 +7,8 @@
     <div class="card-body">
 
         <div class="text-end">
-            <a href="#" class="btn btn-sm btn-primary me-1" onclick="saveAsPDF()"><span class="ti ti-download"></span></a>
-            <a title="Mail Send" href="{{route('payslip.send',[$employee->id,$payslip->salary_month])}}" class="btn btn-sm btn-warning"><span class="ti ti-send"></span></a>
+            <a title="{{ __('Download') }}" href="#" class="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip" data-bs-original-title="{{ __('Download') }}" onclick="saveAsPDF()"><span class="ti ti-download"></span></a>
+            <a title="{{ __('Mail Send') }}" href="{{route('payslip.send',[$employee->id,$payslip->salary_month])}}" class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-original-title="{{ __('Mail Send') }}"><span class="ti ti-send"></span></a>
         </div>
         <div class="invoice" id="printableArea">
             <div class="invoice-number">
@@ -233,7 +233,6 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
             <hr>
             <div class="text-md-right pb-2 text-sm">

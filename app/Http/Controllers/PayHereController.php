@@ -84,7 +84,7 @@ class PayHereController extends Controller
                     }
                 } else {
                     return redirect()->back()->with('error', __('This coupon code is invalid or has expired.'));
-                }                                   
+                }
             }
 
 
@@ -160,7 +160,7 @@ class PayHereController extends Controller
         $plan = Plan::find($request->plan);
 
         Utility::referralTransaction($plan);
-        
+
             $order = new Order();
             $order->order_id = $orderID;
             $order->name = $authuser->name;
@@ -250,7 +250,7 @@ class PayHereController extends Controller
                         strtoupper(md5($payhere_merchant_secret))
                 )
             );
-            $data = [   
+            $data = [
                 'first_name' => $user->name,
                 'last_name' => '',
                 'email' => $user->email,
@@ -269,11 +269,11 @@ class PayHereController extends Controller
                 ->data($data)
                 ->successUrl(route('invoice.payhere.status', [
                     $request->invoice_id,
-                    'amount' => $get_amount,                    
+                    'amount' => $get_amount,
                 ]))
                 ->failUrl(route('invoice.payhere.status', [
                     $request->invoice_id,
-                    'amount' => $get_amount,                    
+                    'amount' => $get_amount,
                 ]))
                 ->renderView();
         } catch (\Exception $e) {
@@ -311,7 +311,7 @@ class PayHereController extends Controller
                 $invoice_payment->reference      = '';
                 $invoice_payment->description    = 'Invoice ' . Utility::invoiceNumberFormat($settings, $invoice->invoice_id);
                 $invoice_payment->save();
-    
+
                 if($invoice->getDue() <= 0)
                 {
                     $invoice->status = 4;
@@ -327,10 +327,10 @@ class PayHereController extends Controller
                     $invoice->status = 3;
                     $invoice->save();
                 }
-    
+
                 //for customer balance update
                 Utility::updateUserBalance('customer', $invoice->customer_id, $request->amount, 'debit');
-    
+
                 //For Notification
                 $setting  = Utility::settingsById($invoice->created_by);
                 $customer = Customer::find($invoice->customer_id);
@@ -367,14 +367,14 @@ class PayHereController extends Controller
                     }
                     else
                     {
-                        return redirect()->back()->with('error', __('Webhook call failed.'));
+                        return redirect()->back()->with('error', __('Payment successfully, Webhook call failed.'));
                     }
                 }
-                
+
                 return redirect()->route('invoice.link.copy', \Crypt::encrypt($invoice->id))->with('success', __('Invoice paid Successfully!'));
             } catch (\Exception $e) {
                 return redirect()->route('invoice.link.copy',$request->invoice)->with('error', __($e->getMessage()));
             }
-        } 
+        }
     }
 }

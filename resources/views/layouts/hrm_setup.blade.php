@@ -39,7 +39,7 @@
     </div>
 </div> --}}
 
-<ul class="nav nav-pills nav-fill information-tab hrm_setup_tab" id="pills-tab" role="tablist">
+<ul class="card flex-row nav nav-pills nav-fill information-tab hrm_setup_tab" id="pills-tab" role="tablist">
     @can('manage branch')
         <li class="nav-item" role="presentation">
             <a href="{{ route('branch.index') }}" class="list-group-item list-group-item-action border-0">
@@ -107,7 +107,7 @@
         <li class="nav-item" role="presentation">
             <a href="{{ route('loanoption.index') }}" class="list-group-item list-group-item-action border-0">
                 <button class="nav-link {{ request()->is('loanoption*') ? 'active' : '' }} " id="loan-setting-tab"
-                    data-bs-toggle="pill" data-bs-target="#loan-setting" type="button">{{ __('Deduction Option') }}</button>
+                    data-bs-toggle="pill" data-bs-target="#loan-setting" type="button">{{ __('Loan Option') }}</button>
             </a>
         </li>
     @endcan
@@ -116,7 +116,7 @@
             <a href="{{ route('deductionoption.index') }}" class="list-group-item list-group-item-action border-0">
                 <button class="nav-link {{ request()->is('deductionoption*') ? 'active' : '' }} "
                     id="deduction-setting-tab" data-bs-toggle="pill" data-bs-target="#deduction-setting"
-                    type="button">{{ __('Saturation Deduction Option') }}</button>
+                    type="button">{{ __('Deduction Option') }}</button>
             </a>
         </li>
     @endcan
